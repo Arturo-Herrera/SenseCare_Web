@@ -41,9 +41,12 @@ i, .texto {
 
 .texto {
     padding: 5px;
-    border-radius: 5px;
 }
 
+p:hover{
+    background-color: #c0cedb;
+    border-radius: 10px;
+}
 /* ------------------------------ */
 /* ESTILOS RESPONSIVOS            */
 /* ------------------------------ */
