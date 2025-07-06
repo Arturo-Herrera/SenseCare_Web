@@ -1,46 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/index.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <link rel="stylesheet" href="../css/index.css" />
+
     <title>SenseCare</title>
-    <link rel="stylesheet" href="../fontawesome-free-6.7.2-web/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans&display=swap" rel="stylesheet">
+
+    <!-- Íconos FontAwesome -->
+    <link rel="stylesheet" href="../fontawesome-free-6.7.2-web/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans&display=swap" rel="stylesheet" />
 </head>
 
 <body>
     <div class="sidebar">
         <div>
-            <img src="../photo/SenseCare_Logo.png" alt="logo" class="logo">
+            <img src="../photo/SenseCare_Logo.png" alt="logo" class="logo" />
         </div>
-        <div class="option-container">
-            <div class="sidebar-option">
-                <i class="fas fa-chart-bar"></i>
-                <p class="texto">Dashboard</p>
-            </div>
-            <div class="sidebar-option">
-                <i class="fas fa-user"></i>
-                <p class="texto">Patients</p>
-            </div>
-            <div class="sidebar-option">
-                <i class="fas fa-file-medical"></i>
-                <p class="texto">Medical history</p>
-            </div>
-            <div class="sidebar-option">
-                <i class="fas fa-users"></i>
-                <p class="texto">Users</p>
-            </div>
-            <div class="sidebar-option">
-                <i class="fas fa-cog"></i>
-                <p class="texto">Settings</p>
-            </div>
-        </div>
-    </div>
+
+        <!--  SOLO añadí id="menu" para que JS lo encuentre -->
+        <div class="option-container" id="menu"></div>
     </div>
 
-
+    <script src="../js/menu.js"></script>
 </body>
-
 </html>

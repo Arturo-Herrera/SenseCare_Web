@@ -1,0 +1,7 @@
+[
+  { "icon": "fa-solid fa-chart-bar",   "text": "Dashboard"       },
+  { "icon": "fa-solid fa-user",        "text": "Patients", "href": "/patients.html"},
+  { "icon": "fa-solid fa-file-medical","text": "Medical history" },
+  { "icon": "fa-solid fa-users",       "text": "Users"           },
+  { "icon": "fa-solid fa-cog",         "text": "Settings"        }
+]
