@@ -1,90 +1,128 @@
 * {
-    font-family: 'Merriweather Sans', sans-serif;
-    font-weight: bold;
+  font-family: "Merriweather Sans", sans-serif;
 }
 
-i, .texto {
-    font-size: 15pt;
+i {
+  font-size: 30px;
+  padding: 5px;
+}
+
+.title {
+  font-size: 40px;
+  color: #44749d;
+  margin-left: 60px;
 }
 
 .sidebar {
-    position: fixed;
-    width: 200px;
-    height: 100vh;
-    background-color: #E7E7E7;
-    color: #44749D;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+  position: fixed;
+  width: 234px;
+  height: 100vh;
+  background-color: #e7e7e7;
+  color: #44749d;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 
 .sidebar-option {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  /* justify-content: flex-start; */
+  gap: 12px;
+  /* padding-left: 10px;
+  padding-right: 10px; */
+  transition: 0.5s;
+  width: 151px;
+  padding: 3px;
 }
 
 .option-container {
-    gap: 35px;
-    height: 100%;
+  gap: 35px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
 }
 
 .logo {
-    width: 200px;
-    height: 200px;
+  width: 200px;
+  height: 200px;
 }
 
 .texto {
-    padding: 5px;
+  white-space: pre-line;
+  font-size: 20px;
+  margin: 0;
+  line-height: 1.2;
+  font-weight: bold;
 }
 
-p:hover{
-    background-color: #c0cedb;
-    border-radius: 10px;
+.icon {
+  width: 24px;
+  display: flex;
+  justify-content: center;
 }
-/* ------------------------------ */
-/* ESTILOS RESPONSIVOS            */
-/* ------------------------------ */
+
+.sidebar-option.active {
+  background: #c0cedb;
+  border-radius: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.sidebar-option:hover {
+  background-color: #c0cedb;
+  border-radius: 10px;
+  cursor: pointer;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+#content {
+  margin-left: 234px;
+  padding: 20px;
+}
 
 @media (max-width: 768px) {
-    .sidebar {
-        width: 150px;
-    }
+  .sidebar {
+    width: 150px;
+  }
 
-    .logo {
-        width: 150px;
-        height: 150px;
-    }
+  .logo {
+    width: 150px;
+    height: 150px;
+  }
 
-    i, .texto {
-        font-size: 12pt;
-    }
+  i,
+  .texto {
+    font-size: 12pt;
+  }
 
-    .option-container {
-        gap: 20px;
-    }
+  .option-container {
+    gap: 20px;
+  }
 }
 
 @media (max-width: 480px) {
-    .sidebar {
-        width: 120px;
-    }
+  .sidebar {
+    width: 120px;
+  }
 
-    .logo {
-        width: 120px;
-        height: 120px;
-    }
+  .logo {
+    width: 120px;
+    height: 120px;
+  }
 
-    i, .texto {
-        font-size: 10pt;
-    }
+  i,
+  .texto {
+    font-size: 10pt;
+  }
 
-    .option-container {
-        gap: 15px;
-    }
+  .option-container {
+    gap: 15px;
+  }
 }
