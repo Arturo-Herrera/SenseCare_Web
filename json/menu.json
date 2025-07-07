@@ -1,0 +1,17 @@
+{
+  "options": [
+    {
+      "icon": "fa-solid fa-chart-bar",
+      "text": "Dashboard",
+      "component": "dashboard"
+    },
+    { "icon": "fa-solid fa-user", "text": "Patients", "component": "patients" },
+    {
+      "icon": "fa-solid fa-file-medical",
+      "text": "Medical\nhistory",
+      "component": "medicalHistory"
+    },
+    { "icon": "fa-solid fa-users", "text": "Users", "component": "users" },
+    { "icon": "fa-solid fa-cog", "text": "Settings", "component": "settings" }
+  ]
+}
