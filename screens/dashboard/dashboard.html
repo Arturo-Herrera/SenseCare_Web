@@ -1,2 +1,57 @@
-<link rel="stylesheet" href="../../css/index.css" />
-<h1 class="title">Dashboard</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/screens/dashboard/style.css" />
+  <title>Dashboard</title>
+</head>
+<body>
+  <div class="dashboard-content">
+    <h1 class="title">Dashboard</h1>
+
+    <div class="stats-container">
+      <div class="stat-card">
+        <h2>24</h2>
+        <p>Active patients</p>
+      </div>
+      <div class="stat-card">
+        <h2>98%</h2>
+        <p>Avg. oxygen level</p>
+      </div>
+      <div class="stat-card">
+        <h2>5</h2>
+        <p>Avg. alerts per day</p>
+      </div>
+    </div>
+
+    <div class="vital-signs-chart">
+      <div class="chart-header">
+        <h2>Vital Signs Overview</h2>
+        <div class="legend">
+          <div class="legend-item">
+            <div class="legend-color bpm"></div>
+            <span>BPM</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color temp"></div>
+            <span>Temp</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="chart-placeholder">
+        <div class="days-container">
+          <span>Mon</span>
+          <span>Tue</span>
+          <span>Wed</span>
+          <span>Thu</span>
+          <span>Fri</span>
+          <span>Sat</span>
+          <span>Sun</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
