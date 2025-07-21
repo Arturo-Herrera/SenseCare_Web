@@ -82,6 +82,11 @@ async function loadComponent(component) {
   try {
     const main = await fetch(view).then((res) => res.text());
     content.innerHTML = main;
+
+    const script = document.createElement("script");
+    script.type = "module";
+    script.src = `${screens}${component}/code.js`;
+    document.body.appendChild(script);
   } catch (e) {
     console.error(e);
     content.innerHTML = `<p>Error loading <strong>${component}</strong></p>`;
