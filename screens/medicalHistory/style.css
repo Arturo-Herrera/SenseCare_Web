@@ -1,0 +1,380 @@
+:root {
+  --primary-color: #44749d;
+  --secondary-color: #38648b;
+  --background-color: #f5f7fa;
+  --card-bg: #ffffff;
+  --text-color: #333333;
+  --text-light: #5a5a5a;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Merriweather Sans", sans-serif;
+  background-color: var(--background-color);
+  overflow: hidden;
+}
+
+.medical-history-container {
+  padding: 20px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.header-left {
+  justify-self: start;
+}
+
+.header-center {
+  justify-self: center;
+}
+
+.header-right {
+  justify-self: end;
+}
+
+.page-title {
+  font-size: 2.2rem;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-container i {
+  position: absolute;
+  left: 15px;
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.search-input {
+  padding: 10px 15px 10px 40px;
+  border: 1px solid #dee2e6;
+  border-radius: 25px;
+  background-color: #e9ecef;
+  width: 260px;
+  font-size: 14px;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(68, 116, 157, 0.2);
+}
+
+.patient-selector {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.patient-select {
+  padding: 10px 35px 10px 15px;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  background-color: #e9ecef;
+  font-size: 14px;
+  color: var(--primary-color);
+  appearance: none;
+  min-width: 180px;
+  outline: none;
+}
+
+.patient-selector i {
+  position: absolute;
+  right: 15px;
+  color: #6c757d;
+  font-size: 13px;
+  pointer-events: none;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.alerts-section,
+.reports-section {
+  background-color: var(--card-bg);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin-bottom: 10px;
+}
+
+.section-title {
+  font-size: 1.4rem;
+  color: var(--primary-color);
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.alerts-container,
+.reports-container {
+  overflow-y: auto;
+  max-height: calc(100% - 60px);
+  padding-right: 8px;
+  padding-bottom: 10px;
+}
+
+.alerts-container::-webkit-scrollbar,
+.reports-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.alerts-container::-webkit-scrollbar-thumb,
+.reports-container::-webkit-scrollbar-thumb {
+  background-color: rgba(68, 116, 157, 0.5);
+  border-radius: 4px;
+}
+
+.alert-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  transition: all 0.3s ease;
+}
+
+.alert-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.alert-item.emergency {
+  background-color: #f8d7da;
+  border-left: 4px solid #dc3545;
+}
+
+.alert-item.warning {
+  background-color: #fff3cd;
+  border-left: 4px solid #ffc107;
+}
+
+.alert-icon {
+  margin-right: 12px;
+}
+
+.alert-icon i {
+  font-size: 18px;
+}
+
+.alert-item.emergency .alert-icon i {
+  color: #dc3545;
+}
+
+.alert-item.warning .alert-icon i {
+  color: #ffc107;
+}
+
+.alert-content {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.alert-text {
+  font-weight: 600;
+  color: var(--text-color);
+  font-size: 14px;
+}
+
+.alert-time {
+  font-size: 13px;
+  color: #6c757d;
+}
+
+.alert-expand i {
+  color: #6c757d;
+  font-size: 13px;
+  transition: transform 0.3s ease;
+}
+
+.alert-item:hover .alert-expand i {
+  transform: rotate(180deg);
+}
+
+.reports-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.add-report-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-report-btn:hover {
+  background-color: var(--secondary-color);
+  transform: scale(1.1);
+}
+
+.report-item {
+  background-color: #f8f9fa;
+  border-left: 4px solid var(--primary-color);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 10px;
+  transition: all 0.3s ease;
+}
+
+.report-item:hover {
+  background-color: #e9ecef;
+  transform: translateX(5px);
+}
+
+.report-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.report-id {
+  font-weight: 600;
+  color: var(--primary-color);
+  font-size: 14px;
+}
+
+.report-date {
+  color: #6c757d;
+  font-size: 13px;
+}
+
+.report-reason {
+  margin-bottom: 6px;
+  color: var(--text-color);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.report-doctor {
+  color: #6c757d;
+  font-size: 13px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .header-left,
+  .header-center,
+  .header-right {
+    justify-self: stretch;
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .medical-history-container {
+    padding: 15px;
+  }
+
+  .page-title {
+    font-size: 1.9rem;
+  }
+
+  .alerts-section,
+  .reports-section {
+    padding: 16px;
+  }
+
+  .alert-item,
+  .report-item {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 1.7rem;
+  }
+
+  .section-title {
+    font-size: 1.2rem;
+  }
+
+  .alert-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .report-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
+
+/* ======= ALERTAS SOS ======= */
+.alert-item.sos {
+  background-color: #f8d7da; /* rojo claro */
+  border-left: 4px solid #dc3545;
+}
+
+.alert-item.sos .alert-text,
+.alert-item.sos .alert-time,
+.alert-item.sos .alert-expand i,
+.alert-item.sos .alert-icon i {
+  color: #dc3545;
+}
+
+/* ======= ALERTAS WARNING ======= */
+.alert-item.warning {
+  background-color: #fff3cd;
+  border-left: 4px solid #ffc107;
+}
+
+.alert-item.warning .alert-text,
+.alert-item.warning .alert-time,
+.alert-item.warning .alert-expand i,
+.alert-item.warning .alert-icon i {
+  color: #ffc107;
+}
