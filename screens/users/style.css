@@ -24,7 +24,7 @@ body {
 /* Controles */
 .controls {
   display: flex;
-  gap: 24px;
+  gap: 41px;
   margin: 20px 0;
 }
 
@@ -106,11 +106,11 @@ body {
   outline-offset: -1px;
 }
 
-/* CONTENEDOR EXTERNO QUE LIMITA Y DA SCROLL SOLO A LAS TARJETAS */
+/* CONTENEDOR EXTERNO CON SCROLL SOLO PARA LAS TARJETAS */
 .scroll-wrapper {
   height: 100%;
-  max-height: calc(100vh - 220px); /* Ajusta según alto de título y controles */
-  width: 992px;
+  max-height: calc(100vh - 40px); /* ajusta esto si cambias el alto del header y controles */
+  width: 1200px;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -191,6 +191,7 @@ body {
   position: absolute;
   right: 24px;
 }
+
 .top-bar {
   width: 992px;
   display: flex;
@@ -224,6 +225,7 @@ body {
   font-size: 20px;
   font-weight: 700;
 }
+
 .custom-box {
   width: 26.67px;
   height: 26.67px;
@@ -240,12 +242,17 @@ body {
   left: 0;
   top: 0;
   border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+.custom-inner-box i {
+  color: #44749D;
+  font-size: 16px;
+}
 
-/* ... TU CSS TAL CUAL ... */
-
-/* Aquí inicia lo responsive */
+/* Responsive */
 @media (max-width: 992px) {
   body {
     padding: 20px;
