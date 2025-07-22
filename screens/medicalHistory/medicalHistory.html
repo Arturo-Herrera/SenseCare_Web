@@ -1,2 +1,166 @@
-<link rel="stylesheet" href="../../css/index.css" />
-<h1 class="title">Medical History</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical History</title>
+    <link rel="stylesheet" href="/screens/medicalHistory/style.css">
+</head>
+<body>
+    <div class="medical-history-container">
+        <!-- Header Section -->
+        <div class="header">
+  <div class="header-left">
+    <h1 class="page-title">Medical History</h1>
+  </div>
+  <div class="header-center">
+    <div class="search-container">
+      <i class="fas fa-search"></i>
+      <input type="text" class="search-input" placeholder="Search" />
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="patient-selector">
+      <select class="patient-select">
+        <option>Select a patient</option>
+      </select>
+      <i class="fas fa-chevron-down"></i>
+    </div>
+  </div>
+</div>
+        <!-- Main Content -->
+        <div class="content-grid">
+            <!-- Alerts History Section -->
+            <div class="alerts-section">
+                <h2 class="section-title">Alerts History</h2>
+                <div class="alerts-container">
+
+                    <div class="alert-item sos">
+                        <div class="alert-icon">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <div class="alert-content">
+                            <span class="alert-text">SOS Emergency</span>
+                            <span class="alert-time">8 min ago</span>
+                        </div>
+                        <div class="alert-expand">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                    </div>
+
+                    <div class="alert-item warning">
+                        <div class="alert-icon">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <div class="alert-content">
+                            <span class="alert-text">High temp</span>
+                            <span class="alert-time">8 min ago</span>
+                        </div>
+                        <div class="alert-expand">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                    </div>
+
+                    <div class="alert-item warning">
+                        <div class="alert-icon">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <div class="alert-content">
+                            <span class="alert-text">Low oxygen level</span>
+                            <span class="alert-time">8 min ago</span>
+                        </div>
+                        <div class="alert-expand">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                    </div>
+
+                    <div class="alert-item warning">
+                        <div class="alert-icon">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <div class="alert-content">
+                            <span class="alert-text">High pulse</span>
+                            <span class="alert-time">8 min ago</span>
+                        </div>
+                        <div class="alert-expand">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                    </div>
+
+                    <div class="alert-item warning">
+                        <div class="alert-icon">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <div class="alert-content">
+                            <span class="alert-text">High temp</span>
+                            <span class="alert-time">8 min ago</span>
+                        </div>
+                        <div class="alert-expand">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                    </div>
+
+                    <div class="alert-item warning">
+                        <div class="alert-icon">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <div class="alert-content">
+                            <span class="alert-text">Low oxygen level</span>
+                            <span class="alert-time">8 min ago</span>
+                        </div>
+                        <div class="alert-expand">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report History Section -->
+            <div class="reports-section">
+                <div class="reports-header">
+                    <h2 class="section-title">Report History</h2>
+                    <button class="add-report-btn">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+                <div class="reports-container">
+                    <div class="report-item">
+                        <div class="report-header">
+                            <span class="report-id">ID: 1001</span>
+                            <span class="report-date">27/06/2025</span>
+                        </div>
+                        <div class="report-content">
+                            <h3 class="report-reason">Reason: Laboral justification</h3>
+                            <p class="report-doctor">Dr. Juan Hernandez</p>
+                        </div>
+                    </div>
+
+                    <div class="report-item">
+                        <div class="report-header">
+                            <span class="report-id">ID: 1002</span>
+                            <span class="report-date">23/06/2025</span>
+                        </div>
+                        <div class="report-content">
+                            <h3 class="report-reason">Reason: Evaluation by a specialist</h3>
+                            <p class="report-doctor">Dr. Juan Hernandez</p>
+                        </div>
+                    </div>
+
+                    <div class="report-item">
+                        <div class="report-header">
+                            <span class="report-id">ID: 1003</span>
+                            <span class="report-date">20/06/2025</span>
+                        </div>
+                        <div class="report-content">
+                            <h3 class="report-reason">Reason: Legal procedure</h3>
+                            <p class="report-doctor">Dr. Juan Hernandez</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../medicalHistory/code.js"></script>
+</body>
+</html>
