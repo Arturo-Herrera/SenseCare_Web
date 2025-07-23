@@ -1,165 +1,169 @@
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/screens/patients/style.css" />
-    <title>Patients Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/screens/patients/style.css" />
+  <title>Patients Dashboard</title>
 </head>
 <body>
-   
-<div class="title-container">
-  <h1 class="title">Patients</h1>
-  <div class="filter-search-wrapper">
-    <div class="search-container">
-      <div class="search-background"></div>
-      <div class="search-icon">
-        <div class="fas fa-magnifying-glass"></div>
-      </div>
-      <div class="search-text">Search</div>
-    </div>
-    <select class="gender-selector">
-      <option value="">Female</option>
-      <option value="">Male</option>
-      <option value="">Other</option>
-    </select>
-  </div>
-</div>
-
-<div class="patient_topContainer">
-    <div class="patient_infoContainer">
-        <div>
-            <h3>Jesus Leyva</h3>
-            <p>male</p>
-            <p>78 years old</p>
-            <p>Last lecture: 2 minutes ago</p>
+  <div class="main-container">
+    <div class="title-container">
+      <h1 class="title">Patients</h1>
+      <div class="filter-search-wrapper">
+        <div class="search-container">
+          <div class="search-background"></div>
+          <div class="search-icon">
+            <div class="search-icon-part1"></div>
+            <div class="search-icon-part2"></div>
+          </div>
+          <input class="search-input" type="text" placeholder="Search" />
         </div>
+
+        <select class="gender-selector">
+          <option value="">Female</option>
+          <option value="">Male</option>
+          <option value="">Other</option>
+        </select>
+      </div>
     </div>
 
-    <div class="patient_dashboardContainer">
+    <div class="patient_topContainer">
+      <div class="patient_leftSpacing">
+        <div class="patient_infoContainer">
+          <h3>Jesus Leyva</h3>
+          <p>male</p>
+          <p>78 years old</p>
+          <p>Last lecture: 2 minutes ago</p>
+        </div>
+      </div>
+
+      <div class="patient_dashboardContainer">
         <h3>Vital signs</h3>
         <div class="vital-signs-lines">
-            <div class="vital-line"></div>
-            <div class="vital-line"></div>
-            <div class="vital-line"></div>
-            <div class="vital-line highlight"></div>
+          <div class="vital-line"></div>
+          <div class="vital-line"></div>
+          <div class="vital-line"></div>
+          <div class="vital-line highlight"></div>
         </div>
         <div class="vital-signs-highlight"></div>
+      </div>
     </div>
-</div>
 
-<div class="patient_bottomContainer">
-    <div class="patient_lectureContainer">
-        <h3>Last 3 lectures</h3>
-        <div class="lectures-container">
+    <div class="patient_bottomContainer">
+      <div class="patient_leftSpacing">
+        <div class="patient_lectureContainer">
+          <h3>Last 3 lectures</h3>
+          <div class="lectures-container">
             <!-- Primera lectura -->
             <div class="lecture-item">
-                <div class="lecture-time">3 mins ago</div>
-                <div class="lecture-data">
-                    <div class="data-item">
-                        <div class="data-icon pulse-icon"></div>
-                        <span>78 BPM</span>
-                    </div>
-                    <div class="data-item">
-                        <div class="data-icon temp-icon"></div>
-                        <span>36.5 °C</span>
-                    </div>
-                    <div class="data-item">
-                        <div class="data-icon oxygen-icon"></div>
-                        <span>93%</span>
-                    </div>
+              <div class="lecture-time">3 mins ago</div>
+              <div class="lecture-data">
+                <div class="data-item">
+                  <div class="data-icon pulse-icon"></div>
+                  <span>78 BPM</span>
                 </div>
+                <div class="data-item">
+                  <div class="data-icon temp-icon"></div>
+                  <span>36.5 °C</span>
+                </div>
+                <div class="data-item">
+                  <div class="data-icon oxygen-icon"></div>
+                  <span>93%</span>
+                </div>
+              </div>
             </div>
-            
+
             <!-- Segunda lectura -->
             <div class="lecture-item">
-                <div class="lecture-time">6 mins ago</div>
-                <div class="lecture-data">
-                    <div class="data-item">
-                        <div class="data-icon pulse-icon"></div>
-                        <span>78 BPM</span>
-                    </div>
-                    <div class="data-item">
-                        <div class="data-icon temp-icon"></div>
-                        <span>36.5 °C</span>
-                    </div>
-                    <div class="data-item">
-                        <div class="data-icon oxygen-icon"></div>
-                        <span>93%</span>
-                    </div>
+              <div class="lecture-time">6 mins ago</div>
+              <div class="lecture-data">
+                <div class="data-item">
+                  <div class="data-icon pulse-icon"></div>
+                  <span>78 BPM</span>
                 </div>
+                <div class="data-item">
+                  <div class="data-icon temp-icon"></div>
+                  <span>36.5 °C</span>
+                </div>
+                <div class="data-item">
+                  <div class="data-icon oxygen-icon"></div>
+                  <span>93%</span>
+                </div>
+              </div>
             </div>
-            
+
             <!-- Tercera lectura -->
             <div class="lecture-item">
-                <div class="lecture-time">9 mins ago</div>
-                <div class="lecture-data">
-                    <div class="data-item">
-                        <div class="data-icon pulse-icon"></div>
-                        <span>78 BPM</span>
-                    </div>
-                    <div class="data-item">
-                        <div class="data-icon temp-icon"></div>
-                        <span>36.5 °C</span>
-                    </div>
-                    <div class="data-item">
-                        <div class="data-icon oxygen-icon"></div>
-                        <span>93%</span>
-                    </div>
+              <div class="lecture-time">9 mins ago</div>
+              <div class="lecture-data">
+                <div class="data-item">
+                  <div class="data-icon pulse-icon"></div>
+                  <span>78 BPM</span>
                 </div>
+                <div class="data-item">
+                  <div class="data-icon temp-icon"></div>
+                  <span>36.5 °C</span>
+                </div>
+                <div class="data-item">
+                  <div class="data-icon oxygen-icon"></div>
+                  <span>93%</span>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
+      </div>
 
-    <div class="patient_chartContainer">
+      <div class="patient_chartContainer">
         <h3>Last alerts</h3>
         <div class="alerts-container">
-            <div class="alert emergency">
-                <div class="alert-icon emergency-icon"></div>
-                <div class="alert-content">
-                    <div class="alert-title">SOS Emergency</div>
-                    <div class="alert-time">6 min ago</div>
-                </div>
-                <div class="alert-arrow emergency-arrow"></div>
+          <div class="alert emergency">
+            <div class="alert-icon emergency-icon"></div>
+            <div class="alert-content">
+              <div class="alert-title">SOS Emergency</div>
+              <div class="alert-time">6 min ago</div>
             </div>
-            
-            <div class="alert warning">
-                <div class="alert-icon warning-icon"></div>
-                <div class="alert-content">
-                    <div class="alert-title">High temp</div>
-                    <div class="alert-time">8 min ago</div>
-                </div>
-                <div class="alert-arrow warning-arrow"></div>
-            </div>
-            
-            <div class="alert warning">
-                <div class="alert-icon warning-icon"></div>
-                <div class="alert-content">
-                    <div class="alert-title">Low oxygen level</div>
-                    <div class="alert-time">8 min ago</div>
-                </div>
-                <div class="alert-arrow warning-arrow"></div>
-            </div>
-            
-            <div class="alert warning">
-                <div class="alert-icon warning-icon"></div>
-                <div class="alert-content">
-                    <div class="alert-title">Low oxygen level</div>
-                    <div class="alert-time">8 min ago</div>
-                </div>
-                <div class="alert-arrow warning-arrow"></div>
-            </div>
-            
-            <div class="alert warning">
-                <div class="alert-icon warning-icon"></div>
-                <div class="alert-content">
-                    <div class="alert-title">Low oxygen level</div>
-                    <div class="alert-time">8 min ago</div>
-                </div>
-                <div class="alert-arrow warning-arrow"></div>
-            </div>
-        </div>
-    </div>
-</div>
+            <div class="alert-arrow emergency-arrow"></div>
+          </div>
 
+          <div class="alert warning">
+            <div class="alert-icon warning-icon"></div>
+            <div class="alert-content">
+              <div class="alert-title">High temp</div>
+              <div class="alert-time">8 min ago</div>
+            </div>
+            <div class="alert-arrow warning-arrow"></div>
+          </div>
+
+          <div class="alert warning">
+            <div class="alert-icon warning-icon"></div>
+            <div class="alert-content">
+              <div class="alert-title">Low oxygen level</div>
+              <div class="alert-time">8 min ago</div>
+            </div>
+            <div class="alert-arrow warning-arrow"></div>
+          </div>
+
+          <div class="alert warning">
+            <div class="alert-icon warning-icon"></div>
+            <div class="alert-content">
+              <div class="alert-title">Low oxygen level</div>
+              <div class="alert-time">8 min ago</div>
+            </div>
+            <div class="alert-arrow warning-arrow"></div>
+          </div>
+
+          <div class="alert warning">
+            <div class="alert-icon warning-icon"></div>
+            <div class="alert-content">
+              <div class="alert-title">Low oxygen level</div>
+              <div class="alert-time">8 min ago</div>
+            </div>
+            <div class="alert-arrow warning-arrow"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

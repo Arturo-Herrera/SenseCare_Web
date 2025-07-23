@@ -12,7 +12,7 @@
    <div class="top-bar">
   <div class="header-title">Users</div>
 
- <div class="controls">
+ <div class="controls"> 
   <div class="search-box">
     <div class="search-icon">
       <i class="fas fa-magnifying-glass"></i>
@@ -21,9 +21,15 @@
   </div>
 
   <div class="filter-box">
-    <div class="filter-text">Filter by type</div>
-    <div class="filter-arrow"></div>
-  </div>
+  <select class="filter-select">
+    <option value="">All</option>
+    <option value="patient">Patient</option>
+    <option value="doctor">Doctor</option>
+    <option value="nurse">Nurse</option>
+  </select>
+  <div class="filter-arrow"></div>
+</div>
+
 
   <!-- Nuevo ícono blanco al lado del filtro -->
   <div class="custom-box">
