@@ -1,4 +1,4 @@
-import { config } from "../../js/config.js";
+import { config } from "../../../js/config.js";
 
 export async function getDashboardData() {
   const endpoint = `${config.api.apiURL}/patient/dashboard/data`;

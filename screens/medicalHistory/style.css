@@ -31,7 +31,7 @@ body {
   grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
   margin-bottom: 20px;
-  gap: 10px;
+  padding-left: 25px;
 }
 
 .header-left {
@@ -47,7 +47,7 @@ body {
 }
 
 .page-title {
-  font-size: 2.2rem;
+  font-size: 2.5rem;
   color: var(--primary-color);
   font-weight: 600;
 }
@@ -56,22 +56,24 @@ body {
   position: relative;
   display: flex;
   align-items: center;
+  gap: 20px;
 }
 
 .search-container i {
   position: absolute;
   left: 15px;
   color: #6c757d;
-  font-size: 14px;
+  font-size: 1.1rem;
 }
 
 .search-input {
-  padding: 10px 15px 10px 40px;
+  padding: 0.625rem 0.9375rem 0.625rem 3.75rem;
   border: 1px solid #dee2e6;
   border-radius: 25px;
   background-color: #e9ecef;
-  width: 260px;
-  font-size: 14px;
+  width: 23.06rem;
+  height: 3.44rem;
+  font-size: 1rem;
   outline: none;
 }
 
@@ -87,14 +89,15 @@ body {
 }
 
 .patient-select {
-  padding: 10px 35px 10px 15px;
+  padding: 0.625rem 2.1875rem 0.625rem 0.9375rem;
   border: 1px solid #dee2e6;
   border-radius: 5px;
   background-color: #e9ecef;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--primary-color);
   appearance: none;
-  min-width: 180px;
+  min-width: 15.13rem;
+  height: 3.44rem;
   outline: none;
 }
 

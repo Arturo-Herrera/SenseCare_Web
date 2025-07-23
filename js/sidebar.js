@@ -62,6 +62,11 @@ function drawOption({ icon, text, component }) {
 
   divOption.append(divIcon, label);
   divOption.addEventListener("click", () => {
+    document.querySelectorAll(".sidebar-option").forEach((opt) => {
+      opt.classList.remove("active");
+    });
+    // Poner active solo a la opción clickeada
+    divOption.classList.add("active");
     loadComponent(component);
     console.log(component);
   });
@@ -77,26 +82,12 @@ function drawOption({ icon, text, component }) {
 //! 5. Finally, it updates the browser's URL using pushState to reflect the current view.
 
 async function loadComponent(component) {
-  const view = `${screens}/${component}/${component}.html`;
+  const htmlUrl = `./${screens}/${component}/${component}.html`;
+  const moduleUrl = `${screens}/${component}/code.js`;
 
-  try {
-    const main = await fetch(view).then((res) => res.text());
-    content.innerHTML = main;
+  const html = await fetch(htmlUrl).then((r) => r.text());
+  document.getElementById("content").innerHTML = html;
 
-    const script = document.createElement("script");
-    script.type = "module";
-    script.src = `${screens}${component}/code.js`;
-    document.body.appendChild(script);
-  } catch (e) {
-    console.error(e);
-    content.innerHTML = `<p>Error loading <strong>${component}</strong></p>`;
-  }
-
-  document
-    .querySelectorAll(".sidebar-option")
-    .forEach((opt) =>
-      opt.classList.toggle("active", opt.dataset.comp === component)
-    );
-
-  history.pushState({ component }, "", `#${component}`);
+  const { init } = await import(moduleUrl);
+  if (typeof init === "function") init();
 }
