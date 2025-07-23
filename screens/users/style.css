@@ -82,28 +82,37 @@ body {
   background: #E7E7E7;
   border-radius: 10px;
   position: relative;
-}
-
-.filter-text {
-  position: absolute;
-  left: 46px;
-  top: 15px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  align-items: center;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+.filter-select {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
   color: #44749D;
   font-size: 20px;
   font-weight: 700;
+  font-family: "Merriweather Sans", sans-serif;
+  appearance: none; /* Elimina el estilo nativo del sistema */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 24px; /* espacio para la flechita */
+  cursor: pointer;
 }
-
 .filter-arrow {
-  width: 17.5px;
-  height: 9px;
   position: absolute;
-  left: 206px;
-  top: 23px;
-  border: 2px solid #44749D;
-  outline-offset: -1px;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid #44749D;
+  border-bottom: 2px solid #44749D;
+  pointer-events: none;
 }
 
 /* CONTENEDOR EXTERNO CON SCROLL SOLO PARA LAS TARJETAS */

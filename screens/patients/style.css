@@ -1,56 +1,67 @@
+/* === VARIABLES DE COLOR === */
 :root {
-  /* Paleta de colores base para todo el diseño */
-  --primary-color: #44749d;         /* Azul principal para títulos y elementos clave */
-  --secondary-color: #38648b;       /* Azul secundario */
-  --background-color: #f5f7fa;      /* Fondo general de la aplicación */
-  --card-bg: #ffffff;               /* Fondo de las tarjetas */
-  --text-color: #333333;            /* Color principal del texto */
-  --text-light: #5a5a5a;            /* Color para textos secundarios */
-  --emergency-color: #F42B15;       /* Rojo para alertas de emergencia */
-  --warning-color: #FF9D00;         /* Naranja para alertas de advertencia */
+  --primary-color: #44749d;
+  --secondary-color: #38648b;
+  --background-color: #f5f7fa;
+  --card-bg: #ffffff;
+  --text-color: #333333;
+  --text-light: #5a5a5a;
+  --emergency-color: #F42B15;
+  --warning-color: #FF9D00;
 }
 
-/* Estilos base del body */
-body {
-  margin: 0;                                         /* Elimina margen por defecto */
-  font-family: "Merriweather Sans", sans-serif;     /* Fuente principal */
-  background-color: var(--background-color);        /* Fondo del sitio */
-  color: var(--text-color);                         /* Color de texto */
-  padding: 20px;                                     /* Espaciado interno */
-}
-
-/* Contenedor que agrupa el título y los filtros */
-.title-container {
-  display: flex;                        /* Alinea elementos horizontalmente */
-  align-items: center;                 /* Centra verticalmente */
-  justify-content: space-between;     /* Deja espacio entre título y filtros */
-  margin-bottom: 20px;                /* Espacio inferior */
-}
-
-/* Estilo del título principal */
-.title {
-  color: var(--primary-color);     /* Color azul */
-  font-size: 40px;                 /* Tamaño grande */
+/* === RESET GLOBAL === */
+* {
+  box-sizing: border-box;
   margin: 0;
+  padding: 0;
 }
 
-/* Contenedor del buscador y selector de género */
+body {
+  font-family: "Merriweather Sans", sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  padding: 15px;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* === CONTENEDOR PRINCIPAL === */
+.main-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 30px);
+}
+
+/* === TÍTULO Y BARRAS DE FILTRO === */
+.title-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 40px;
+  padding-left: 60px; /* Igual que patient_leftSpacing */
+}
+
+.title {
+  color: var(--primary-color);
+  font-size: 40px;
+  margin: 0;
+  white-space: nowrap;
+  margin-right: 100px; /* Separación de 100px con el buscador */
+}
+
 .filter-search-wrapper {
   display: flex;
   align-items: center;
-  gap: 150px; /* espacio entre buscador y selector */
-  margin-right: 175px; /* o ajusta hasta alinear perfectamente */
+  gap: 81px; /* Separación de 81px entre buscador y selector */
 }
 
-
-/* Estilo del contenedor del buscador */
+/* === BARRA DE BÚSQUEDA === */
 .search-container {
   width: 369px;
   height: 55px;
-  position: relative;            /* Necesario para posicionar los íconos dentro */
+  position: relative;
 }
 
-/* Fondo gris claro del input de búsqueda */
 .search-background {
   width: 100%;
   height: 100%;
@@ -59,60 +70,58 @@ body {
   border-radius: 30px;
 }
 
-/* Contenedor del ícono de lupa */
 .search-icon {
-  width: 35px;
-  height: 35px;
-  left: 24px;
-  top: 10px;
+  width: 32px;
+  height: 32px;
+  left: 20px;
+  top: 9px;
   position: absolute;
   overflow: hidden;
 }
 
-/* Parte redonda de la lupa */
 .search-icon-part1 {
-  width: 18.20px;
-  height: 18.20px;
-  left: 7px;
-  top: 7px;
+  width: 16px;
+  height: 16px;
+  left: 6px;
+  top: 6px;
   position: absolute;
   background: #ACACAC;
   border: 2px solid #ACACAC;
   border-radius: 50%;
 }
 
-/* Mango de la lupa */
 .search-icon-part2 {
-  width: 7.28px;
-  height: 7.28px;
-  left: 21.89px;
-  top: 21.89px;
+  width: 6px;
+  height: 6px;
+  left: 20px;
+  top: 20px;
   position: absolute;
   background: #ACACAC;
   transform: rotate(45deg);
 }
 
-/* Texto placeholder del buscador */
-.search-text {
-  left: 74px;
-  top: 15px;
+.search-input {
   position: absolute;
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-  color: #ACACAC;
-  font-size: 20px;
-  font-family: Merriweather Sans;
+  left: 65px;
+  top: 9px;
+  height: 32px;
+  width: 170px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--primary-color);
+  font-size: 18px;
   font-weight: 700;
-  word-wrap: break-word;
+  font-family: "Merriweather Sans", sans-serif;
+  z-index: 2;
 }
 
-/* Estilo del selector de género */
+/* === SELECTOR DE GÉNERO === */
 .gender-selector {
   width: 242px;
   height: 55px;
   padding: 0 15px;
-  font-size: 18px;
+  font-size: 16px;
   border-radius: 10px;
   border: none;
   background-color: #E7E7E7;
@@ -120,204 +129,90 @@ body {
   font-weight: 600;
   font-family: "Merriweather Sans", sans-serif;
   cursor: pointer;
-  min-width: 120px;
-  
 }
 
-/* Contenedor superior: info del paciente + signos vitales */
+/* === LAYOUT DE PACIENTE === */
 .patient_topContainer {
   display: flex;
-  gap: 20px;
-  margin-bottom: -40px;  /* Hace que las tarjetas inferiores suban un poco */
+  gap: 38px;
+  height: calc(45% - 12px);
+  width: 100%;
+  margin-bottom: -74px;
 }
 
-/* Contenedor inferior: últimas lecturas + alertas */
 .patient_bottomContainer {
   display: flex;
-  gap: 20px;
-  align-items: flex-end;  /* Alineación inferior de las tarjetas */
+  gap: 38px;
+  height: calc(50% - 12px);
+  width: 100%;
 }
 
-/* Estilo base para todas las tarjetas */
-.patient_infoContainer,
-.patient_dashboardContainer,
-.patient_lectureContainer,
-.patient_chartContainer {
-  padding: 20px;
-  border-radius: 30px;
-  background-color: var(--card-bg);
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
-}
-
-/* Tarjeta de información del paciente */
+/* === INFORMACIÓN DEL PACIENTE === */
 .patient_infoContainer {
-  height: 212px;
   width: 391px;
+  height: 212px;
+  padding: 15px;
+  border-radius: 25px;
+  background-color: var(--card-bg);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Tarjeta de signos vitales */
+/* === DASHBOARD DE SIGNOS VITALES === */
 .patient_dashboardContainer {
-  height: 276px;
-  width: 533px;
+  width: 513px;
+  height: 266px;
+  padding: 15px;
+  border-radius: 25px;
+  background-color: var(--card-bg);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Tarjeta de lecturas */
+/* === LECTURAS RECIENTES === */
 .patient_lectureContainer {
   width: 391px;
   height: 340px;
+  padding: 15px;
+  border-radius: 25px;
+  background-color: var(--card-bg);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Tarjeta de alertas */
 .patient_chartContainer {
   width: 535px;
   height: 276px;
+  padding: 15px;
+  border-radius: 25px;
+  background-color: var(--card-bg);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  align-self: flex-end;
 }
 
-/* Títulos secundarios (como "Last alerts") */
+/* === ESTILOS DE TÍTULOS === */
 h3 {
-  font-size: 28px;
+  font-size: 24px;
   color: var(--primary-color);
-  margin-top: 0;
-  margin-bottom: 20px;
-}
-
-/* Párrafos (edad, sexo, etc.) */
-p {
-  font-size: 20px;
-  color: var(--primary-color);
-  margin: 12px 0;
-}
-
-/* Línea de una lectura de signos vitales */
-.lecture_row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #E7E7E7;
-  border-radius: 10px;
-  padding: 12px 15px;
-  margin-top: 20px;
-  height: 53px;
-  width: 347px;
-}
-
-/* Valores dentro de cada lectura */
-.lecture_values {
-  display: flex;
-  gap: 15px;
-  font-size: 16px;
-  color: var(--text-light);
-}
-
-/* Tiempo transcurrido desde la lectura */
-.lecture_time {
-  font-size: 14px;
-  color: var(--text-light);
-}
-
-/* Contenedor de todas las alertas */
-.alerts-container {
+  margin-bottom: 15px;
   width: 100%;
-  max-height: 200px;
-  overflow-y: auto;   /* Scroll vertical si excede altura */
-  margin-top: 15px;
-  padding-right: 5px;
-}
-
-/* Cada alerta individual */
-.alert {
-  width: 100%;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  padding: 0 15px;
-  box-sizing: border-box;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 20px;
-  margin-bottom: 12px;
-  gap: 15px;
-}
-
-/* Ícono de alerta */
-.alert-icon {
-  width: 26px;
-  height: 24px;
-  flex-shrink: 0;
-}
-
-/* Fondo para alertas de emergencia */
-.emergency {
-  background: #FFD4D4;
-}
-
-/* Color del ícono de emergencia */
-.emergency-icon {
-  background: var(--emergency-color);
-}
-
-/* Fondo para alertas de advertencia */
-.warning {
-  background: #FFE4B9;
-}
-
-/* Color del ícono de advertencia */
-.warning-icon {
-  background: var(--warning-color);
-}
-
-/* Contenedor del texto e íconos dentro de la alerta */
-.alert-content {
-  flex: 1;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-}
-
-/* Título de la alerta (ej. "High temp") */
-.alert-title {
-  font-size: 18px;
-  font-weight: 700;
+  text-align: left;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Tiempo desde la alerta (ej. "8 min ago") */
-.alert-time {
-  font-size: 13px;
-  font-weight: 700;
-  color: inherit;
-  margin-right: 10px;
+p {
+  font-size: 18px;
+  color: var(--primary-color);
+  margin: 8px 0;
 }
 
-/* Flechita o ícono final de la alerta */
-.alert-arrow {
-  width: 23px;
-  height: 15px;
-  flex-shrink: 0;
-}
-
-/* Estilo visual de la flecha de emergencia */
-.emergency-arrow {
-  outline: 4px var(--emergency-color) solid;
-  outline-offset: -2px;
-}
-
-/* Estilo visual de la flecha de advertencia */
-.warning-arrow {
-  background: var(--warning-color);
-  outline: 4px var(--warning-color) solid;
-  outline-offset: -2px;
-}
-
-/* Líneas horizontales en la tarjeta de signos vitales */
+/* === LÍNEAS DE SIGNOS VITALES === */
 .vital-signs-lines {
-  width: 491px;
-  height: 120px;
+  width: 100%;
+  height: 80%;
   position: relative;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
-/* Línea individual */
 .vital-line {
   width: 100%;
   height: 0;
@@ -327,114 +222,193 @@ p {
   outline-offset: -0.5px;
 }
 
-/* Posiciones de las líneas */
 .vital-line:nth-child(1) { top: 0; }
-.vital-line:nth-child(2) { top: 40px; }
-.vital-line:nth-child(3) { top: 80px; }
-.vital-line:nth-child(4) { 
-  top: 120px; 
+.vital-line:nth-child(2) { top: 33%; }
+.vital-line:nth-child(3) { top: 66%; }
+.vital-line.highlight {
+  top: 100%;
   outline: 1px rgba(0, 0, 0, 0.40) solid;
 }
 
-/* Contenedor para las 3 lecturas recientes */
+/* === CONTENEDOR DE LECTURAS === */
 .lectures-container {
-    width: 347px;
-    height: 254px;
-    position: relative;
-    margin-top: 15px;
+  height: calc(100% - 40px);
+  overflow-y: auto;
 }
 
-/* Cada elemento de lectura */
 .lecture-item {
-    width: 100%;
-    height: 76px;
-    position: relative;
-    margin-bottom: 13px;
+  width: 100%;
+  height: 70px;
+  position: relative;
+  margin-bottom: 10px;
 }
 
-/* Fondo gris de los datos de lectura */
 .lecture-data {
-    width: 347px;
-    height: 53px;
-    position: absolute;
-    top: 23px;
-    left: 0;
-    background: #E7E7E7;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+  width: 100%;
+  height: 50px;
+  position: absolute;
+  top: 20px;
+  background: #E7E7E7;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
 
-/* Tiempo de la lectura */
 .lecture-time {
-    position: absolute;
-    top: 0;
-    right: 0;
-    color: var(--primary-color);
-    font-size: 13px;
-    font-weight: 700;
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: var(--primary-color);
+  font-size: 12px;
+  font-weight: 700;
 }
 
-/* Valor individual dentro de la lectura (ej. BPM) */
+/* === ÍCONOS DE DATOS DE LECTURA === */
 .data-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #ACACAC;
-    font-size: 13px;
-    font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #ACACAC;
+  font-size: 12px;
+  font-weight: 700;
 }
 
-/* Icono al lado de los datos */
 .data-icon {
-    width: 24px;
-    height: 24px;
-    position: relative;
+  width: 22px;
+  height: 22px;
+  position: relative;
+  border-radius: 50%;
 }
 
-/* Icono de pulso */
 .pulse-icon {
-    background: #44749D;
+  background: #44749D;
 }
 
-/* Estilos responsivos para pantallas pequeñas */
+.temp-icon {
+  background: #D9D9D9;
+}
+
+.oxygen-icon {
+  background: #5A5A5A;
+}
+
+/* === CONTENEDOR DE ALERTAS === */
+.alerts-container {
+  width: 100%;
+  height: calc(100% - 40px);
+  overflow-y: auto;
+  margin-top: 10px;
+}
+
+.alert {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  margin-bottom: 10px;
+  gap: 12px;
+}
+
+.alert-icon {
+  width: 22px;
+  height: 20px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+/* === ALERTAS DE EMERGENCIA === */
+.emergency {
+  background: #FFD4D4;
+}
+
+.emergency-icon {
+  background: var(--emergency-color);
+}
+
+/* === ALERTAS DE ADVERTENCIA === */
+.warning {
+  background: #FFE4B9;
+}
+
+.warning-icon {
+  background: var(--warning-color);
+}
+
+/* === CONTENIDO DE LA ALERTA === */
+.alert-content {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.alert-title {
+  font-size: 16px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.alert-time {
+  font-size: 12px;
+  font-weight: 700;
+  color: inherit;
+  margin-right: 8px;
+}
+
+/* === ESPACIADO LATERAL OPCIONAL === */
+.patient_leftSpacing {
+  padding-left: 60px;
+}
+
+/* === FLECHAS DE ALERTA === */
+.alert-arrow {
+  width: 20px;
+  height: 12px;
+  flex-shrink: 0;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.emergency-arrow {
+  background: var(--emergency-color);
+}
+
+.warning-arrow {
+  background: var(--warning-color);
+}
+
+/* === RESPONSIVE DESIGN === */
 @media (max-width: 1000px) {
   .patient_topContainer,
   .patient_bottomContainer {
-    flex-direction: column;  /* Apilan las tarjetas verticalmente */
+    flex-direction: column;
+    height: auto;
   }
 
   .patient_infoContainer,
   .patient_dashboardContainer,
   .patient_lectureContainer,
   .patient_chartContainer {
-    width: 100%;
-    height: auto;
-  }
-
-  .alert {
-    padding: 0 12px;
-  }
-  
-  .alert-title {
-    font-size: 16px;
-  }
-  
-  h3 {
-    font-size: 24px;
+    width: 100% !important;
+    height: auto !important;
   }
 
   .title-container {
     flex-direction: column;
     align-items: flex-start;
-    gap: 15px;
+    gap: 10px;
+    padding-left: 15px;
   }
 
   .filter-search-wrapper {
     width: 100%;
-    flex-direction: column;
-    height: auto;
+    gap: 10px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
   }
 
   .search-container {
