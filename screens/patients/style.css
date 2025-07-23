@@ -1,0 +1,447 @@
+:root {
+  /* Paleta de colores base para todo el diseño */
+  --primary-color: #44749d;         /* Azul principal para títulos y elementos clave */
+  --secondary-color: #38648b;       /* Azul secundario */
+  --background-color: #f5f7fa;      /* Fondo general de la aplicación */
+  --card-bg: #ffffff;               /* Fondo de las tarjetas */
+  --text-color: #333333;            /* Color principal del texto */
+  --text-light: #5a5a5a;            /* Color para textos secundarios */
+  --emergency-color: #F42B15;       /* Rojo para alertas de emergencia */
+  --warning-color: #FF9D00;         /* Naranja para alertas de advertencia */
+}
+
+/* Estilos base del body */
+body {
+  margin: 0;                                         /* Elimina margen por defecto */
+  font-family: "Merriweather Sans", sans-serif;     /* Fuente principal */
+  background-color: var(--background-color);        /* Fondo del sitio */
+  color: var(--text-color);                         /* Color de texto */
+  padding: 20px;                                     /* Espaciado interno */
+}
+
+/* Contenedor que agrupa el título y los filtros */
+.title-container {
+  display: flex;                        /* Alinea elementos horizontalmente */
+  align-items: center;                 /* Centra verticalmente */
+  justify-content: space-between;     /* Deja espacio entre título y filtros */
+  margin-bottom: 20px;                /* Espacio inferior */
+}
+
+/* Estilo del título principal */
+.title {
+  color: var(--primary-color);     /* Color azul */
+  font-size: 40px;                 /* Tamaño grande */
+  margin: 0;
+}
+
+/* Contenedor del buscador y selector de género */
+.filter-search-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 150px; /* espacio entre buscador y selector */
+  margin-right: 175px; /* o ajusta hasta alinear perfectamente */
+}
+
+
+/* Estilo del contenedor del buscador */
+.search-container {
+  width: 369px;
+  height: 55px;
+  position: relative;            /* Necesario para posicionar los íconos dentro */
+}
+
+/* Fondo gris claro del input de búsqueda */
+.search-background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: #E7E7E7;
+  border-radius: 30px;
+}
+
+/* Contenedor del ícono de lupa */
+.search-icon {
+  width: 35px;
+  height: 35px;
+  left: 24px;
+  top: 10px;
+  position: absolute;
+  overflow: hidden;
+}
+
+/* Parte redonda de la lupa */
+.search-icon-part1 {
+  width: 18.20px;
+  height: 18.20px;
+  left: 7px;
+  top: 7px;
+  position: absolute;
+  background: #ACACAC;
+  border: 2px solid #ACACAC;
+  border-radius: 50%;
+}
+
+/* Mango de la lupa */
+.search-icon-part2 {
+  width: 7.28px;
+  height: 7.28px;
+  left: 21.89px;
+  top: 21.89px;
+  position: absolute;
+  background: #ACACAC;
+  transform: rotate(45deg);
+}
+
+/* Texto placeholder del buscador */
+.search-text {
+  left: 74px;
+  top: 15px;
+  position: absolute;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  color: #ACACAC;
+  font-size: 20px;
+  font-family: Merriweather Sans;
+  font-weight: 700;
+  word-wrap: break-word;
+}
+
+/* Estilo del selector de género */
+.gender-selector {
+  width: 242px;
+  height: 55px;
+  padding: 0 15px;
+  font-size: 18px;
+  border-radius: 10px;
+  border: none;
+  background-color: #E7E7E7;
+  color: #333;
+  font-weight: 600;
+  font-family: "Merriweather Sans", sans-serif;
+  cursor: pointer;
+  min-width: 120px;
+  
+}
+
+/* Contenedor superior: info del paciente + signos vitales */
+.patient_topContainer {
+  display: flex;
+  gap: 20px;
+  margin-bottom: -40px;  /* Hace que las tarjetas inferiores suban un poco */
+}
+
+/* Contenedor inferior: últimas lecturas + alertas */
+.patient_bottomContainer {
+  display: flex;
+  gap: 20px;
+  align-items: flex-end;  /* Alineación inferior de las tarjetas */
+}
+
+/* Estilo base para todas las tarjetas */
+.patient_infoContainer,
+.patient_dashboardContainer,
+.patient_lectureContainer,
+.patient_chartContainer {
+  padding: 20px;
+  border-radius: 30px;
+  background-color: var(--card-bg);
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Tarjeta de información del paciente */
+.patient_infoContainer {
+  height: 212px;
+  width: 391px;
+}
+
+/* Tarjeta de signos vitales */
+.patient_dashboardContainer {
+  height: 276px;
+  width: 533px;
+}
+
+/* Tarjeta de lecturas */
+.patient_lectureContainer {
+  width: 391px;
+  height: 340px;
+}
+
+/* Tarjeta de alertas */
+.patient_chartContainer {
+  width: 535px;
+  height: 276px;
+}
+
+/* Títulos secundarios (como "Last alerts") */
+h3 {
+  font-size: 28px;
+  color: var(--primary-color);
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+/* Párrafos (edad, sexo, etc.) */
+p {
+  font-size: 20px;
+  color: var(--primary-color);
+  margin: 12px 0;
+}
+
+/* Línea de una lectura de signos vitales */
+.lecture_row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #E7E7E7;
+  border-radius: 10px;
+  padding: 12px 15px;
+  margin-top: 20px;
+  height: 53px;
+  width: 347px;
+}
+
+/* Valores dentro de cada lectura */
+.lecture_values {
+  display: flex;
+  gap: 15px;
+  font-size: 16px;
+  color: var(--text-light);
+}
+
+/* Tiempo transcurrido desde la lectura */
+.lecture_time {
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+/* Contenedor de todas las alertas */
+.alerts-container {
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;   /* Scroll vertical si excede altura */
+  margin-top: 15px;
+  padding-right: 5px;
+}
+
+/* Cada alerta individual */
+.alert {
+  width: 100%;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  margin-bottom: 12px;
+  gap: 15px;
+}
+
+/* Ícono de alerta */
+.alert-icon {
+  width: 26px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+/* Fondo para alertas de emergencia */
+.emergency {
+  background: #FFD4D4;
+}
+
+/* Color del ícono de emergencia */
+.emergency-icon {
+  background: var(--emergency-color);
+}
+
+/* Fondo para alertas de advertencia */
+.warning {
+  background: #FFE4B9;
+}
+
+/* Color del ícono de advertencia */
+.warning-icon {
+  background: var(--warning-color);
+}
+
+/* Contenedor del texto e íconos dentro de la alerta */
+.alert-content {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Título de la alerta (ej. "High temp") */
+.alert-title {
+  font-size: 18px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Tiempo desde la alerta (ej. "8 min ago") */
+.alert-time {
+  font-size: 13px;
+  font-weight: 700;
+  color: inherit;
+  margin-right: 10px;
+}
+
+/* Flechita o ícono final de la alerta */
+.alert-arrow {
+  width: 23px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+/* Estilo visual de la flecha de emergencia */
+.emergency-arrow {
+  outline: 4px var(--emergency-color) solid;
+  outline-offset: -2px;
+}
+
+/* Estilo visual de la flecha de advertencia */
+.warning-arrow {
+  background: var(--warning-color);
+  outline: 4px var(--warning-color) solid;
+  outline-offset: -2px;
+}
+
+/* Líneas horizontales en la tarjeta de signos vitales */
+.vital-signs-lines {
+  width: 491px;
+  height: 120px;
+  position: relative;
+  margin-top: 20px;
+}
+
+/* Línea individual */
+.vital-line {
+  width: 100%;
+  height: 0;
+  position: absolute;
+  background: #D9D9D9;
+  outline: 1px rgba(0, 0, 0, 0.10) solid;
+  outline-offset: -0.5px;
+}
+
+/* Posiciones de las líneas */
+.vital-line:nth-child(1) { top: 0; }
+.vital-line:nth-child(2) { top: 40px; }
+.vital-line:nth-child(3) { top: 80px; }
+.vital-line:nth-child(4) { 
+  top: 120px; 
+  outline: 1px rgba(0, 0, 0, 0.40) solid;
+}
+
+/* Contenedor para las 3 lecturas recientes */
+.lectures-container {
+    width: 347px;
+    height: 254px;
+    position: relative;
+    margin-top: 15px;
+}
+
+/* Cada elemento de lectura */
+.lecture-item {
+    width: 100%;
+    height: 76px;
+    position: relative;
+    margin-bottom: 13px;
+}
+
+/* Fondo gris de los datos de lectura */
+.lecture-data {
+    width: 347px;
+    height: 53px;
+    position: absolute;
+    top: 23px;
+    left: 0;
+    background: #E7E7E7;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+/* Tiempo de la lectura */
+.lecture-time {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: var(--primary-color);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* Valor individual dentro de la lectura (ej. BPM) */
+.data-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #ACACAC;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* Icono al lado de los datos */
+.data-icon {
+    width: 24px;
+    height: 24px;
+    position: relative;
+}
+
+/* Icono de pulso */
+.pulse-icon {
+    background: #44749D;
+}
+
+/* Estilos responsivos para pantallas pequeñas */
+@media (max-width: 1000px) {
+  .patient_topContainer,
+  .patient_bottomContainer {
+    flex-direction: column;  /* Apilan las tarjetas verticalmente */
+  }
+
+  .patient_infoContainer,
+  .patient_dashboardContainer,
+  .patient_lectureContainer,
+  .patient_chartContainer {
+    width: 100%;
+    height: auto;
+  }
+
+  .alert {
+    padding: 0 12px;
+  }
+  
+  .alert-title {
+    font-size: 16px;
+  }
+  
+  h3 {
+    font-size: 24px;
+  }
+
+  .title-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .filter-search-wrapper {
+    width: 100%;
+    flex-direction: column;
+    height: auto;
+  }
+
+  .search-container {
+    width: 100%;
+  }
+
+  .gender-selector {
+    width: 100%;
+  }
+}
