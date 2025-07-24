@@ -2,7 +2,7 @@
 const menu = "../json/menu.json";
 
 //* This is used to assign the URL from each screen path
-const screens = "../screens/";
+const screens = "../screens";
 
 //? Variables to access to the html elements
 const sideMenu = document.getElementById("menu");

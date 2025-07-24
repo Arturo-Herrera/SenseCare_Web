@@ -1,13 +1,13 @@
 import { config } from "../../../js/config.js";
 
-export async function getDashboardData() {
-  const endpoint = `${config.api.apiURL}/patient/dashboard/data`;
+export async function getPatientData() {
+  const endpoint = `${config.api.apiURL}/Patient`;
 
   try {
     const response = await fetch(endpoint);
 
     if (!response.ok) {
-      throw new Error(`Error fetching dashboard data: ${response.statusText}`);
+      throw new Error(`Error fetching patient data: ${response.statusText}`);
     }
 
     const data = await response.json();
@@ -15,7 +15,7 @@ export async function getDashboardData() {
     return data;
 
   } catch (err) {
-    console.error("Failed to fetch dashboard data:", err);
+    console.error("Failed to fetch patient data:", err);
     throw err;
   }
 }

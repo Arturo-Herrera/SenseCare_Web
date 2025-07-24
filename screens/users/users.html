@@ -4,37 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="stylesheet" href="/screens/users/style.css">
-  
+  <script src="code.js"></script>
   <title>Card List</title>
 </head>
 <body>
 
-   <div class="top-bar">
+  <div class="top-bar">
   <div class="header-title">Users</div>
 
- <div class="controls"> 
+  <div class="controls"> 
   <div class="search-box">
     <div class="search-icon">
       <i class="fas fa-magnifying-glass"></i>
     </div>
-    <input type="text" class="search-input" placeholder="Search" />
+    <input type="text" class="search-input" id="search-name" placeholder="Search" />
   </div>
 
   <div class="filter-box">
-  <select class="filter-select">
-    <option value="">All</option>
-    <option value="patient">Patient</option>
-    <option value="doctor">Doctor</option>
-    <option value="nurse">Nurse</option>
+  <select class="filter-select" id="filter-select">
+    <option id="All">ALL</option>
+    <option id="MED">Doctor</option>
+    <option id="CUID">Cuidador</option>
+    <option id="PAC">Paciente</option>
   </select>
   <div class="filter-arrow"></div>
 </div>
-
-
   <!-- Nuevo ícono blanco al lado del filtro -->
   <div class="custom-box">
-   <a href="/screens/medicalHistory/medicalHistory.html"  class=""><i class="fas fa-pen-to-square"></i></a>
-
+    <a href="/screens/medicalHistory/medicalHistory.html"  class=""><i class="fas fa-pen-to-square"></i></a>
   </div>
 </div>
 
@@ -44,75 +41,12 @@
 
   <!-- SOLO SE ENVUELVE card-container en un contenedor nuevo -->
   <div class="scroll-wrapper">
-    <div class="card-container">
+    <div class="card-container" id="card-container">
       <!-- Tus tarjetas (puedes duplicarlas cuantas quieras) -->
-      <div class="card">
-        <div class="name">Jesus Leyva Barrios</div>
-        <div class="role">Patient</div>
-        <div class="status">Active</div>
-        <div class="circle green"></div>
-        <div class="icon"></div>
-      </div>
-<div class="card">
-        <div class="name">Jesus Leyva Barrios</div>
-        <div class="role">Patient</div>
-        <div class="status">Active</div>
-        <div class="circle green"></div>
-        <div class="icon"></div>
-      </div>
-      <div class="card">
-        <div class="name">Jesus Leyva Barrios</div>
-        <div class="role">Patient</div>
-        <div class="status">Active</div>
-        <div class="circle green"></div>
-        <div class="icon"></div>
-      </div>
-      <div class="card">
-        <div class="name">Jesus Leyva Barrios</div>
-        <div class="role">Patient</div>
-        <div class="status">Active</div>
-        <div class="circle green"></div>
-        <div class="icon"></div>
-      </div>
-      <div class="card">
-        <div class="name">Jesus Leyva Barrios</div>
-        <div class="role">Patient</div>
-        <div class="status">Active</div>
-        <div class="circle green"></div>
-        <div class="icon"></div>
-      </div>
-      <div class="card">
-        <div class="name">Jesus Leyva Barrios</div>
-        <div class="role">Patient</div>
-        <div class="status">Active</div>
-        <div class="circle green"></div>
-        <div class="icon"></div>
-      </div>
-      <div class="card">
-        <div class="name">Jesus Leyva Barrios</div>
-        <div class="role">Patient</div>
-        <div class="status">Active</div>
-        <div class="circle green"></div>
-        <div class="icon"></div>
-      </div>
-      <div class="card">
-        <div class="name">Jesus Leyva Barrios</div>
-        <div class="role">Patient</div>
-        <div class="status">Active</div>
-        <div class="circle green"></div>
-        <div class="icon"></div>
-      </div>
-      <div class="card">
-        <div class="name">Jesus Leyva Barrios</div>
-        <div class="role">Patient</div>
-        <div class="status">Active</div>
-        <div class="circle green"></div>
-        <div class="icon"></div>
-      </div>
-      <div class="card">
-        <div class="name">Jesus Leyva Barrios</div>
-        <div class="role">Patient</div>
-        <div class="status">Active</div>
+      <div class="card" id="card">
+        <div class="name" id="name">Jesus Leyva Barrios</div>
+        <div class="role" id="role">Patient</div>
+        <div class="status" id="status">Active</div>
         <div class="circle green"></div>
         <div class="icon"></div>
       </div>
