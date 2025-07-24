@@ -1,13 +1,13 @@
 import { config } from "../../../js/config.js";
 
-export async function getHistoryData(idPatient) {
-  const endpoint = `${config.api.apiURL}/Report/medicalHistory/data/` + idPatient;
+export async function getPatientData(idPatient) {
+  const endpoint = `${config.api.apiURL}/Patient/patients/data/`  + idPatient;
 
   try {
     const response = await fetch(endpoint);
 
     if (!response.ok) {
-      throw new Error(`Error fetching history data: ${response.statusText}`);
+      throw new Error(`Error fetching patient data: ${response.statusText}`);
     }
 
     const data = await response.json();
@@ -15,7 +15,7 @@ export async function getHistoryData(idPatient) {
     return data;
 
   } catch (err) {
-    console.error("Failed to fetch history data:", err);
+    console.error("Failed to fetch patient data:", err);
     throw err;
   }
 }

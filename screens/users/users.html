@@ -1,58 +1,137 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="stylesheet" href="/screens/users/style.css">
-  <script src="code.js"></script>
-  <title>Card List</title>
-</head>
-<body>
+<link rel="stylesheet" href="/screens/users/style.css" />
 
-  <div class="top-bar">
-  <div class="header-title">Users</div>
-
-  <div class="controls"> 
-  <div class="search-box">
-    <div class="search-icon">
-      <i class="fas fa-magnifying-glass"></i>
+<div class="users-container">
+  <div class="header">
+    <div class="header-left">
+      <h1 class="page-title">Users</h1>
     </div>
-    <input type="text" class="search-input" id="search-name" placeholder="Search" />
+    <div class="header-center">
+      <div class="search-container">
+        <i class="fas fa-search"></i>
+        <input type="text" class="search-input" placeholder="Search" />
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="patient-selector">
+        <select class="patient-select" id="patient-select">
+          <option>Select a patient</option>
+        </select>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+    </div>
   </div>
-
-  <div class="filter-box">
-  <select class="filter-select" id="filter-select">
-    <option id="All">ALL</option>
-    <option id="MED">Doctor</option>
-    <option id="CUID">Cuidador</option>
-    <option id="PAC">Paciente</option>
-  </select>
-  <div class="filter-arrow"></div>
-</div>
-  <!-- Nuevo ícono blanco al lado del filtro -->
-  <div class="custom-box">
-    <a href="/screens/medicalHistory/medicalHistory.html"  class=""><i class="fas fa-pen-to-square"></i></a>
-  </div>
-</div>
-
-</div>
-
-
 
   <!-- SOLO SE ENVUELVE card-container en un contenedor nuevo -->
-  <div class="scroll-wrapper">
+  <div class="content-grid">
     <div class="card-container" id="card-container">
-      <!-- Tus tarjetas (puedes duplicarlas cuantas quieras) -->
       <div class="card" id="card">
         <div class="name" id="name">Jesus Leyva Barrios</div>
         <div class="role" id="role">Patient</div>
         <div class="status" id="status">Active</div>
-        <div class="circle green"></div>
-        <div class="icon"></div>
+        <div class="actions">
+          <div class="circle green"></div>
+          <div class="icon"></div>
+        </div>
       </div>
-      <!-- Repite más tarjetas aquí -->
+      <div class="card" id="card">
+        <div class="name" id="name">Jesus Leyva Barrios</div>
+        <div class="role" id="role">Patient</div>
+        <div class="status" id="status">Active</div>
+        <div class="actions">
+          <div class="circle green"></div>
+          <div class="icon"></div>
+        </div>
+      </div>
+      <div class="card" id="card">
+        <div class="name" id="name">Jesus Leyva Barrios</div>
+        <div class="role" id="role">Patient</div>
+        <div class="status" id="status">Active</div>
+        <div class="actions">
+          <div class="circle green"></div>
+          <div class="icon"></div>
+        </div>
+      </div>
+      <div class="card" id="card">
+        <div class="name" id="name">Jesus Leyva Barrios</div>
+        <div class="role" id="role">Patient</div>
+        <div class="status" id="status">Active</div>
+        <div class="actions">
+          <div class="circle green"></div>
+          <div class="icon"></div>
+        </div>
+      </div>
+      <div class="card" id="card">
+        <div class="name" id="name">Jesus Leyva Barrios</div>
+        <div class="role" id="role">Patient</div>
+        <div class="status" id="status">Active</div>
+        <div class="actions">
+          <div class="circle green"></div>
+          <div class="icon"></div>
+        </div>
+      </div>
+      <div class="card" id="card">
+        <div class="name" id="name">Jesus Leyva Barrios</div>
+        <div class="role" id="role">Patient</div>
+        <div class="status" id="status">Active</div>
+        <div class="actions">
+          <div class="circle green"></div>
+          <div class="icon"></div>
+        </div>
+      </div>
+      <div class="card" id="card">
+        <div class="name" id="name">Jesus Leyva Barrios</div>
+        <div class="role" id="role">Patient</div>
+        <div class="status" id="status">Active</div>
+        <div class="actions">
+          <div class="circle green"></div>
+          <div class="icon"></div>
+        </div>
+      </div>
+      <div class="card" id="card">
+        <div class="name" id="name">Jesus Leyva Barrios</div>
+        <div class="role" id="role">Patient</div>
+        <div class="status" id="status">Active</div>
+        <div class="actions">
+          <div class="circle green"></div>
+          <div class="icon"></div>
+        </div>
+      </div>
+      <div class="card" id="card">
+        <div class="name" id="name">Jesus Leyva Barrios</div>
+        <div class="role" id="role">Patient</div>
+        <div class="status" id="status">Active</div>
+        <div class="actions">
+          <div class="circle green"></div>
+          <div class="icon"></div>
+        </div>
+      </div>
+      <div class="card" id="card">
+        <div class="name" id="name">Jesus Leyva Barrios</div>
+        <div class="role" id="role">Patient</div>
+        <div class="status" id="status">Active</div>
+        <div class="actions">
+          <div class="circle green"></div>
+          <div class="icon"></div>
+        </div>
+      </div>
+      <div class="card" id="card">
+        <div class="name" id="name">Jesus Leyva Barrios</div>
+        <div class="role" id="role">Patient</div>
+        <div class="status" id="status">Active</div>
+        <div class="actions">
+          <div class="circle green"></div>
+          <div class="icon"></div>
+        </div>
+      </div>
+      <div class="card" id="card">
+        <div class="name" id="name">Jesus Leyva Barrios</div>
+        <div class="role" id="role">Patient</div>
+        <div class="status" id="status">Active</div>
+        <div class="actions">
+          <div class="circle green"></div>
+          <div class="icon"></div>
+        </div>
+      </div>
     </div>
   </div>
-
-</body>
-</html>
+</div>
