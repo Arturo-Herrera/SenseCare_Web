@@ -8,130 +8,138 @@
     <div class="header-center">
       <div class="search-container">
         <i class="fas fa-search"></i>
-        <input type="text" class="search-input" placeholder="Search" />
+        <input
+          type="text"
+          class="search-input"
+          id="search-input"
+          placeholder="Search"
+        />
+      </div>
+    </div>
+    <div class="header-center2">
+      <div class="filter-container">
+        <label for="filter-select">Filter by Role</label>
+        <select id="filter-select">
+          <option value="">All</option>
+        </select>
       </div>
     </div>
     <div class="header-right">
-      <div class="patient-selector">
-        <select class="patient-select" id="patient-select">
-          <option>Select a patient</option>
-        </select>
-        <i class="fas fa-chevron-down"></i>
+      <div class="add-container">
+        <div class="add-button">
+          <i class="fas fa-plus"></i>
+        </div>
       </div>
     </div>
   </div>
 
   <!-- SOLO SE ENVUELVE card-container en un contenedor nuevo -->
   <div class="content-grid">
-    <div class="card-container" id="card-container">
-      <div class="card" id="card">
-        <div class="name" id="name">Jesus Leyva Barrios</div>
-        <div class="role" id="role">Patient</div>
-        <div class="status" id="status">Active</div>
-        <div class="actions">
-          <div class="circle green"></div>
-          <div class="icon"></div>
-        </div>
+    <div class="card-container" id="card-container"></div>
+
+    <div
+      class="create-user-container"
+      id="create-user-container"
+      style="display: none"
+    >
+      <div class="add-user-header">
+        <h2 class="add-user-title">Add New User</h2>
+        <button id="back-button">Back</button>
       </div>
-      <div class="card" id="card">
-        <div class="name" id="name">Jesus Leyva Barrios</div>
-        <div class="role" id="role">Patient</div>
-        <div class="status" id="status">Active</div>
-        <div class="actions">
-          <div class="circle green"></div>
-          <div class="icon"></div>
+
+      <form class="info-user-container" id="user-form">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" placeholder="Enter name" required />
         </div>
-      </div>
-      <div class="card" id="card">
-        <div class="name" id="name">Jesus Leyva Barrios</div>
-        <div class="role" id="role">Patient</div>
-        <div class="status" id="status">Active</div>
-        <div class="actions">
-          <div class="circle green"></div>
-          <div class="icon"></div>
+        <div class="form-group">
+          <label for="sur-name">Surname</label>
+          <input
+            type="text"
+            id="sur-name"
+            placeholder="Enter surname"
+            required
+          />
         </div>
-      </div>
-      <div class="card" id="card">
-        <div class="name" id="name">Jesus Leyva Barrios</div>
-        <div class="role" id="role">Patient</div>
-        <div class="status" id="status">Active</div>
-        <div class="actions">
-          <div class="circle green"></div>
-          <div class="icon"></div>
+        <div class="form-group">
+          <label for="last-name">Last Name</label>
+          <input
+            type="text"
+            id="last-name"
+            placeholder="Enter last name"
+            required
+          />
         </div>
-      </div>
-      <div class="card" id="card">
-        <div class="name" id="name">Jesus Leyva Barrios</div>
-        <div class="role" id="role">Patient</div>
-        <div class="status" id="status">Active</div>
-        <div class="actions">
-          <div class="circle green"></div>
-          <div class="icon"></div>
+        <div class="form-group">
+          <label for="date-birth">Date of Birth</label>
+          <input type="date" id="date-birth" required />
         </div>
-      </div>
-      <div class="card" id="card">
-        <div class="name" id="name">Jesus Leyva Barrios</div>
-        <div class="role" id="role">Patient</div>
-        <div class="status" id="status">Active</div>
-        <div class="actions">
-          <div class="circle green"></div>
-          <div class="icon"></div>
+        <div class="form-group">
+          <label for="gender">Gender</label>
+          <select id="gender" required>
+            <option value="" disabled selected>Select</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
         </div>
-      </div>
-      <div class="card" id="card">
-        <div class="name" id="name">Jesus Leyva Barrios</div>
-        <div class="role" id="role">Patient</div>
-        <div class="status" id="status">Active</div>
-        <div class="actions">
-          <div class="circle green"></div>
-          <div class="icon"></div>
+        <div class="form-group">
+          <label for="colonia">Colonia</label>
+          <input
+            type="text"
+            id="colonia"
+            placeholder="Enter colonia"
+            required
+          />
         </div>
-      </div>
-      <div class="card" id="card">
-        <div class="name" id="name">Jesus Leyva Barrios</div>
-        <div class="role" id="role">Patient</div>
-        <div class="status" id="status">Active</div>
-        <div class="actions">
-          <div class="circle green"></div>
-          <div class="icon"></div>
+        <div class="form-group">
+          <label for="street">Street</label>
+          <input type="text" id="street" placeholder="Enter street" required />
         </div>
-      </div>
-      <div class="card" id="card">
-        <div class="name" id="name">Jesus Leyva Barrios</div>
-        <div class="role" id="role">Patient</div>
-        <div class="status" id="status">Active</div>
-        <div class="actions">
-          <div class="circle green"></div>
-          <div class="icon"></div>
+        <div class="form-group">
+          <label for="number">Number</label>
+          <input
+            type="number"
+            id="number"
+            placeholder="Enter number"
+            required
+          />
         </div>
-      </div>
-      <div class="card" id="card">
-        <div class="name" id="name">Jesus Leyva Barrios</div>
-        <div class="role" id="role">Patient</div>
-        <div class="status" id="status">Active</div>
-        <div class="actions">
-          <div class="circle green"></div>
-          <div class="icon"></div>
+        <div class="form-group">
+          <label for="phone-number">Phone Number</label>
+          <input
+            type="number"
+            id="phone-number"
+            placeholder="Enter phone number"
+            required
+          />
         </div>
-      </div>
-      <div class="card" id="card">
-        <div class="name" id="name">Jesus Leyva Barrios</div>
-        <div class="role" id="role">Patient</div>
-        <div class="status" id="status">Active</div>
-        <div class="actions">
-          <div class="circle green"></div>
-          <div class="icon"></div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="Enter email" required />
         </div>
-      </div>
-      <div class="card" id="card">
-        <div class="name" id="name">Jesus Leyva Barrios</div>
-        <div class="role" id="role">Patient</div>
-        <div class="status" id="status">Active</div>
-        <div class="actions">
-          <div class="circle green"></div>
-          <div class="icon"></div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            placeholder="Enter password"
+            required
+          />
         </div>
-      </div>
+        <div class="form-group">
+          <label for="role">Role</label>
+          <select id="role" required>
+            <option value="" disabled selected>Select role</option>
+            <option value="patient">Patient</option>
+            <option value="doctor">Doctor</option>
+            <option value="caregiver">Caregiver</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="submit-button">Create User</button>
+        </div>
+      </form>
     </div>
   </div>
+  <div id="toast-container"></div>
 </div>

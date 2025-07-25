@@ -91,3 +91,137 @@ async function loadComponent(component) {
   const { init } = await import(moduleUrl);
   if (typeof init === "function") init();
 }
+
+//? Función para precargar CSS del HTML
+/*
+VERSION MEJORADA PERO EL CSS SE VA AL DEMONIO
+
+//* This is used to assign the URL from menu.json
+const menu = "../json/menu.json";
+
+//* This is used to assign the URL from each screen path
+const screens = "../screens";
+
+//? Variables to access to the html elements
+const sideMenu = document.getElementById("menu");
+const content = document.getElementById("content");
+
+//! This variable allows you to reuse the structure of options in multiple functions without requesting it again
+let menuData;
+
+//? We call function init
+init();
+
+//? This function initializes the sidebar menu and loads the correct screen.
+async function init() {
+  try {
+    menuData = await fetch(menu).then((res) => res.json());
+    console.log(menuData);
+  } catch (e) {
+    console.error("Couldn't load menu:", e);
+    content.textContent = "Error loading menu";
+    return;
+  }
+
+  menuData.options.forEach((opt) => sideMenu.appendChild(drawOption(opt)));
+
+  const firstView = location.hash.slice(1) || menuData.options[0].component;
+  await loadComponent(firstView);
+
+  window.addEventListener("popstate", (e) =>
+    loadComponent(e.state?.component || menuData.options[0].component)
+  );
+}
+
+//? This function creates and returns one sidebar button and connect its click to load the corresponding screen.
+function drawOption({ icon, text, component }) {
+  const divOption = document.createElement("div");
+  divOption.className = "sidebar-option";
+  divOption.dataset.comp = component;
+
+  const divIcon = document.createElement("div");
+  divIcon.className = "side-menu-icon";
+  const i = document.createElement("i");
+  i.className = icon;
+  divIcon.appendChild(i);
+
+  const label = document.createElement("p");
+  label.className = "texto";
+  label.textContent = text;
+
+  divOption.append(divIcon, label);
+  divOption.addEventListener("click", () => {
+    document.querySelectorAll(".sidebar-option").forEach((opt) => {
+      opt.classList.remove("active");
+    });
+    // Poner active solo a la opción clickeada
+    divOption.classList.add("active");
+    loadComponent(component);
+    console.log(component);
+  });
+
+  return divOption;
+}
+
+//? This function loads and displays the selected screen inside the main content area.
+async function loadComponent(component) {
+  const htmlUrl = `./${screens}/${component}/${component}.html`;
+  const moduleUrl = `${screens}/${component}/code.js?t=${Date.now()}`; // Timestamp para forzar recarga
+
+  // Cargar HTML
+  const html = await fetch(htmlUrl).then((r) => r.text());
+  
+  // Precargar CSS antes de mostrar HTML
+  await preloadCSS(html);
+  
+  // Insertar HTML después de que CSS esté listo
+  document.getElementById("content").innerHTML = html;
+
+  // Cargar e inicializar módulo
+  const { init } = await import(moduleUrl);
+  if (typeof init === "function") init();
+}
+
+//? Función para precargar CSS del HTML
+async function preloadCSS(html) {
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = html;
+  
+  const cssLinks = tempDiv.querySelectorAll('link[rel="stylesheet"]');
+  const styleElements = tempDiv.querySelectorAll('style');
+  
+  // Precargar CSS externos
+  const cssPromises = Array.from(cssLinks).map(link => {
+    return new Promise((resolve) => {
+      const href = link.getAttribute('href');
+      
+      // Si ya está cargado, resolver inmediatamente
+      if (document.querySelector(`link[href="${href}"]`)) {
+        resolve();
+        return;
+      }
+      
+      const linkElement = document.createElement('link');
+      linkElement.rel = 'stylesheet';
+      linkElement.href = href;
+      linkElement.onload = resolve;
+      linkElement.onerror = resolve; // No fallar por CSS
+      
+      document.head.appendChild(linkElement);
+    });
+  });
+  
+  // Agregar estilos inline
+  styleElements.forEach(style => {
+    if (!document.querySelector(`style[data-component="${style.textContent.substring(0,50)}"]`)) {
+      const newStyle = document.createElement('style');
+      newStyle.setAttribute('data-component', style.textContent.substring(0,50));
+      newStyle.textContent = style.textContent;
+      document.head.appendChild(newStyle);
+    }
+  });
+  
+  // Esperar a que todos los CSS se carguen
+  await Promise.all(cssPromises);
+}
+*/
