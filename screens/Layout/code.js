@@ -127,7 +127,7 @@ async function renderAllPatients() {
 
       let color, parpadea;
 
-      if (alerta.idTipoAlerta === "SOS") {
+      if (alerta.idTipoAlerta === "SOS" && isAlertRecent) {
         color = "#ea4335";
         parpadea = true;
       } else if (isAlertRecent) {
