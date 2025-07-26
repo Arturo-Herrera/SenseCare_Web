@@ -225,16 +225,24 @@ function showToast(message, type = "success") {
 }
 
 // Inicializar la carga de pacientes
+// ... El resto de tu código permanece igual hasta después de renderHistoryData()
+
+// Agregar búsqueda de pacientes por nombre con input + enter
+let allPatients = []; // Se usará globalmente para búsqueda
+
 selectPatient()
   .then((response) => {
-    const patients = Array.isArray(response) ? response : response.data;
+    allPatients = Array.isArray(response) ? response : response.data;
 
     const select = document.getElementById("patient-select");
+    const searchInput = document.getElementById("search-patient");
+    const searchResults = document.getElementById("search-results");
+
     if (!select) {
       console.error("Patient select element not found");
       return;
     }
-    
+
     select.innerHTML = "";
 
     const defaultOption = document.createElement("option");
@@ -242,7 +250,7 @@ selectPatient()
     defaultOption.textContent = "Select a patient";
     select.appendChild(defaultOption);
 
-    patients.forEach((patient) => {
+    allPatients.forEach((patient) => {
       const option = document.createElement("option");
       option.value = patient.id;
       option.textContent = `${patient.fullName}`;
@@ -254,18 +262,62 @@ selectPatient()
       if (idPatient) {
         renderHistoryData(idPatient);
       } else {
-        // CORREGIDO: Verificar que los elementos existen antes de limpiarlos
         const alertsContainer = document.getElementById("alerts-container");
         const reportsContainer = document.getElementById("reports-container");
         if (alertsContainer) alertsContainer.innerHTML = "";
         if (reportsContainer) reportsContainer.innerHTML = "";
       }
     });
+
+    // Input: mostrar coincidencias
+    if (searchInput && searchResults) {
+      searchInput.addEventListener("input", () => {
+        const query = searchInput.value.toLowerCase();
+        searchResults.innerHTML = "";
+
+        if (query.trim() === "") return;
+
+        const filtered = allPatients.filter((p) =>
+          p.fullName.toLowerCase().includes(query)
+        );
+
+        filtered.forEach((patient) => {
+          const li = document.createElement("li");
+          li.textContent = patient.fullName;
+          li.addEventListener("click", () => {
+            searchInput.value = patient.fullName;
+            searchResults.innerHTML = "";
+            renderHistoryData(patient.id);
+          });
+          searchResults.appendChild(li);
+        });
+      });
+
+      // Al presionar Enter: seleccionar automáticamente el primer match
+      searchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          const query = searchInput.value.toLowerCase();
+          const match = allPatients.find((p) =>
+            p.fullName.toLowerCase().includes(query)
+          );
+
+          if (match) {
+            searchInput.value = match.fullName;
+            searchResults.innerHTML = "";
+            renderHistoryData(match.id);
+          } else {
+            console.log("No matching patient found");
+          }
+        }
+      });
+    }
   })
   .catch((error) => {
     console.error("Error fetching patients:", error);
     showToast("Error loading patients", "error");
   });
+
 
 // Event listeners para mostrar/ocultar formulario
 const addReportBtn = document.querySelector(".add-report-btn");
