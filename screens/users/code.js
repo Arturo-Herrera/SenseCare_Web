@@ -402,3 +402,28 @@ document
       showToast("An unexpected error occurred.", "error");
     }
   });
+
+  const searchInput = document.getElementById("search-input");
+  const searchResults = document.getElementById("search-results");
+
+searchInput.addEventListener("input", () => {
+  const term = searchInput.value.toLowerCase().trim();
+  searchResults.innerHTML = "";
+
+  if (term === "") return;
+
+  const matches = patients.filter(p =>
+    p.fullName.toLowerCase().includes(term)
+  );
+
+  matches.forEach(p => {
+    const li = document.createElement("li");
+    li.textContent = p.fullName;
+    li.addEventListener("click", () => {
+      searchInput.value = p.fullName;
+      searchResults.innerHTML = "";
+      // acción al seleccionar paciente
+    });
+    searchResults.appendChild(li);
+  });
+});
