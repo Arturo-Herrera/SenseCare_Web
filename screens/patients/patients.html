@@ -8,16 +8,12 @@
     <div class="header-center">
       <div class="search-container">
         <i class="fas fa-search"></i>
-        <input type="text" class="search-input" placeholder="Search" />
+        <input type="text" class="search-input" id="search-patient" placeholder="Search" autocomplete="off"/>
+        <ul id="search-results" class="search-results"></ul>
       </div>
     </div>
     <div class="header-right">
-      <div class="patient-selector">
-        <select class="patient-select" id="patient-select">
-          <option>Select a patient</option>
-        </select>
-        <i class="fas fa-chevron-down"></i>
-      </div>
+      
     </div>
   </div>
 
@@ -25,10 +21,10 @@
     <div class="grid-left">
       <!-- Info container -->
       <div class="patient-info-container" id="patient-info">
-        <h1 class="patient-name" id="name">Jesus Leyva</h1>
-        <p class="gender" id="gender">Male</p>
-        <p class="age" id="age">78 years old</p>
-        <p class="time-last-lecture" id="lecture">Last lecture: 2 mins ago</p>
+        <h1 class="patient-name" id="name">User</h1>
+        <p class="gender" id="gender">XX</p>
+        <p class="age" id="age">Years</p>
+        <p class="time-last-lecture" id="lecture">Last lecture</p>
       </div>
 
       <div class="lectures-container">
@@ -39,43 +35,43 @@
           <div class="lecture-card">
             <div class="stat">
               <i class="fas fa-heart"></i>
-              <p>78 BPM</p>
+              <p>0 BPM</p>
             </div>
             <div class="stat">
               <i class="fa-solid fa-temperature-empty"></i>
-              <p>36.5 °C</p>
+              <p>0 °C</p>
             </div>
             <div class="stat">
               <i class="fa-solid fa-droplet"></i>
-              <p>98 %</p>
+              <p>0 %</p>
             </div>
           </div>
           <div class="lecture-card">
             <div class="stat">
               <i class="fas fa-heart"></i>
-              <p>78 BPM</p>
+              <p>0 BPM</p>
             </div>
             <div class="stat">
               <i class="fa-solid fa-temperature-empty"></i>
-              <p>36.5 °C</p>
+              <p>0 °C</p>
             </div>
             <div class="stat">
               <i class="fa-solid fa-droplet"></i>
-              <p>98 %</p>
+              <p>0 %</p>
             </div>
           </div>
           <div class="lecture-card">
             <div class="stat">
               <i class="fas fa-heart"></i>
-              <p>78 BPM</p>
+              <p>0 BPM</p>
             </div>
             <div class="stat">
               <i class="fa-solid fa-temperature-empty"></i>
-              <p>36.5 °C</p>
+              <p>0 °C</p>
             </div>
             <div class="stat">
               <i class="fa-solid fa-droplet"></i>
-              <p>98 %</p>
+              <p>0 %</p>
             </div>
           </div>
         </div>
@@ -110,42 +106,6 @@
       <div class="alerts-container">
         <h2 class="alerts-title">Last 6 alerts</h2>
         <div class="cards-alerts-container">
-          <div class="card card-sos">
-            <div class="description-alert">
-              <i class="fa-solid fa-triangle-exclamation"></i>
-              <p class="description">SOS Emergency</p>
-            </div>
-            <div class="time-alert">
-              <p class="time-ago">6 mins ago</p>
-            </div>
-          </div>
-          <div class="card card-warning">
-            <div class="description-alert">
-              <i class="fa-solid fa-triangle-exclamation"></i>
-              <p class="description">SOS Emergency</p>
-            </div>
-            <div class="time-alert">
-              <p class="time-ago">6 mins ago</p>
-            </div>
-          </div>
-          <div class="card card-warning">
-            <div class="description-alert">
-              <i class="fa-solid fa-triangle-exclamation"></i>
-              <p class="description">SOS Emergency</p>
-            </div>
-            <div class="time-alert">
-              <p class="time-ago">6 mins ago</p>
-            </div>
-          </div>
-          <div class="card card-warning">
-            <div class="description-alert">
-              <i class="fa-solid fa-triangle-exclamation"></i>
-              <p class="description">SOS Emergency</p>
-            </div>
-            <div class="time-alert">
-              <p class="time-ago">6 mins ago</p>
-            </div>
-          </div>
         </div>
       </div>
     </div>
