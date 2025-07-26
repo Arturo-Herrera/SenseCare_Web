@@ -384,6 +384,12 @@ document
       showToast("User created successfully!", "success");
       this.reset();
 
+      const caregiverGroup = document.getElementById("caregiver-group");
+      const deviceGroup = document.getElementById("device-group");
+
+      if (caregiverGroup) caregiverGroup.remove();
+      if (deviceGroup) deviceGroup.remove();
+
       document.getElementById("create-user-container").style.display = "none";
       document.getElementById("card-container").style.display = "flex";
 
