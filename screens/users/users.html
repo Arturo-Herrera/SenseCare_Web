@@ -50,7 +50,13 @@
       <form class="info-user-container" id="user-form">
         <div class="form-group">
           <label for="name">Name</label>
-          <input type="text" id="name" placeholder="Enter name" required />
+          <input
+            type="text"
+            id="name"
+            placeholder="Enter name"
+            required
+            autocomplete="off"
+          />
         </div>
         <div class="form-group">
           <label for="sur-name">Surname</label>
@@ -59,6 +65,7 @@
             id="sur-name"
             placeholder="Enter surname"
             required
+            autocomplete="off"
           />
         </div>
         <div class="form-group">
@@ -68,11 +75,12 @@
             id="last-name"
             placeholder="Enter last name"
             required
+            autocomplete="off"
           />
         </div>
         <div class="form-group">
           <label for="date-birth">Date of Birth</label>
-          <input type="date" id="date-birth" required />
+          <input type="date" id="date-birth" required autocomplete="off" />
         </div>
         <div class="form-group">
           <label for="gender">Gender</label>
@@ -89,11 +97,18 @@
             id="colonia"
             placeholder="Enter colonia"
             required
+            autocomplete="off"
           />
         </div>
         <div class="form-group">
           <label for="street">Street</label>
-          <input type="text" id="street" placeholder="Enter street" required />
+          <input
+            type="text"
+            id="street"
+            placeholder="Enter street"
+            required
+            autocomplete="off"
+          />
         </div>
         <div class="form-group">
           <label for="number">Number</label>
@@ -102,6 +117,7 @@
             id="number"
             placeholder="Enter number"
             required
+            autocomplete="off"
           />
         </div>
         <div class="form-group">
@@ -111,20 +127,34 @@
             id="phone-number"
             placeholder="Enter phone number"
             required
+            autocomplete="off"
           />
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" placeholder="Enter email" required />
+          <input
+            type="email"
+            id="email"
+            placeholder="Enter email"
+            required
+            autocomplete="off"
+          />
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            placeholder="Enter password"
-            required
-          />
+          <div class="password-container">
+            <input
+              type="password"
+              id="password"
+              placeholder="Enter password"
+              required
+              autocomplete="off"
+            />
+            <i
+              id="togglePassword"
+              class="fa-solid fa-eye password-toggle-icon"
+            ></i>
+          </div>
         </div>
         <div class="form-group">
           <label for="role">Role</label>
