@@ -98,6 +98,26 @@ body {
   color: #44749d;
 }
 
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #999;
+  font-size: 18px;
+  padding-right: 10px;
+}
+
+.password-toggle-icon:hover {
+  color: #333;
+}
+
 #toast-container {
   position: fixed;
   bottom: 20px;
