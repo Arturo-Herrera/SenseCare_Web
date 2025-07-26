@@ -83,8 +83,18 @@ i {
 #content {
   margin-left: 234px;
   padding: 20px;
-  background: #F8F8F8;
+  background: #f8f8f8;
   overflow: hidden;
+}
+
+.logout-option {
+  margin-top: auto;
+  color: #e57373;
+}
+
+.logout-option:hover {
+  background-color: #ffcdd2;
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {

@@ -241,6 +241,10 @@ body {
   background-color: #ffb6c1;
 }
 
+.legend-color.ox {
+  background-color: #9EB3FD;
+}
+
 .chart-content,
 .chart-placeholder {
   flex: 1;

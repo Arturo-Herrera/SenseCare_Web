@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+< lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,6 +11,7 @@
     <!-- Íconos FontAwesome -->
     <link rel="stylesheet" href="../fontawesome-free-6.7.2-web/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans&display=swap" rel="stylesheet" />
+    <script src="/Highcharts-12.3.0/code/highcharts.js"></script>
 </head>
 
 <body>
@@ -26,5 +27,17 @@
     <main id="content"></main>
 
     <script type="module" src="../js/sidebar.js"></script>
+
+        <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        const userId = localStorage.getItem("userId");
+        const userRole = localStorage.getItem("userRole");
+
+
+        if (!userId || userRole !== "MED") {
+          location.href = "/screens/login/login.html";
+        }
+      });
+    </script>
 </body>
 </html>

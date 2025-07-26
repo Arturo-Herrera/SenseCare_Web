@@ -9,7 +9,7 @@ function renderPatientData(idPatient) {
     if (data.patient && data.patient.length > 0) {
       const patientData = data.patient[0].paciente; // Accedemos al objeto paciente dentro del array
       renderInfoPatient(patientData);
-      
+      updateDashboard(data);
       // También renderizar las otras secciones si las tienes
       if (data.lectures && data.lectures.length > 0) {
         renderLectures(data.lectures);
@@ -170,3 +170,69 @@ selectPatient().then((response) => {
 }).catch((error) => {
   console.error("Error fetching patients:", error);
 });
+
+
+function updateDashboard(data) {
+    const vitals = data.averageVitals;
+
+    const categories = vitals.map(v => {
+        const dateObj = new Date(v.date);
+        return dateObj.toISOString().split('T')[0]; // yyyy-MM-dd
+    });
+
+    const tempData = vitals.map(v => v.averageTemperature);
+    const bpmData = vitals.map(v => v.averagePulse);
+    const oxygenData = vitals.map(v => v.averageOxygen);
+
+    Highcharts.chart('chart-data', {
+        chart: {
+            type: 'spline',
+            backgroundColor: 'transparent',
+            spacing: [10, 0, 10, 0]
+        },
+        title: { text: '' },
+        xAxis: {
+            categories: categories,
+            lineColor: '#ccc',
+            tickColor: '#ccc'
+        },
+        yAxis: {
+            title: { text: '' },
+            gridLineColor: '#f5f5f5'
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            spline: {
+                marker: { enabled: true, radius: 4 },
+                lineWidth: 2,
+                enableMouseTracking: false,
+                dataLabels: {
+                    enabled: true,
+                    style: { fontSize: '10px', color: '#444' }
+                }
+            }
+        },
+        series: [
+            {
+                name: 'Temp',
+                data: tempData,
+                color: '#ffb6c1',
+                marker: { fillColor: '#ffb6c1' }
+            },
+            {
+                name: 'BPM',
+                data: bpmData,
+                color: '#90ee90',
+                marker: { fillColor: '#90ee90' }
+            },
+            {
+                name: 'Oxygen',
+                data: oxygenData,
+                color: '#9EB3FD',
+                marker: { fillColor: '#9EB3FD' }
+            }
+        ]
+    });
+}
