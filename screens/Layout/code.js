@@ -8,7 +8,7 @@ let redMarker = null;
 let markers = [];
 
 // Configuración central y zoom del mapa
-const centerCoords = { lat: 32.4645, lng: -116.8280 };
+const centerCoords = { lat: 32.4645, lng: -116.828 };
 const zoomLevel = 11;
 
 export function init() {
@@ -26,12 +26,16 @@ function loadGoogleMapsWithBootstrap() {
     (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=\`https://maps.\${c}apis.com/maps/api/js?\`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({key: "AIzaSyB3FVF1njQEtL3RVS4UthYcUHCCqLbkQig",v: "weekly"});
   `;
 
-  const script = document.createElement('script');
+  const script = document.createElement("script");
   script.textContent = bootstrapCode;
   document.head.appendChild(script);
 
   const checkGoogleMaps = setInterval(() => {
-    if (window.google && window.google.maps && window.google.maps.importLibrary) {
+    if (
+      window.google &&
+      window.google.maps &&
+      window.google.maps.importLibrary
+    ) {
       clearInterval(checkGoogleMaps);
       initializeMapWithImportLibrary();
     }
@@ -51,7 +55,9 @@ async function initializeMapWithImportLibrary() {
     center: centerCoords,
   });
 
-  renderAllPatients();
+  await renderAllPatients();
+
+  setInterval(renderAllPatients, 120000);
 }
 
 function initializeMap() {
@@ -64,6 +70,8 @@ function initializeMap() {
   });
 
   renderAllPatients();
+
+  setInterval(renderAllPatients(), 120000);
 }
 
 function isRecent(fechaISO) {
@@ -80,7 +88,9 @@ function createEmojiIcon(emoji, color, invert = false) {
   const textColor = invert ? color : "#ffffff";
 
   return {
-    url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+    url:
+      "data:image/svg+xml;charset=UTF-8," +
+      encodeURIComponent(`
       <svg width="60" height="60" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
@@ -104,7 +114,7 @@ async function renderAllPatients() {
 
     markers = [];
 
-    patients.forEach(p => {
+    patients.forEach((p) => {
       const alerta = p.alerta;
       if (!alerta || !alerta.fecha || !alerta.idTipoAlerta) return;
 
@@ -170,7 +180,7 @@ async function renderAllPatients() {
     });
 
     setInterval(() => {
-      markers.forEach(obj => {
+      markers.forEach((obj) => {
         if (obj.parpadea) {
           obj.strokeToggle = !obj.strokeToggle;
 
@@ -183,7 +193,6 @@ async function renderAllPatients() {
         }
       });
     }, 600);
-
   } catch (err) {
     console.error("Error al pintar pacientes en el mapa:", err);
   }
@@ -199,10 +208,10 @@ function setRedMarker(lat, lng, title = "Paciente") {
     map,
     title,
     icon: createEmojiIcon("❗", "#ea4335"),
-    zIndex: 1000
+    zIndex: 1000,
   });
 }
 
-window.setRedPersonLocation = function(lat, lng, name) {
+window.setRedPersonLocation = function (lat, lng, name) {
   setRedMarker(lat, lng, name || "Paciente");
 };

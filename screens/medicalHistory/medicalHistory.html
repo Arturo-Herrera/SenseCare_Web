@@ -27,8 +27,7 @@
     <div class="alerts-section">
       <h2 class="section-title">Alerts History</h2>
 
-      <div class="alerts-container" id="alerts-container">
-      </div>
+      <div class="alerts-container" id="alerts-container"></div>
     </div>
 
     <!-- Report History Section -->
@@ -42,7 +41,68 @@
 
       <div id="reports-container"></div>
     </div>
+
+    <div
+      class="create-report-container"
+      id="create-report-container"
+      style="display: none"
+    >
+      <div class="add-report-header">
+        <h2 class="add-report-title">Add New Report</h2>
+        <button id="back-button">Back</button>
+      </div>
+
+      <form class="info-report-container" id="report-form">
+        <div class="form-group">
+          <label for="reason">Reason</label>
+          <input type="text" id="reason" placeholder="Enter reason" required />
+        </div>
+        <div class="form-group">
+          <label for="diagnosis">Diagnosis</label>
+          <input
+            type="text"
+            id="diagnosis"
+            placeholder="Enter diagnosis"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="medicine">Medicine</label>
+          <input
+            type="text"
+            id="medicine"
+            placeholder="Enter medicine"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="dosis">Dosis</label>
+          <input type="text" id="dosis" placeholder="Enter dosis" required />
+        </div>
+        <div class="form-group">
+          <label for="duration">Duration</label>
+          <input
+            type="text"
+            id="duration"
+            placeholder="Enter duration"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="observations">Observations</label>
+          <textarea
+            id="observations"
+            placeholder="Enter observations"
+            required
+          ></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="submit-button">Create Report</button>
+        </div>
+      </form>
+    </div>
   </div>
+  <div id="toast-container"></div>
 </div>
 
 <div class="report-modal modal-initial" id="report-modal">

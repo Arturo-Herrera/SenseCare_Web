@@ -1,30 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+
     <link rel="stylesheet" href="../css/index.css" />
 
     <title>SenseCare</title>
 
     <!-- Íconos FontAwesome -->
-    <link rel="stylesheet" href="../fontawesome-free-6.7.2-web/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans&display=swap" rel="stylesheet" />
-</head>
+    <link
+      rel="stylesheet"
+      href="../fontawesome-free-6.7.2-web/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Merriweather+Sans&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<body>
+  <body>
     <div class="sidebar">
-        <div>
-            <img src="../photo/SenseCare_Logo.png" alt="SenseCare" class="logo" />
-        </div>
+      <div>
+        <img src="../photo/SenseCare_Logo.png" alt="SenseCare" class="logo" />
+      </div>
 
-        <!--  SOLO añadí id="menu" para que JS lo encuentre -->
-        <div class="option-container" id="menu"></div>
+      <!--  SOLO añadí id="menu" para que JS lo encuentre -->
+      <div class="option-container" id="menu"></div>
     </div>
 
     <main id="content"></main>
 
     <script type="module" src="../js/sidebar.js"></script>
-</body>
+
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        const userId = localStorage.getItem("userId");
+        const userRole = localStorage.getItem("userRole");
+
+        console.log("Session Check → userId:", userId, "userRole:", userRole);
+
+        if (!userId || userRole !== "MED") {
+          // Redirige al login si no hay sesión válida
+          location.href = "/screens/login/login.html";
+        }
+      });
+    </script>
+  </body>
 </html>
