@@ -173,6 +173,128 @@
         </div>
       </form>
     </div>
+
+    <!-- UPDATE USER -->
+    <div
+      class="create-user-container"
+      id="update-user-container"
+      style="display: none"
+    >
+      <div class="add-user-header">
+        <h2 class="add-user-title">Add New User</h2>
+        <button id="back-button">Back</button>
+      </div>
+
+      <form class="info-user-container" id="user-form">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input
+            type="text"
+            id="name"
+            placeholder="Enter name"
+            required
+            autocomplete="off"
+          />
+        </div>
+        <div class="form-group">
+          <label for="sur-name">Surname</label>
+          <input
+            type="text"
+            id="sur-name"
+            placeholder="Enter surname"
+            required
+            autocomplete="off"
+          />
+        </div>
+        <div class="form-group">
+          <label for="last-name">Last Name</label>
+          <input
+            type="text"
+            id="last-name"
+            placeholder="Enter last name"
+            required
+            autocomplete="off"
+          />
+        </div>
+        <div class="form-group">
+          <label for="date-birth">Date of Birth</label>
+          <input type="date" id="date-birth" required autocomplete="off" />
+        </div>
+        <div class="form-group">
+          <label for="gender">Gender</label>
+          <select id="gender" required>
+            <option value="" disabled selected>Select</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="colonia">Colonia</label>
+          <input
+            type="text"
+            id="colonia"
+            placeholder="Enter colonia"
+            required
+            autocomplete="off"
+          />
+        </div>
+        <div class="form-group">
+          <label for="street">Street</label>
+          <input
+            type="text"
+            id="street"
+            placeholder="Enter street"
+            required
+            autocomplete="off"
+          />
+        </div>
+        <div class="form-group">
+          <label for="number">Number</label>
+          <input
+            type="number"
+            id="number"
+            placeholder="Enter number"
+            required
+            autocomplete="off"
+          />
+        </div>
+        <div class="form-group">
+          <label for="phone-number">Phone Number</label>
+          <input
+            type="number"
+            id="phone-number"
+            placeholder="Enter phone number"
+            required
+            autocomplete="off"
+            maxlength="10"
+            max="9999999999"
+            oninput="this.value=this.value.slice(0,10)"
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="Enter email"
+            required
+            autocomplete="off"
+          />
+        </div>
+        <div class="form-group">
+          <label for="role">Role</label>
+          <select id="role" required>
+            <option value="" disabled selected>Select role</option>
+            <option value="patient">Patient</option>
+            <option value="doctor">Doctor</option>
+            <option value="caregiver">Caregiver</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="submit-button">Create User</button>
+        </div>
+      </form>
+    </div>
   </div>
   <div id="toast-container"></div>
 </div>

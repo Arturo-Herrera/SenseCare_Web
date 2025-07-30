@@ -393,7 +393,7 @@ body {
 
 .password-container input {
   width: 100%;
-  padding-right: 40px; 
+  padding-right: 40px;
   box-sizing: border-box;
 }
 
@@ -409,6 +409,51 @@ body {
 
 .password-toggle-icon:hover {
   color: #333;
+}
+
+/* .update-button-container {
+  display: flex;
+} */
+
+.buttons-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+}
+
+.disable-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #adb743;
+  border-radius: 10px;
+  width: 12rem;
+  height: 1.7rem;
+  color: #ffffff;
+  transition: transform 0.3s ease;
+}
+
+.disable-button:hover {
+  background: #949c3a;
+  transform: scale(1.05);
+}
+
+.update-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #44749d;
+  border-radius: 10px;
+  width: 12rem;
+  height: 1.7rem;
+  color: #ffffff;
+  transition: transform 0.3s ease;
+}
+
+.update-button:hover {
+  background: #38648b;
+  transform: scale(1.05);
 }
 
 @media (max-width: 992px) {

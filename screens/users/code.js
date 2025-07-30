@@ -12,11 +12,11 @@ function renderCardsFromArray(users) {
     card.className = "card";
     card.innerHTML = `
       <div class="card-summary">
-        <div class="name">${user.fullName || "N/A"}</div>
+        <div class="name">${user.nombre || "N/A"} ${user.apellidoPa} ${user.apellidoMa}</div>
         <div class="role">${user.descriptionUserType || "N/A"}</div>
-        <div class="status">${user.active ? "Active" : "Inactive"}</div>
+        <div class="status">${user.activo ? "Active" : "Inactive"}</div>
         <div class="actions">
-          <div class="circle ${user.active ? "green" : "red"}"></div>
+          <div class="circle ${user.activo ? "green" : "red"}"></div>
           <div class="icon">
             <i class="fas fa-chevron-down"></i>
           </div>
@@ -25,19 +25,19 @@ function renderCardsFromArray(users) {
       <div class="card-details">
         <div class="section">
           <h2 class="section-title">Date birth:</h2>
-          <p>${user.birthDate ? user.birthDate.split("T")[0] : "N/A"}</p>
+          <p>${user.fecNac ? user.fecNac.split("T")[0] : "N/A"}</p>
         </div>
         <div class="section">
           <h2 class="section-title">Gender:</h2>
-          <p>${user.gender || "N/A"}</p>
+          <p>${user.sexo || "N/A"}</p>
         </div>
         <div class="section">
           <h2 class="section-title">Address:</h2>
-          <p>${user.fullAddress || "N/A"}</p>
+          <p>${user.dirColonia || "N/A"} ${user.dirCalle} ${user.dirNum}</p>
         </div>
         <div class="section">
           <h2 class="section-title">Phone number:</h2>
-          <p>${user.phoneNumber || "N/A"}</p>
+          <p>${user.telefono || "N/A"}</p>
         </div>
         <div class="section">
           <h2 class="section-title">Email:</h2>
@@ -47,11 +47,16 @@ function renderCardsFromArray(users) {
           <h2 class="section-title">Role:</h2>
           <p>${user.descriptionUserType || "N/A"}</p>
         </div>
+        <div class="buttons-container">
+          <div class="update-button" onclick="openUpdateForm(${user.id || user.userId || 0})">Update</div>
+          <div class="disable-button">Disable</div>
+        </div>
       </div>
     `;
     container.appendChild(card);
   });
 
+  // Event listeners para abrir/cerrar cards
   document.querySelectorAll(".icon i").forEach((icon) => {
     icon.addEventListener("click", (e) => {
       const card = e.target.closest(".card");
@@ -79,6 +84,77 @@ function renderCardsFromArray(users) {
       }
     });
   });
+}
+
+// Función global para abrir el formulario de actualización
+window.openUpdateForm = function(userId) {
+  console.log("Opening update form for user:", userId);
+  
+  // Encontrar el usuario por ID
+  const userToUpdate = allUsers.find(user => (user.id || user.userId) === userId);
+  
+  if (userToUpdate) {
+    // Llenar el formulario con los datos del usuario
+    populateUpdateForm(userToUpdate);
+  }
+  
+  // Mostrar el formulario de actualización
+  document.getElementById("card-container").style.display = "none";
+  document.getElementById("update-user-container").style.display = "flex";
+};
+
+// Función para llenar el formulario de actualización con los datos del usuario
+function populateUpdateForm(user) {
+  const updateContainer = document.getElementById("update-user-container");
+  
+  // Cambiar el título
+  updateContainer.querySelector(".add-user-title").textContent = "Update User";
+  updateContainer.querySelector(".submit-button").textContent = "Update User";
+  
+  // Llenar los campos con la información del usuario
+  const nameField = updateContainer.querySelector("#name");
+  const surnameField = updateContainer.querySelector("#sur-name");
+  const lastnameField = updateContainer.querySelector("#last-name");
+  const dateField = updateContainer.querySelector("#date-birth");
+  const genderField = updateContainer.querySelector("#gender");
+  const coloniaField = updateContainer.querySelector("#colonia");
+  const streetField = updateContainer.querySelector("#street");
+  const numberField = updateContainer.querySelector("#number");
+  const phoneField = updateContainer.querySelector("#phone-number");
+  const emailField = updateContainer.querySelector("#email");
+  const roleField = updateContainer.querySelector("#role");
+  
+  // Llenar los campos (ajusta según la estructura de tu objeto user)
+  if (nameField && user.nombre) nameField.value = user.nombre;
+  if (surnameField && user.apellidoPa) surnameField.value = user.apellidoPa;
+  if (lastnameField && user.apellidoMa) lastnameField.value = user.apellidoMa;
+  if (dateField && user.fecNac) {
+    const date = new Date(user.fecNac);
+    dateField.value = date.toISOString().split('T')[0];
+  }
+  if (genderField && user.gender) {
+    genderField.value = user.gender.toLowerCase();
+  }
+  if (coloniaField && user.dirColonia) coloniaField.value = user.dirColonia;
+  if (streetField && user.dirCalle) streetField.value = user.dirCalle;
+  if (numberField && user.dirNum) numberField.value = user.dirNum;
+  if (phoneField && user.telefono) phoneField.value = user.telefono;
+  if (emailField && user.email) emailField.value = user.email;
+  if (roleField && user.descriptionUserType) {
+    // Mapear el rol a su valor correspondiente
+    const roleMapping = {
+      'Patient': 'patient',
+      'Doctor': 'doctor',
+      'Caregiver': 'caregiver',
+      'Paciente': 'patient',
+      'Médico': 'doctor',
+      'Cuidador': 'caregiver'
+    };
+    roleField.value = roleMapping[user.descriptionUserType] || 'patient';
+  }
+  
+  // Guardar el ID del usuario para la actualización
+  updateContainer.setAttribute('data-user-id', user.id || user.userId || 0);
 }
 
 getUserData()
@@ -169,7 +245,14 @@ addButton.addEventListener("click", () => {
 
 backButton.addEventListener("click", () => {
   createUserContainer.style.display = "none";
+  document.getElementById("update-user-container").style.display = "none";
   cardContainer.style.display = "flex";
+});
+
+// Event listener para el botón back del formulario de actualización
+document.querySelector("#update-user-container #back-button").addEventListener("click", () => {
+  document.getElementById("update-user-container").style.display = "none";
+  document.getElementById("card-container").style.display = "flex";
 });
 
 function showToast(message, type = "success") {
@@ -298,11 +381,11 @@ document
     switch (selectedGender.toLowerCase()) {
       case "male":
       case "masculino":
-        gender = "Masculino";
+        gender = "Male";
         break;
       case "female":
       case "femenino":
-        gender = "Femenino";
+        gender = "Female";
         break;
       default:
         showToast("Invalid gender selected.", "error");

@@ -128,7 +128,6 @@ function openReportModal(report) {
       med.textContent = `Medicine: ${report.treatment.medicine}`;
       treatmentDetails.appendChild(med);
     }
-    // CORREGIDO: Usar 'dosis' en lugar de 'dose'
     if (report.treatment.dosis) {
       const dose = document.createElement("p");
       dose.textContent = `Dose: ${report.treatment.dosis}`;
@@ -270,7 +269,6 @@ selectPatient()
     });
 
     if (searchInput && searchResults) {
-      // Mostrar TODOS los pacientes al hacer focus o click en el input
       function showAllPatientsList() {
         searchResults.innerHTML = "";
         allPatients.forEach((patient) => {
@@ -288,13 +286,11 @@ selectPatient()
       searchInput.addEventListener("focus", showAllPatientsList);
       searchInput.addEventListener("click", showAllPatientsList);
 
-      // Filtrar lista mientras escribe
       searchInput.addEventListener("input", () => {
         const query = searchInput.value.toLowerCase();
         searchResults.innerHTML = "";
 
         if (query.trim() === "") {
-          // Si está vacío, mostrar todos
           showAllPatientsList();
           return;
         }
@@ -315,7 +311,6 @@ selectPatient()
         });
       });
 
-      // Enter para seleccionar el primer match
       searchInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
           e.preventDefault();
