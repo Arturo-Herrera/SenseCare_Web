@@ -371,19 +371,34 @@ if (backButton) {
     if (reportsSection) reportsSection.style.display = "block";
   });
 }
-
 const reportForm = document.getElementById("report-form");
+
 if (reportForm) {
+  const reasonInput = document.getElementById("reason");
+  const observationsInput = document.getElementById("observations");
+
+  const reasonRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+  const observationsRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9.,!?()\s]+$/;
+
+  // Validación en tiempo real para Reason (solo letras y espacios)
+  reasonInput.addEventListener("input", function () {
+    this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, "");
+  });
+
+  // Validación en tiempo real para Observations (letras, números, signos básicos)
+  observationsInput.addEventListener("input", function () {
+    this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ0-9.,!?()\s]/g, "");
+  });
+
   reportForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const reason = document.getElementById("reason")?.value?.trim() || "";
-    const diagnosis = document.getElementById("diagnosis")?.value?.trim() || "";
-    const medicine = document.getElementById("medicine")?.value?.trim() || "";
-    const dosis = document.getElementById("dosis")?.value?.trim() || "";
-    const duration = document.getElementById("duration")?.value?.trim() || "";
-    const observations =
-      document.getElementById("observations")?.value?.trim() || "";
+    const reason = reasonInput.value.trim();
+    const diagnosis = document.getElementById("diagnosis").value.trim();
+    const medicine = document.getElementById("medicine").value.trim();
+    const dosis = document.getElementById("dosis").value.trim();
+    const duration = document.getElementById("duration").value.trim();
+    const observations = observationsInput.value.trim();
 
     if (
       !reason ||
@@ -397,13 +412,22 @@ if (reportForm) {
       return;
     }
 
-    const patientSelect = document.getElementById("patient-select");
-    if (!patientSelect || !patientSelect.value) {
-      showToast("Please select a patient.", "error");
+    if (!reasonRegex.test(reason)) {
+      showToast("Reason can only contain letters and spaces.", "error");
       return;
     }
 
+    if (!observationsRegex.test(observations)) {
+      showToast(
+        "Observations can only contain letters, numbers, punctuation (.,!?()) and spaces.",
+        "error"
+      );
+      return;
+    }
+
+    const patientSelect = document.getElementById("patient-select");
     const idPatient = parseInt(patientSelect.value);
+
     if (isNaN(idPatient)) {
       showToast("Invalid patient selection.", "error");
       return;
@@ -419,10 +443,8 @@ if (reportForm) {
 
     try {
       const submitButton = reportForm.querySelector('button[type="submit"]');
-      if (submitButton) {
-        submitButton.disabled = true;
-        submitButton.textContent = "Sending...";
-      }
+      submitButton.disabled = true;
+      submitButton.textContent = "Sending...";
 
       await sendReport({
         reason,
@@ -438,29 +460,20 @@ if (reportForm) {
       showToast("Report created successfully!", "success");
       reportForm.reset();
 
-      // Volver a la vista principal
-      const createReportContainer = document.getElementById(
-        "create-report-container"
-      );
-      const alertsSection = document.querySelector(".alerts-section");
-      const reportsSection = document.querySelector(".reports-section");
+      // Cambiar de vista al historial después de enviar
+      document.getElementById("create-report-container").style.display = "none";
+      document.querySelector(".alerts-section").style.display = "block";
+      document.querySelector(".reports-section").style.display = "block";
 
-      if (createReportContainer) createReportContainer.style.display = "none";
-      if (alertsSection) alertsSection.style.display = "block";
-      if (reportsSection) reportsSection.style.display = "block";
-
-      // CORREGIDO: Refrescar datos después de crear el reporte
+      // Refrescar historial
       renderHistoryData(idPatient);
     } catch (error) {
       console.error("Error submitting report:", error);
       showToast(`Failed to send report: ${error.message}`, "error");
     } finally {
-      // Restaurar estado del botón
       const submitButton = reportForm.querySelector('button[type="submit"]');
-      if (submitButton) {
-        submitButton.disabled = false;
-        submitButton.textContent = "Submit Report"; // O el texto original
-      }
+      submitButton.disabled = false;
+      submitButton.textContent = "Submit Report";
     }
   });
 } else {
