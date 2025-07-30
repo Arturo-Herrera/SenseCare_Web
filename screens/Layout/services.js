@@ -1,7 +1,8 @@
 import { config } from "../../../js/config.js";
 
 export async function getDeviceData() {
-  const endpoint = `${config.api.apiURL}/Map/info`;
+  const idDoctor = localStorage.getItem("userId")
+  const endpoint = `${config.api.apiURL}/Map/info/${idDoctor}`;
 
   try {
     const response = await fetch(endpoint);

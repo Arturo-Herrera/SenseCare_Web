@@ -9,7 +9,7 @@ let markers = [];
 
 // Configuración central y zoom del mapa
 const centerCoords = { lat: 32.4645, lng: -116.828 };
-const zoomLevel = 11;
+const zoomLevel = 11.5;
 
 export function init() {
   if (window.google && window.google.maps && window.google.maps.Map) {
@@ -122,7 +122,7 @@ async function renderAllPatients() {
       const lng = parseFloat(p.longitud);
       if (isNaN(lat) || isNaN(lng)) return;
 
-      const emoji = p.sexo === "Femenino" ? "👩🏼‍💼" : "👨🏼‍💼";
+      const emoji = p.sexo === "Female" ? "👩🏼‍💼" : "👨🏼‍💼";
       const isAlertRecent = isRecent(alerta.fecha);
 
       let color, parpadea;

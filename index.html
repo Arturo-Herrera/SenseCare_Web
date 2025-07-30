@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link rel="stylesheet" href="../css/index.css" />
+    
 
     <title>SenseCare</title>
 
@@ -17,6 +18,7 @@
       href="https://fonts.googleapis.com/css2?family=Merriweather+Sans&display=swap"
       rel="stylesheet"
     />
+    <script src="/Highcharts-12.3.0/code/highcharts.js"></script>
   </head>
 
   <body>
@@ -38,10 +40,7 @@
         const userId = localStorage.getItem("userId");
         const userRole = localStorage.getItem("userRole");
 
-        console.log("Session Check → userId:", userId, "userRole:", userRole);
-
         if (!userId || userRole !== "MED") {
-          // Redirige al login si no hay sesión válida
           location.href = "/screens/login/login.html";
         }
       });

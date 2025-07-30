@@ -128,6 +128,9 @@
             placeholder="Enter phone number"
             required
             autocomplete="off"
+            maxlength="10"
+            max="9999999999"
+            oninput="this.value=this.value.slice(0,10)"
           />
         </div>
         <div class="form-group">

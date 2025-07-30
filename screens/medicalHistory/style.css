@@ -22,8 +22,8 @@ body {
 }
 
 .header {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   padding-left: 25px;
   padding-right: 30px;
@@ -34,11 +34,12 @@ body {
 }
 
 .header-center {
-  justify-self: center;
+  justify-self: end;
+  padding-right: 50px;
 }
 
 .header-right {
-  justify-self: end;
+  justify-self: center;
 }
 
 .page-title {
@@ -684,4 +685,45 @@ body {
 
 .doctor {
   color: var(--primary-color);
+}
+
+/* === ESTILO PARA RESULTADOS DE BÚSQUEDA === */
+#search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 8px;
+  padding: 0;
+}
+
+#search-results li {
+  list-style: none;
+  padding: 12px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  font-size: 1rem;
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+#search-results li:hover {
+  background-color: #f5f7fa;
+}
+
+
+/**/
+.patient-select {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
 }

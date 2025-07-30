@@ -1,7 +1,8 @@
 import { config } from "../../../js/config.js";
 
 export async function getDashboardData() {
-  const endpoint = `${config.api.apiURL}/patient/dashboard/data`;
+  const idDoctor = localStorage.getItem("userId")
+  const endpoint = `${config.api.apiURL}/patient/dashboard/data/${idDoctor}`;
 
   try {
     const response = await fetch(endpoint);

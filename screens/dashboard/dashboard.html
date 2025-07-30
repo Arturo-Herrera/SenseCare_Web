@@ -1,51 +1,39 @@
-  <link rel="stylesheet" href="/screens/dashboard/style.css" />
+<link rel="stylesheet" href="/screens/dashboard/style.css" />
 
-  <div class="dashboard-content">
-    <h1 class="title">Dashboard</h1>
+<div class="dashboard-content">
+  <h1 class="title">Dashboard</h1>
 
-    <div class="stats-container">
-      <div class="stat-card">
-        <h2 id="active-patients">24</h2>
-        <p>Active patients</p>
+  <div class="stats-container">
+    <div class="stat-card">
+      <h2 id="active-patients"></h2>
+      <p>Active patients</p>
+    </div>
+    <div class="stat-card">
+      <h2 id="avg-oxygen-level"></h2>
+      <p>Avg. oxygen level</p>
+    </div>
+    <div class="stat-card">
+      <h2 id="avg-alerts-per-day"></h2>
+      <p>Avg. alerts per day</p>
+    </div>
+  </div>
+
+  <div class="charts-container">
+    <div class="vital-signs-chart">
+      <div class="chart-header">
+        <h2>Pulse (BPM)</h2>
       </div>
-      <div class="stat-card">
-        <h2 id="avg-oxygen-level" >98%</h2>
-        <p>Avg. oxygen level</p>
-      </div>
-      <div class="stat-card">
-        <h2 id="avg-alerts-per-day" >5</h2>
-        <p>Avg. alerts per day</p>
-      </div>
+      <div id="chart-bpm"></div>
     </div>
 
     <div class="vital-signs-chart">
       <div class="chart-header">
-        <h2>Vital Signs Overview</h2>
-        <div class="legend">
-          <div class="legend-item">
-            <div class="legend-color bpm"></div>
-            <span>BPM</span>
-          </div>
-          <div class="legend-item">
-            <div class="legend-color temp"></div>
-            <span>Temp</span>
-          </div>
-        </div>
+        <h2>Temperature (°C)</h2>
       </div>
-      
-      <div class="chart-placeholder">
-        <div class="days-container">
-          <span>Mon</span>
-          <span>Tue</span>
-          <span>Wed</span>
-          <span>Thu</span>
-          <span>Fri</span>
-          <span>Sat</span>
-          <span>Sun</span>
-        </div>
-      </div>
+      <div id="chart-temp"></div>
     </div>
   </div>
+  <div id="toast-container"></div>
+</div>
 
-  <!-- <script type="module" src="/screens/dashboard/code.js"></script> -->
-
+<!-- <script type="module" src="/screens/dashboard/code.js"></script> -->

@@ -97,12 +97,12 @@ getUserData()
 
     const activeOption = document.createElement("option");
     activeOption.value = "activo";
-    activeOption.textContent = "Activo";
+    activeOption.textContent = "Active";
     select.appendChild(activeOption);
 
     const inactiveOption = document.createElement("option");
     inactiveOption.value = "inactivo";
-    inactiveOption.textContent = "Inactivo";
+    inactiveOption.textContent = "Inactive";
     select.appendChild(inactiveOption);
 
     const tiposUnicos = [];

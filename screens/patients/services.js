@@ -21,7 +21,8 @@ export async function getPatientData(idPatient) {
 }
 
 export async function selectPatient() {
-  const endpoint = `${config.api.apiURL}/Patient/getSelect`;
+  const idDoctor = localStorage.getItem("userId")
+  const endpoint = `${config.api.apiURL}/Patient/getSelect/${idDoctor}`;
   
   try {
     const response = await fetch(endpoint);

@@ -83,9 +83,25 @@ function addLogoutButton() {
   sideMenu.appendChild(logoutBtn);
 }
 
+function checkAuthentication() {
+  const userId = localStorage.getItem("userId");
+  const userRole = localStorage.getItem("userRole");
+
+  if (!userId || userRole !== "MED") {
+    location.href = "/screens/login/login.html";
+    return false;
+  }
+  return true;
+}
+
+if (!checkAuthentication()) {
+  throw new Error("Authentication required");
+}
+
 async function loadComponent(component) {
   const htmlUrl = `./${screens}/${component}/${component}.html`;
   const moduleUrl = `${screens}/${component}/code.js?t=${Date.now()}`;
+  checkAuthentication();
 
   const html = await fetch(htmlUrl).then((r) => r.text());
   document.getElementById("content").innerHTML = html;
