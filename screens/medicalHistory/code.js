@@ -269,13 +269,35 @@ selectPatient()
       }
     });
 
-    // Input: mostrar coincidencias
     if (searchInput && searchResults) {
+      // Mostrar TODOS los pacientes al hacer focus o click en el input
+      function showAllPatientsList() {
+        searchResults.innerHTML = "";
+        allPatients.forEach((patient) => {
+          const li = document.createElement("li");
+          li.textContent = patient.fullName;
+          li.addEventListener("click", () => {
+            searchInput.value = patient.fullName;
+            searchResults.innerHTML = "";
+            renderHistoryData(patient.id);
+          });
+          searchResults.appendChild(li);
+        });
+      }
+
+      searchInput.addEventListener("focus", showAllPatientsList);
+      searchInput.addEventListener("click", showAllPatientsList);
+
+      // Filtrar lista mientras escribe
       searchInput.addEventListener("input", () => {
         const query = searchInput.value.toLowerCase();
         searchResults.innerHTML = "";
 
-        if (query.trim() === "") return;
+        if (query.trim() === "") {
+          // Si está vacío, mostrar todos
+          showAllPatientsList();
+          return;
+        }
 
         const filtered = allPatients.filter((p) =>
           p.fullName.toLowerCase().includes(query)
@@ -293,7 +315,7 @@ selectPatient()
         });
       });
 
-      // Al presionar Enter: seleccionar automáticamente el primer match
+      // Enter para seleccionar el primer match
       searchInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
           e.preventDefault();
@@ -312,21 +334,28 @@ selectPatient()
         }
       });
     }
+
+    if (allPatients.length > 0) {
+      renderHistoryData(allPatients[0].id);
+
+      if (select) select.value = allPatients[0].id;
+      if (searchInput) searchInput.value = allPatients[0].fullName;
+    }
   })
   .catch((error) => {
     console.error("Error fetching patients:", error);
     showToast("Error loading patients", "error");
   });
 
-
-// Event listeners para mostrar/ocultar formulario
 const addReportBtn = document.querySelector(".add-report-btn");
 if (addReportBtn) {
   addReportBtn.addEventListener("click", () => {
-    const createReportContainer = document.getElementById("create-report-container");
+    const createReportContainer = document.getElementById(
+      "create-report-container"
+    );
     const alertsSection = document.querySelector(".alerts-section");
     const reportsSection = document.querySelector(".reports-section");
-    
+
     if (createReportContainer) createReportContainer.style.display = "flex";
     if (alertsSection) alertsSection.style.display = "none";
     if (reportsSection) reportsSection.style.display = "none";
@@ -336,37 +365,43 @@ if (addReportBtn) {
 const backButton = document.getElementById("back-button");
 if (backButton) {
   backButton.addEventListener("click", () => {
-    const createReportContainer = document.getElementById("create-report-container");
+    const createReportContainer = document.getElementById(
+      "create-report-container"
+    );
     const alertsSection = document.querySelector(".alerts-section");
     const reportsSection = document.querySelector(".reports-section");
-    
+
     if (createReportContainer) createReportContainer.style.display = "none";
     if (alertsSection) alertsSection.style.display = "block";
     if (reportsSection) reportsSection.style.display = "block";
   });
 }
 
-// CORREGIDO: Manejo del formulario de reporte
 const reportForm = document.getElementById("report-form");
 if (reportForm) {
   reportForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Obtener valores del formulario
     const reason = document.getElementById("reason")?.value?.trim() || "";
     const diagnosis = document.getElementById("diagnosis")?.value?.trim() || "";
     const medicine = document.getElementById("medicine")?.value?.trim() || "";
     const dosis = document.getElementById("dosis")?.value?.trim() || "";
     const duration = document.getElementById("duration")?.value?.trim() || "";
-    const observations = document.getElementById("observations")?.value?.trim() || "";
+    const observations =
+      document.getElementById("observations")?.value?.trim() || "";
 
-    // Validar campos requeridos
-    if (!reason || !diagnosis || !medicine || !dosis || !duration || !observations) {
+    if (
+      !reason ||
+      !diagnosis ||
+      !medicine ||
+      !dosis ||
+      !duration ||
+      !observations
+    ) {
       showToast("Please fill in all fields.", "error");
       return;
     }
 
-    // Obtener ID del paciente seleccionado
     const patientSelect = document.getElementById("patient-select");
     if (!patientSelect || !patientSelect.value) {
       showToast("Please select a patient.", "error");
@@ -388,7 +423,6 @@ if (reportForm) {
     const idDoctor = parseInt(userIdFromStorage);
 
     try {
-      // Mostrar loading state (opcional)
       const submitButton = reportForm.querySelector('button[type="submit"]');
       if (submitButton) {
         submitButton.disabled = true;
@@ -403,24 +437,25 @@ if (reportForm) {
         duration,
         observations,
         idDoctor,
-        idPatient
+        idPatient,
       });
 
       showToast("Report created successfully!", "success");
       reportForm.reset();
 
       // Volver a la vista principal
-      const createReportContainer = document.getElementById("create-report-container");
+      const createReportContainer = document.getElementById(
+        "create-report-container"
+      );
       const alertsSection = document.querySelector(".alerts-section");
       const reportsSection = document.querySelector(".reports-section");
-      
+
       if (createReportContainer) createReportContainer.style.display = "none";
       if (alertsSection) alertsSection.style.display = "block";
       if (reportsSection) reportsSection.style.display = "block";
 
       // CORREGIDO: Refrescar datos después de crear el reporte
       renderHistoryData(idPatient);
-
     } catch (error) {
       console.error("Error submitting report:", error);
       showToast(`Failed to send report: ${error.message}`, "error");

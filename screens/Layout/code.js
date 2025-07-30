@@ -134,7 +134,7 @@ async function renderAllPatients() {
         color = "#fbbc04";
         parpadea = true;
       } else {
-        color = "#9e9e9e";
+        color = "#90EE90";
         parpadea = false;
       }
 

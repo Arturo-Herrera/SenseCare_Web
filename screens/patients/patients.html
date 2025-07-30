@@ -8,13 +8,17 @@
     <div class="header-center">
       <div class="search-container">
         <i class="fas fa-search"></i>
-        <input type="text" class="search-input" id="search-patient" placeholder="Search" autocomplete="off"/>
+        <input
+          type="text"
+          class="search-input"
+          id="search-patient"
+          placeholder="Search"
+          autocomplete="off"
+        />
         <ul id="search-results" class="search-results"></ul>
       </div>
     </div>
-    <div class="header-right">
-      
-    </div>
+    <div class="header-right"></div>
   </div>
 
   <div class="content-container">
@@ -99,15 +103,35 @@
           </div>
         </div>
 
-        <div id="chart-data"></div><!--Grafica-->
-
+        <div id="chart-data"></div>
+        <!--Grafica-->
       </div>
 
       <div class="alerts-container">
         <h2 class="alerts-title">Last 6 alerts</h2>
-        <div class="cards-alerts-container">
-        </div>
+        <div class="cards-alerts-container"></div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para la gráfica grande -->
+<div id="chart-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn">&times;</span>
+    <h2
+      style="
+        color: var(--primary-color);
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 30px;
+        padding-left: 20px;
+      "
+    >
+      Detailed Vital Signs
+    </h2>
+    <div id="modal-chart-container">
+      <div id="big-chart" style="width: 100%; height: 500px"></div>
     </div>
   </div>
 </div>
