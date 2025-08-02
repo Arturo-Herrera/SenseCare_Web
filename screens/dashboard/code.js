@@ -62,10 +62,30 @@ function updateDashboard(data) {
       categories: categories,
       lineColor: "#ccc",
       tickColor: "#ccc",
+      labels: {
+        style: {
+          fontSize: "8px",
+          color: "#666",
+        },
+      },
     },
     yAxis: {
       title: { text: "BPM" },
       gridLineColor: "#eee",
+      min: 50,
+      max: 120,
+      tickInterval: 10,
+      plotBands: [
+        {
+          from: 60,
+          to: 100,
+          color: "rgba(144, 238, 144, 0.2)", // Verde suave
+          label: {
+            text: "",
+            style: { color: "#606060", fontSize: "10px" },
+          },
+        },
+      ],
     },
     plotOptions: {
       spline: {
@@ -106,10 +126,30 @@ function updateDashboard(data) {
       categories: categories,
       lineColor: "#ccc",
       tickColor: "#ccc",
+      labels: {
+        style: {
+          fontSize: "8px",
+          color: "#666",
+        },
+      },
     },
     yAxis: {
       title: { text: "°C" },
       gridLineColor: "#eee",
+      min: 35,
+      max: 40,
+      tickInterval: 0.3,
+      plotBands: [
+        {
+          from: 36.1,
+          to: 37.2,
+          color: "rgba(255, 182, 193, 0.2)", // Rosa suave
+          label: {
+            text: "",
+            style: { color: "#606060", fontSize: "10px" },
+          },
+        },
+      ],
     },
     plotOptions: {
       spline: {

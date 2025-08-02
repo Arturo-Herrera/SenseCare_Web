@@ -12,8 +12,8 @@ function renderCardsFromArray(users) {
     card.className = "card";
     card.innerHTML = `
       <div class="card-summary">
-        <div class="name">${user.nombre || "N/A"} ${user.apellidoPa} ${
-      user.apellidoMa
+        <div class="name">${user.nombre || "N/A"} ${user.apellidoPa || ""} ${
+      user.apellidoMa || ""
     }</div>
         <div class="role">${user.descriptionUserType || "N/A"}</div>
         <div class="status">${user.activo ? "Active" : "Inactive"}</div>
@@ -380,8 +380,6 @@ document
     const nombre = document.getElementById("name").value.trim();
     const apellidoPa = document.getElementById("sur-name").value.trim();
     const apellidoMa = document.getElementById("last-name").value.trim();
-    const colonia = document.getElementById("colonia").value.trim();
-    const calle = document.getElementById("street").value.trim();
 
     if (!nameRegex.test(nombre)) {
       showToast("Name can only contain letters.", "error");
@@ -594,13 +592,13 @@ document
     const email = document
       .querySelector("#update-user-container #email")
       .value.trim();
-    const contrasena = document.querySelector(
-      "#update-user-container #password"
-    ).value;
-    const roleSelect = document.querySelector("#update-user-container #role");
-    const genderSelect = document.querySelector(
-      "#update-user-container #gender"
-    );
+    // const contrasena = document.querySelector(
+    //   "#update-user-container #password"
+    // ).value;
+    // const roleSelect = document.querySelector("#update-user-container #role");
+    // const genderSelect = document.querySelector(
+    //   "#update-user-container #gender"
+    // );
     const dateBirth = document.querySelector(
       "#update-user-container #date-birth"
     ).value;
@@ -632,26 +630,26 @@ document
       return showToast("Please enter a valid email.", "error");
     }
 
-    if (contrasena && contrasena.length < 6) {
-      return showToast("Password must be at least 6 characters.", "error");
-    }
+    // if (contrasena && contrasena.length < 6) {
+    //   return showToast("Password must be at least 6 characters.", "error");
+    // }
 
-    const roleValue = roleSelect.value;
-    let roleId = "";
-    switch (roleValue.toLowerCase()) {
-      case "patient":
-        roleId = "PAC";
-        break;
-      case "doctor":
-        roleId = "MED";
-        break;
-      case "caregiver":
-        roleId = "CUID";
-        break;
-      default:
-        showToast("Invalid role selected.", "error");
-        return;
-    }
+    // const roleValue = roleSelect.value;
+    // let roleId = "";
+    // switch (roleValue.toLowerCase()) {
+    //   case "patient":
+    //     roleId = "PAC";
+    //     break;
+    //   case "doctor":
+    //     roleId = "MED";
+    //     break;
+    //   case "caregiver":
+    //     roleId = "CUID";
+    //     break;
+    //   default:
+    //     showToast("Invalid role selected.", "error");
+    //     return;
+    // }
 
     const genderValue = genderSelect.value;
     let gender = "";
@@ -683,19 +681,21 @@ document
         .value.trim(),
       telefono,
       email,
+      // contrasena: contrasena,
       activo: true,
-      idTipoUsuario: {
-        _id: roleId,
-        descripcion: roleValue,
-      },
+      // idTipoUsuario: {
+      //   _id: roleId,
+      //   descripcion: roleValue,
+      // },
     };
 
-    if (contrasena) {
-      userData.contrasena = contrasena;
-    }
+    // if (contrasena) {
+    //   userData.contrasena = contrasena;
+    // }
 
     try {
-      const url = `${config.api.apiURL}/Users/${userId}`;
+      console.log(userData);
+      const url = `${config.api.apiURL}/Users/updateUser`;
       const response = await fetch(url, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },

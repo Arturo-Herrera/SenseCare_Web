@@ -1,5 +1,5 @@
 import { getPatientData, selectPatient } from "./services.js";
-
+import { config } from "../../../js/config.js";
 // Variable global para almacenar todos los pacientes
 let allPatients = [];
 let currentPatientData = {};
@@ -215,9 +215,38 @@ document.addEventListener("DOMContentLoaded", () => {
   initializePatientSearch();
 });
 
+// Nueva función para cargar dispositivos
+async function loadAvailableDevices() {
+  try {
+    const response = await fetch(`${config.api.apiURL}/Users/caregivers`);
+    if (!response.ok)
+      throw new Error("Failed to fetch caregivers and devices.");
+    const result = await response.json();
+    console.log(result);
+
+    const devices = result.data.availableDevices;
+    const deviceSelect = document.getElementById("device-select");
+
+    // Limpiar opciones anteriores excepto el placeholder
+    deviceSelect.innerHTML = `<option value="" disabled selected>Select a device</option>`;
+
+    devices.forEach((d) => {
+      const option = document.createElement("option");
+      option.textContent = `Device #${d.id}`;
+      deviceSelect.appendChild(option);
+    });
+  } catch (err) {
+    console.error("Error cargando dispositivos:", err);
+  }
+}
+
 // También inicializar si el DOM ya está cargado
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initializePatientSearch);
+  document.addEventListener(
+    "DOMContentLoaded",
+    initializePatientSearch,
+    loadAvailableDevices
+  );
 } else {
   initializePatientSearch();
 }
@@ -287,6 +316,12 @@ function renderInfoPatient(data) {
   if (lectureElement) {
     lectureElement.style.display = "none";
   }
+
+  const patientModal = document.getElementById("patient-info");
+
+  patientModal.addEventListener("click", () => {
+    openInfoModal(data);
+  });
 }
 
 function renderLectures(lectures) {
@@ -391,28 +426,70 @@ function updateDashboard(data) {
 }
 
 function renderVitalChart(containerId, title, data, color, categories) {
+  let plotBand = null;
+  let yAxisConfig = {
+    title: { text: "" },
+    gridLineColor: "#f5f5f5",
+  };
+
+  if (title === "BPM") {
+    plotBand = {
+      from: 60,
+      to: 100,
+      color: "rgba(144, 238, 144, 0.2)",
+      label: {
+        text: "",
+        style: { color: "#606060", fontSize: "10px" },
+      },
+    };
+    yAxisConfig.min = 50;
+    yAxisConfig.max = 100;
+    yAxisConfig.tickInterval = 10;
+  } else if (title === "Temperature (°C)") {
+    plotBand = {
+      from: 36.1,
+      to: 37.2,
+      color: "rgba(255, 182, 193, 0.2)",
+      label: {
+        text: "",
+        style: { color: "#606060", fontSize: "10px" },
+      },
+    };
+    yAxisConfig.min = 35;
+    yAxisConfig.max = 39;
+    yAxisConfig.tickInterval = 1;
+  } else if (title === "Oxygen (%)") {
+    plotBand = {
+      from: 95,
+      to: 100,
+      color: "rgba(158, 179, 253, 0.2)",
+      label: {
+        text: "",
+        style: { color: "#606060", fontSize: "10px" },
+      },
+    };
+    yAxisConfig.min = 90;
+    yAxisConfig.max = 100;
+    yAxisConfig.tickInterval = 2;
+  }
+
+  if (plotBand) {
+    yAxisConfig.plotBands = [plotBand];
+  }
+
   Highcharts.chart(containerId, {
-    chart: {
-      type: "spline",
-      backgroundColor: "transparent",
-    },
+    chart: { type: "spline", backgroundColor: "transparent" },
     title: { text: title, style: { fontSize: "1.2rem", color: "#44749D" } },
     xAxis: {
       categories: categories,
       lineColor: "#ccc",
       tickColor: "#ccc",
       labels: {
-        style: {
-          fontSize: "10px",
-          color: "#666",
-        },
+        style: { fontSize: "10px", color: "#666" },
         rotation: -45,
       },
     },
-    yAxis: {
-      title: { text: "" },
-      gridLineColor: "#f5f5f5",
-    },
+    yAxis: yAxisConfig,
     legend: { enabled: false },
     plotOptions: {
       spline: {
@@ -431,6 +508,114 @@ function renderVitalChart(containerId, title, data, color, categories) {
         data: data,
         color: color,
         marker: { fillColor: color },
+      },
+    ],
+  });
+}
+
+function renderBigChart(chartType) {
+  if (!currentPatientData) {
+    showToast("No data for chart");
+    return;
+  }
+
+  const vitalsSorted = currentPatientData.averageVitals
+    .slice()
+    .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  const categories = vitalsSorted.map((v) => v.date.split("T")[0]);
+  let data = [];
+  let title = "";
+  let color = "";
+  let plotBand = null;
+  let yAxisConfig = { title: { text: "" } };
+
+  if (chartType === "bpm") {
+    data = vitalsSorted.map((v) => v.averagePulse);
+    title = "Pulse (BPM)";
+    color = "#90ee90";
+    plotBand = {
+      from: 60,
+      to: 100,
+      color: "rgba(144, 238, 144, 0.2)",
+      label: {
+        text: "",
+        style: { color: "#606060", fontSize: "12px" },
+      },
+    };
+    yAxisConfig.min = 50;
+    yAxisConfig.max = 130;
+    yAxisConfig.tickInterval = 10;
+  } else if (chartType === "temp") {
+    data = vitalsSorted.map((v) => v.averageTemperature);
+    title = "Temperature (°C)";
+    color = "#ffb6c1";
+    plotBand = {
+      from: 36.1,
+      to: 37.2,
+      color: "rgba(255, 182, 193, 0.2)",
+      label: {
+        text: "",
+        style: { color: "#606060", fontSize: "12px" },
+      },
+    };
+    yAxisConfig.min = 35;
+    yAxisConfig.max = 40;
+    yAxisConfig.tickInterval = 0.3;
+  } else if (chartType === "oxygen") {
+    data = vitalsSorted.map((v) => v.averageOxygen);
+    title = "Oxygen (%)";
+    color = "#9EB3FD";
+    plotBand = {
+      from: 95,
+      to: 100,
+      color: "rgba(158, 179, 253, 0.2)",
+      label: {
+        text: "",
+        style: { color: "#606060", fontSize: "12px" },
+      },
+    };
+    yAxisConfig.min = 88;
+    yAxisConfig.max = 100;
+    yAxisConfig.tickInterval = 2;
+  }
+
+  if (plotBand) {
+    yAxisConfig.plotBands = [plotBand];
+  }
+
+  Highcharts.chart("big-chart", {
+    chart: { type: "spline", backgroundColor: "#fff", height: "500px" },
+    title: { text: title, style: { fontSize: "24px", color: "#333" } },
+    xAxis: {
+      categories,
+      labels: { style: { fontSize: "12px", color: "#666" } },
+    },
+    yAxis: yAxisConfig,
+    plotOptions: {
+      spline: {
+        lineWidth: 4,
+        marker: { enabled: true, radius: 6 },
+        dataLabels: {
+          enabled: true,
+          style: {
+            fontSize: "14px",
+            fontWeight: "bold",
+            color: "#000",
+            textOutline: "none",
+          },
+          formatter: function () {
+            return this.y;
+          },
+        },
+      },
+    },
+    series: [
+      {
+        name: title,
+        data: data,
+        color: color,
+        marker: { symbol: "circle" },
       },
     ],
   });
@@ -464,85 +649,194 @@ function openChartModal(chartType) {
   renderBigChart(chartType);
 }
 
-// Cerrar modal
 document.querySelector(".close-btn").onclick = closeModal;
 window.onclick = function (event) {
   const modal = document.getElementById("chart-modal");
   if (event.target === modal) closeModal();
 };
+
 function closeModal() {
   document.getElementById("chart-modal").style.display = "none";
   document.getElementById("modal-chart-container").innerHTML =
     '<div id="big-chart" style="width: 100%; height: 500px"></div>';
 }
 
-function renderBigChart(chartType) {
-  if (!currentPatientData) {
-    showToast("No data for chart");
-    return;
-  }
+const addButton = document.querySelector(".add-button");
+const contentContainer = document.getElementById("content-container");
+const contentContainer2 = document.getElementById("content-container-2");
+const backButton = document.getElementById("back-button");
 
-  const vitalsSorted = currentPatientData.averageVitals
-    .slice()
-    .sort((a, b) => new Date(a.date) - new Date(b.date));
+addButton.addEventListener("click", () => {
+  contentContainer.style.display = "none";
+  contentContainer2.style.display = "flex";
+  loadAvailableDevices();
+});
 
-  const categories = vitalsSorted.map((v) => v.date.split("T")[0]);
-  let data = [];
-  let title = "";
-  let color = "";
+backButton.addEventListener("click", () => {
+  contentContainer2.style.display = "none";
+  contentContainer.style.display = "flex";
+});
 
-  if (chartType === "bpm") {
-    data = vitalsSorted.map((v) => v.averagePulse);
-    title = "Pulse (BPM)";
-    color = "#90ee90";
-  } else if (chartType === "temp") {
-    data = vitalsSorted.map((v) => v.averageTemperature);
-    title = "Temperature (°C)";
-    color = "#ffb6c1";
-  } else if (chartType === "oxygen") {
-    data = vitalsSorted.map((v) => v.averageOxygen);
-    title = "Oxygen (%)";
-    color = "#9EB3FD";
-  }
+document
+  .getElementById("togglePassword")
+  .addEventListener("click", function () {
+    const passwordInput = document.getElementById("caregiver-password");
+    const type =
+      passwordInput.getAttribute("type") === "password" ? "text" : "password";
+    passwordInput.setAttribute("type", type);
 
-  Highcharts.chart("big-chart", {
-    chart: { type: "spline", backgroundColor: "#fff", height: "500px" },
-    title: { text: title, style: { fontSize: "24px", color: "#333" } },
-    xAxis: {
-      categories,
-      labels: {
-        style: {
-          fontSize: "12px",
-          color: "#666",
-        },
-      },
-    },
-    yAxis: { title: { text: "" } },
-    plotOptions: {
-      spline: {
-        lineWidth: 4,
-        marker: { enabled: true, radius: 6 },
-        dataLabels: {
-          enabled: true,
-          style: {
-            fontSize: "14px",
-            fontWeight: "bold",
-            color: "#000",
-            textOutline: "none",
-          },
-          formatter: function () {
-            return this.y;
-          },
-        },
-      },
-    },
-    series: [
-      {
-        name: title,
-        data: data,
-        color: color,
-        marker: { symbol: "circle" },
-      },
-    ],
+    this.classList.toggle("fa-eye");
+    this.classList.toggle("fa-eye-slash");
   });
+
+const fileInput = document.getElementById("fileUpload");
+const fileName = document.getElementById("fileName");
+
+fileInput.addEventListener("change", function () {
+  if (this.files && this.files.length > 0) {
+    fileName.textContent = this.files[0].name;
+  } else {
+    fileName.textContent = "Ningún archivo seleccionado";
+  }
+});
+
+document
+  .getElementById("user-form")
+  .addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const cuidadorData = {
+      nombre: document.getElementById("caregiver-name").value,
+      apellidoPa: document.getElementById("caregiver-sur-name").value,
+      apellidoMa: document.getElementById("caregiver-last-name").value,
+      fecNac: document.getElementById("caregiver-date-birth").value,
+      sexo: document.getElementById("caregiver-gender").value,
+      telefono: document.getElementById("caregiver-phone-number").value,
+      email: document.getElementById("caregiver-email").value,
+      contrasena: document.getElementById("caregiver-password").value,
+      activo: true,
+      idTipoUsuario: {
+        _id: "CUID",
+        descripcion: "Caregiver",
+      },
+    };
+
+    try {
+      const cuidadorResponse = await fetch(`${config.api.apiURL}/Users`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(cuidadorData),
+      });
+
+      if (!cuidadorResponse.ok)
+        throw new Error("Error creating caregiver user");
+      showToast("Error creating caregiver user", "error");
+
+      const cuidadorResult = await cuidadorResponse.json();
+      const cuidadorId = cuidadorResult.Id;
+
+      const pacienteData = {
+        nombre: document.getElementById("name").value,
+        apellidoPa: document.getElementById("sur-name").value,
+        apellidoMa: document.getElementById("last-name").value,
+        fecNac: document.getElementById("date-birth").value,
+        sexo: document.getElementById("gender").value,
+        dirColonia: document.getElementById("colonia").value,
+        dirCalle: document.getElementById("street").value,
+        dirNum: document.getElementById("number").value,
+        telefono: document.getElementById("phone-number").value,
+        email: "",
+        contrasena: "",
+        idCuidador: cuidadorId,
+        idMedico: 0,
+        idDispositivo: parseInt(document.getElementById("device-select").value),
+      };
+
+      const pacienteResponse = await fetch(
+        `${config.api.apiURL}/Patient/register`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(pacienteData),
+        }
+      );
+
+      if (!pacienteResponse.ok) {
+        showToast("Error creating patient", "error");
+      }
+
+      showToast("Patient and caregiver created succesfully", "Success");
+    } catch (error) {
+      console.error(error);
+      showToast(error, "error");
+    }
+  });
+
+function openInfoModal(patient) {
+  const modal = document.getElementById("report-modal");
+  const modalContent = modal.querySelector(".report-modal-content");
+
+  modal.classList.remove("modal-initial");
+  modalContent.classList.remove("modal-initial");
+
+  modal.querySelector(
+    ".section-title.full-name"
+  ).nextElementSibling.textContent = `${patient.nombre} ${patient.apellidoPa} ${patient.apellidoMa}`;
+  modal.querySelector(
+    ".section-title.age"
+  ).nextElementSibling.textContent = `${patient.fecNac}`;
+
+  modal.querySelector(".section-title.gender").nextElementSibling.textContent =
+    patient.sexo || "";
+  modal.querySelector(
+    ".section-title.address"
+  ).nextElementSibling.textContent = `${patient.dirColonia} ${patient.dirCalle} ${patient.dirNum}`;
+
+  modal.querySelector(".section-title.phone").nextElementSibling.textContent =
+    patient.telefono || "";
+
+  // Info cuidador
+
+  modal.querySelector(
+    ".section-title.caregiver-full-name"
+  ).nextElementSibling.textContent = `${patient.nombre} ${patient.apellidoPa} ${patient.apellidoMa}`;
+  modal.querySelector(
+    ".section-title.caregiver-age"
+  ).nextElementSibling.textContent = `${patient.fecNac}`;
+
+  modal.querySelector(
+    ".section-title.caregiver-gender"
+  ).nextElementSibling.textContent = patient.sexo || "";
+  modal.querySelector(
+    ".section-title.address"
+  ).nextElementSibling.textContent = `${patient.dirColonia} ${patient.dirCalle} ${patient.dirNum}`;
+
+  modal.querySelector(
+    ".section-title.caregiver-phone"
+  ).nextElementSibling.textContent = patient.telefono || "";
+
+  modal.querySelector(
+    ".section-title.caregiver-email"
+  ).nextElementSibling.textContent = patient.telefono || "";
+
+  // modal.querySelector(".doctor-container p").textContent =
+  //   report.nombreCompletoMedico || "";
+
+  modal.classList.add("active");
+
+  const closeBtn = modal.querySelector(".close-btn");
+
+  function closeModal() {
+    modal.classList.remove("active");
+    modal.classList.add("modal-initial");
+    modalContent.classList.add("modal-initial");
+  }
+
+  closeBtn.onclick = closeModal;
+
+  modal.onclick = (e) => {
+    if (e.target === modal) {
+      closeModal();
+    }
+  };
 }

@@ -460,12 +460,10 @@ if (reportForm) {
       showToast("Report created successfully!", "success");
       reportForm.reset();
 
-      // Cambiar de vista al historial después de enviar
       document.getElementById("create-report-container").style.display = "none";
       document.querySelector(".alerts-section").style.display = "block";
       document.querySelector(".reports-section").style.display = "block";
 
-      // Refrescar historial
       renderHistoryData(idPatient);
     } catch (error) {
       console.error("Error submitting report:", error);
