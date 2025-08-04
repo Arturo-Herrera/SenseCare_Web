@@ -485,7 +485,7 @@ document
       return;
     }
 
-    if (userData.contrasena.length < 6) {
+    if (userData.contrasena.length < 6 ) {
       showToast("Password must be at least 6 characters.", "error");
       return;
     }

@@ -356,7 +356,7 @@ function renderLectures(lectures) {
   const lectureCards = document.querySelectorAll(".lecture-card");
 
   // Limpiar todas las tarjetas primero
-  lectureCards.forEach(card => {
+  lectureCards.forEach((card) => {
     const stats = card.querySelectorAll(".stat p");
     if (stats[0]) stats[0].textContent = "0 BPM";
     if (stats[1]) stats[1].textContent = "0 °C";
@@ -729,9 +729,9 @@ document
   });
 
 const fileInput = document.getElementById("fileUpload");
-const imageUrlInput = document.createElement('input'); // Campo oculto para la URL
-imageUrlInput.type = 'hidden';
-imageUrlInput.id = 'imageUrl';
+const imageUrlInput = document.createElement("input"); // Campo oculto para la URL
+imageUrlInput.type = "hidden";
+imageUrlInput.id = "imageUrl";
 document.getElementById("user-form").appendChild(imageUrlInput);
 
 // Función para subir imagen a Cloudinary
@@ -740,13 +740,13 @@ async function uploadImageToCloudinary(file, signal) {
   const unsignedUploadPreset = "sensecare";
 
   const formData = new FormData();
-  formData.append('file', file);
-  formData.append('upload_preset', unsignedUploadPreset);
+  formData.append("file", file);
+  formData.append("upload_preset", unsignedUploadPreset);
 
   const response = await fetch(urlCloudinary, {
-    method: 'POST',
+    method: "POST",
     body: formData,
-    signal: signal
+    signal: signal,
   });
 
   if (!response.ok) throw new Error(await response.text());
@@ -761,40 +761,42 @@ let uploadAbortController = null;
 
 // Event listener para cuando se selecciona una imagen
 fileInput.addEventListener("change", async function () {
-  const label = document.querySelector('.custom-file-label');
-  
+  const label = document.querySelector(".custom-file-label");
+
   if (this.files && this.files.length > 0) {
     const fileName = this.files[0].name;
-    
+
     if (label) label.textContent = `Subiendo ${fileName}...`;
-    
+
     // Cancelar subida anterior si existe
     if (isUploading && uploadAbortController) {
       uploadAbortController.abort();
     }
-    
+
     try {
       isUploading = true;
       uploadAbortController = new AbortController();
-      
+
       // Subir la imagen a Cloudinary inmediatamente
-      const imageUrl = await uploadImageToCloudinary(this.files[0], uploadAbortController.signal);
-      
+      const imageUrl = await uploadImageToCloudinary(
+        this.files[0],
+        uploadAbortController.signal
+      );
+
       // Guardar la URL en el campo oculto
       imageUrlInput.value = imageUrl;
-      
+
       if (label) label.textContent = `${fileName} (Listo)`;
       showToast("Imagen subida correctamente", "success");
-      
+
       console.log("Imagen subida a Cloudinary:", imageUrl);
-      
     } catch (error) {
-      if (error.name !== 'AbortError') {
+      if (error.name !== "AbortError") {
         console.error("Error al subir imagen a Cloudinary:", error);
         if (label) label.textContent = "Error al subir, intenta nuevamente";
         showToast("Error al subir la imagen", "error");
-        fileInput.value = ''; // Limpiar el input
-        imageUrlInput.value = ''; // Limpiar la URL también
+        fileInput.value = ""; // Limpiar el input
+        imageUrlInput.value = ""; // Limpiar la URL también
       }
     } finally {
       isUploading = false;
@@ -803,107 +805,229 @@ fileInput.addEventListener("change", async function () {
   } else {
     // Si no hay archivo seleccionado
     if (label) label.textContent = "Subir Imagen";
-    imageUrlInput.value = '';
+    imageUrlInput.value = "";
   }
 });
 
-// Modificación del submit del formulario
-document.getElementById("user-form").addEventListener("submit", async function (e) {
-  e.preventDefault();
+const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  // Mostrar spinner en el botón de submit
-  const submitBtn = e.target.querySelector('button[type="submit"]');
-  const originalBtnText = submitBtn.innerHTML;
-  submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Procesando...';
-  submitBtn.disabled = true;
+// Campos de nombres/apellidos (paciente y cuidador)
+const nameFields = [
+  "name",
+  "sur-name",
+  "last-name",
+  "caregiver-name",
+  "caregiver-sur-name",
+  "caregiver-last-name",
+];
 
-  try {
-    // Verificar si aún se está subiendo una imagen
-    if (isUploading) {
-      showToast("Espera a que termine de subir la imagen", "warning");
-      return;
+// Validar nombres/apellidos en tiempo real (solo letras)
+nameFields.forEach((id) => {
+  const input = document.getElementById(id);
+
+  // Bloquear entrada de caracteres no válidos (números, símbolos)
+  input.addEventListener("keypress", function (e) {
+    const key = String.fromCharCode(e.which);
+    if (!/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]$/.test(key)) {
+      e.preventDefault();
     }
+  });
 
-    // Crear datos del cuidador
-    const cuidadorData = {
-      nombre: document.getElementById("caregiver-name").value,
-      apellidoPa: document.getElementById("caregiver-sur-name").value,
-      apellidoMa: document.getElementById("caregiver-last-name").value || "",
-      foto: "",
-      fecNac: document.getElementById("caregiver-date-birth").value,
-      sexo: document.getElementById("caregiver-gender").value,
-      dirColonia: "",
-      dirCalle: "",
-      dirNum: "",
-      telefono: document.getElementById("caregiver-phone-number").value,
-      email: document.getElementById("caregiver-email").value,
-      contrasena: document.getElementById("caregiver-password").value,
-      activo: true,
-      idTipoUsuario: {
-        _id: "CUID",
-        descripcion: "Caregiver",
-      },
-    };
+  // Limpiar caracteres no válidos al pegar texto (números, símbolos)
+  input.addEventListener("paste", function (e) {
+    e.preventDefault();
+    const text = (e.clipboardData || window.clipboardData).getData("text");
+    this.value = text.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, "");
+  });
 
-    // Crear cuidador
-    const cuidadorResponse = await fetch(`${config.api.apiURL}/Users`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(cuidadorData),
-    });
-
-    if (!cuidadorResponse.ok) throw new Error("Error creating caregiver user");
-
-    const cuidadorResult = await cuidadorResponse.json();
-    const cuidadorId = cuidadorResult.data.id;
-    const medicoId = localStorage.getItem("userId");
-
-    // Crear datos del paciente con la URL de Cloudinary
-    const pacienteData = {
-      nombre: document.getElementById("patient-name").value,
-      apellidoPa: document.getElementById("sur-name").value,
-      apellidoMa: document.getElementById("last-name").value || "",
-      foto: imageUrlInput.value || "",
-      fecNac: document.getElementById("date-birth").value,
-      sexo: document.getElementById("patient-gender").value,
-      dirColonia: document.getElementById("colonia").value,
-      dirCalle: document.getElementById("street").value,
-      dirNum: document.getElementById("number").value,
-      telefono: document.getElementById("phone-number").value,
-      idCuidador: parseInt(cuidadorId),
-      idMedico: parseInt(medicoId),
-      idDispositivo: parseInt(document.getElementById("device-select").value)
-    };
-
-    console.log("Datos del paciente:", pacienteData);
-
-    // Crear paciente
-    const pacienteResponse = await fetch(`${config.api.apiURL}/Patient/register`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(pacienteData)
-    });
-
-    if (!pacienteResponse.ok) {
-      const errorData = await pacienteResponse.json();
-      throw new Error(errorData.message || "Error creating patient");
-    }
-
-    showToast("Paciente y cuidador creados exitosamente", "success");
-    
-    // Redirigir después de 2 segundos
-    setTimeout(() => {
-      window.location.href = '/patients';
-    }, 2000);
-    
-  } catch (error) {
-    console.error(error);
-    showToast(error.message, "error");
-  } finally {
-    submitBtn.innerHTML = originalBtnText;
-    submitBtn.disabled = false;
-  }
+  // Asegurarse que al escribir no se queden caracteres no válidos
+  input.addEventListener("input", function () {
+    this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, "");
+  });
 });
+
+// Validar Colonia y Calle (letras, números y espacios)
+["colonia", "street"].forEach((id) => {
+  document.getElementById(id).addEventListener("input", function () {
+    this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ0-9\s]/g, "");
+  });
+});
+
+// Validar Teléfonos (solo números, máximo 10 dígitos)
+["phone-number", "caregiver-phone-number"].forEach((id) => {
+  const input = document.getElementById(id);
+
+  input.addEventListener("input", function () {
+    this.value = this.value.replace(/\D/g, "").substring(0, 10);
+  });
+});
+
+// Submit del formulario
+document
+  .getElementById("user-form")
+  .addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.innerHTML;
+    submitBtn.innerHTML =
+      '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Procesando...';
+    submitBtn.disabled = true;
+
+    try {
+      if (isUploading) {
+        showToast("Espera a que termine de subir la imagen", "warning");
+        return;
+      }
+
+      // Datos Cuidador
+      const cuidadorData = {
+        nombre: document.getElementById("caregiver-name").value.trim(),
+        apellidoPa: document.getElementById("caregiver-sur-name").value.trim(),
+        apellidoMa:
+          document.getElementById("caregiver-last-name").value.trim() || "",
+        foto: "",
+        fecNac: document.getElementById("caregiver-date-birth").value,
+        sexo: document.getElementById("caregiver-gender").value,
+        dirColonia: "",
+        dirCalle: "",
+        dirNum: "",
+        telefono: document
+          .getElementById("caregiver-phone-number")
+          .value.trim(),
+        email: document.getElementById("caregiver-email").value.trim(),
+        contrasena: document.getElementById("caregiver-password").value.trim(),
+        activo: true,
+        idTipoUsuario: {
+          _id: "CUID",
+          descripcion: "Caregiver",
+        },
+      };
+
+      // Validaciones cuidador
+      if (!nameRegex.test(cuidadorData.nombre)) {
+        showToast("Nombre del cuidador solo puede contener letras.", "error");
+        return;
+      }
+      if (!nameRegex.test(cuidadorData.apellidoPa)) {
+        showToast(
+          "Apellido Paterno del cuidador solo puede contener letras.",
+          "error"
+        );
+        return;
+      }
+      if (cuidadorData.apellidoMa && !nameRegex.test(cuidadorData.apellidoMa)) {
+        showToast(
+          "Apellido Materno del cuidador solo puede contener letras.",
+          "error"
+        );
+        return;
+      }
+      if (!emailRegex.test(cuidadorData.email)) {
+        showToast("Correo electrónico inválido.", "error");
+        return;
+      }
+      if (cuidadorData.contrasena.length < 6) {
+        showToast("La contraseña debe tener al menos 6 caracteres.", "error");
+        return;
+      }
+      if (cuidadorData.telefono.length !== 10) {
+        showToast(
+          "El teléfono del cuidador debe tener exactamente 10 dígitos.",
+          "error"
+        );
+        return;
+      }
+
+      // Crear cuidador
+      const cuidadorResponse = await fetch(`${config.api.apiURL}/Users`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(cuidadorData),
+      });
+
+      if (!cuidadorResponse.ok)
+        throw new Error("Error al crear el usuario cuidador");
+
+      const cuidadorResult = await cuidadorResponse.json();
+      const cuidadorId = cuidadorResult.data.id;
+      const medicoId = localStorage.getItem("userId");
+
+      // Datos Paciente
+      const pacienteData = {
+        nombre: document.getElementById("name").value.trim(),
+        apellidoPa: document.getElementById("sur-name").value.trim(),
+        apellidoMa: document.getElementById("last-name").value.trim() || "",
+        foto: imageUrlInput.value || "",
+        fecNac: document.getElementById("date-birth").value,
+        sexo: document.getElementById("patient-gender").value,
+        dirColonia: document.getElementById("colonia").value.trim(),
+        dirCalle: document.getElementById("street").value.trim(),
+        dirNum: document.getElementById("number").value.trim(),
+        telefono: document.getElementById("phone-number").value.trim(),
+        idCuidador: parseInt(cuidadorId),
+        idMedico: parseInt(medicoId),
+        idDispositivo: parseInt(document.getElementById("device-select").value),
+      };
+
+      console.log("Datos del paciente:", pacienteData);
+
+      // Validaciones paciente
+      if (!nameRegex.test(pacienteData.nombre)) {
+        showToast("Nombre del paciente solo puede contener letras.", "error");
+        return;
+      }
+      if (!nameRegex.test(pacienteData.apellidoPa)) {
+        showToast(
+          "Apellido Paterno del paciente solo puede contener letras.",
+          "error"
+        );
+        return;
+      }
+      if (pacienteData.apellidoMa && !nameRegex.test(pacienteData.apellidoMa)) {
+        showToast(
+          "Apellido Materno del paciente solo puede contener letras.",
+          "error"
+        );
+        return;
+      }
+      if (pacienteData.telefono.length !== 10) {
+        showToast(
+          "El teléfono del paciente debe tener exactamente 10 dígitos.",
+          "error"
+        );
+        return;
+      }
+
+      // Crear paciente
+      const pacienteResponse = await fetch(
+        `${config.api.apiURL}/Patient/register`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(pacienteData),
+        }
+      );
+
+      if (!pacienteResponse.ok) {
+        const errorData = await pacienteResponse.json();
+        throw new Error(errorData.message || "Error al crear paciente");
+      }
+
+      showToast("Paciente y cuidador creados exitosamente", "success");
+
+      setTimeout(() => {
+        window.location.href = "/patients";
+      }, 2000);
+    } catch (error) {
+      console.error(error);
+      showToast(error.message, "error");
+    } finally {
+      submitBtn.innerHTML = originalBtnText;
+      submitBtn.disabled = false;
+    }
+  });
 
 function openInfoModal(patientData) {
   selectedPatientData = patientData.patient[0];
