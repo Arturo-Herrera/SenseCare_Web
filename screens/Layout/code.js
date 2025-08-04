@@ -114,31 +114,35 @@ async function renderAllPatients() {
 
     markers = [];
 
-    patients.forEach((p) => {
+    const defaultImageUrl =
+      "https://res.cloudinary.com/drrbpmn8j/image/upload/v1754318789/ttiwc7chvzoqo0o3ahwb.png";
+
+    for (const p of patients) {
       const alerta = p.alerta;
-      if (!alerta || !alerta.fecha || !alerta.idTipoAlerta) return;
+      if (!alerta || !alerta.fecha || !alerta.idTipoAlerta) continue;
 
       const lat = parseFloat(p.latitud);
       const lng = parseFloat(p.longitud);
-      if (isNaN(lat) || isNaN(lng)) return;
+      if (isNaN(lat) || isNaN(lng)) continue;
 
-      const emoji = p.sexo === "Female" ? "👩🏼‍💼" : "👨🏼‍💼";
+      const fotoUrl =
+        p.foto && p.foto.startsWith("http") ? p.foto : defaultImageUrl;
+
       const isAlertRecent = isRecent(alerta.fecha);
-
       let color, parpadea;
 
-      if (alerta.idTipoAlerta === "SOS") {
-        color = "#ea4335";
+      if (alerta.idTipoAlerta === "SOS" && isAlertRecent) {
+        color = "#ea4335"; // Rojo
         parpadea = true;
-      } else if (isAlertRecent) {
-        color = "#fbbc04";
+      } else if (alerta.idTipoAlerta !== "SOS" && isAlertRecent) {
+        color = "#fbbc04"; // Naranja
         parpadea = true;
       } else {
-        color = "#9e9e9e";
+        color = "#9e9e9e"; // Gris si no es reciente
         parpadea = false;
       }
 
-      const icon = createEmojiIcon(emoji, color, false);
+      const icon = await createImageIcon(fotoUrl, color, parpadea);
 
       const marker = new google.maps.Marker({
         position: { lat, lng },
@@ -171,27 +175,25 @@ async function renderAllPatients() {
 
       markers.push({
         marker,
-        emoji,
         parpadea,
-        tipoAlerta: alerta.idTipoAlerta,
         strokeToggle: false,
         baseColor: color,
+        fotoUrl,
       });
-    });
-
-    setInterval(() => {
-      markers.forEach((obj) => {
+    }
+    setInterval(async () => {
+      for (const obj of markers) {
         if (obj.parpadea) {
           obj.strokeToggle = !obj.strokeToggle;
 
-          const newIcon = createEmojiIcon(
-            obj.emoji,
-            obj.baseColor,
-            obj.strokeToggle
+          const newIcon = await createImageIcon(
+            obj.fotoUrl,
+            obj.strokeToggle ? obj.baseColor : "#cccccc" // Alterna el color de borde
           );
+
           obj.marker.setIcon(newIcon);
         }
-      });
+      }
     }, 600);
   } catch (err) {
     console.error("Error al pintar pacientes en el mapa:", err);
@@ -215,3 +217,49 @@ function setRedMarker(lat, lng, title = "Paciente") {
 window.setRedPersonLocation = function (lat, lng, name) {
   setRedMarker(lat, lng, name || "Paciente");
 };
+function createImageIcon(url, borderColor = "#ffffff") {
+  const canvas = document.createElement("canvas");
+  canvas.width = 60;
+  canvas.height = 60;
+  const ctx = canvas.getContext("2d");
+
+  const img = new Image();
+  img.crossOrigin = "anonymous";
+  img.src = url;
+
+  return new Promise((resolve) => {
+    img.onload = () => {
+      // Borde exterior
+      ctx.beginPath();
+      ctx.arc(30, 30, 28, 0, Math.PI * 2, true);
+      ctx.fillStyle = borderColor;
+      ctx.fill();
+
+      // Clip redondo para la imagen
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(30, 30, 24, 0, Math.PI * 2, true);
+      ctx.closePath();
+      ctx.clip();
+
+      // Imagen dentro del círculo
+      ctx.drawImage(img, 6, 6, 48, 48);
+      ctx.restore();
+
+      const dataUrl = canvas.toDataURL("image/png") + `#${Math.random()}`; // <-- Forzar cambio
+      resolve({
+        url: dataUrl,
+        scaledSize: new google.maps.Size(50, 50),
+        anchor: new google.maps.Point(25, 25),
+      });
+    };
+
+    img.onerror = () => {
+      resolve({
+        url,
+        scaledSize: new google.maps.Size(50, 50),
+        anchor: new google.maps.Point(25, 25),
+      });
+    };
+  });
+}

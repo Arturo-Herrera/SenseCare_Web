@@ -290,19 +290,22 @@ function renderPatientData(idPatient) {
 
         currentPatientData = data;
 
-        if (data.lectures && data.lectures.length > 0) {
-          renderLectures(data.lectures);
-        }
+        // SIEMPRE llamar a renderLectures, con datos o array vacío
+        renderLectures(data.lectures || []);
 
         if (data.alerts && data.alerts.length > 0) {
           renderAlerts(data.alerts);
         }
       } else {
         showToast("No patient data found");
+        // También limpiar cuando no hay datos del paciente
+        renderLectures([]);
       }
     })
     .catch((error) => {
       console.error("Error fetching patient data:", error);
+      // Limpiar también en caso de error
+      renderLectures([]);
     });
 }
 
@@ -352,21 +355,33 @@ function renderLectures(lectures) {
   const recentLectures = lectures.slice(0, 3);
   const lectureCards = document.querySelectorAll(".lecture-card");
 
+  // Limpiar todas las tarjetas primero
+  lectureCards.forEach(card => {
+    const stats = card.querySelectorAll(".stat p");
+    if (stats[0]) stats[0].textContent = "0 BPM";
+    if (stats[1]) stats[1].textContent = "0 °C";
+    if (stats[2]) stats[2].textContent = "0 %";
+  });
+
+  // Actualizar solo las tarjetas con datos disponibles
   recentLectures.forEach((lecture, index) => {
     if (lectureCards[index]) {
       const card = lectureCards[index];
       const stats = card.querySelectorAll(".stat p");
 
       if (stats[0]) {
-        stats[0].textContent = `${lecture.pulsoPromedio || "N/A"} BPM`;
+        const pulso = lecture.pulsoPromedio || 0;
+        stats[0].textContent = `${pulso} BPM`;
       }
 
       if (stats[1]) {
-        stats[1].textContent = `${lecture.temperatura || "N/A"} °C`;
+        const temperatura = lecture.temperatura || 0;
+        stats[1].textContent = `${temperatura} °C`;
       }
 
       if (stats[2]) {
-        stats[2].textContent = `${lecture.oxigeno || "N/A"} %`;
+        const oxigeno = lecture.oxigeno || 0;
+        stats[2].textContent = `${oxigeno} %`;
       }
     }
   });
