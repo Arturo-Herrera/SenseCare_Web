@@ -6,6 +6,7 @@ let redMarker = null;
 
 // Arreglo para manejar parpadeo
 let markers = [];
+let blinkInterval = null;
 
 // Configuración central y zoom del mapa
 const centerCoords = { lat: 32.4645, lng: -116.828 };
@@ -71,7 +72,7 @@ function initializeMap() {
 
   renderAllPatients();
 
-  setInterval(renderAllPatients(), 120000);
+  setInterval(renderAllPatients, 120000); // ✅ Corregido: removí los paréntesis extra
 }
 
 function isRecent(fechaISO) {
@@ -79,6 +80,22 @@ function isRecent(fechaISO) {
   const ahora = new Date();
   const diferenciaMin = (ahora - fechaAlerta) / (1000 * 60);
   return diferenciaMin <= 10;
+}
+
+// Función para determinar el color según el tipo de alerta
+function getAlertColor(tipoAlerta) {
+  // Convierte a mayúsculas para comparación más robusta
+  const tipo = String(tipoAlerta).toUpperCase();
+  
+  switch (tipo) {
+    case 'SOS':
+      return '#ea4335'; // Rojo para SOS
+    case 'WARN':
+    case 'WARNING':
+      return '#fbbc04'; // Amarillo para WARN/WARNING
+    default:
+      return '#34a853'; // Verde para otros tipos
+  }
 }
 
 // Ícono con color invertible
@@ -106,20 +123,78 @@ function createEmojiIcon(emoji, color, invert = false) {
   };
 }
 
-// Renderizar pacientes
+function createImageIcon(url, borderColor = "#ffffff") {
+  const canvas = document.createElement("canvas");
+  canvas.width = 60;
+  canvas.height = 60;
+  const ctx = canvas.getContext("2d");
+
+  const img = new Image();
+  img.crossOrigin = "anonymous";
+  img.src = url;
+
+  return new Promise((resolve) => {
+    img.onload = () => {
+      // Borde exterior
+      ctx.beginPath();
+      ctx.arc(30, 30, 28, 0, Math.PI * 2, true);
+      ctx.fillStyle = borderColor;
+      ctx.fill();
+
+      // Clip redondo para la imagen
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(30, 30, 24, 0, Math.PI * 2, true);
+      ctx.closePath();
+      ctx.clip();
+
+      // Imagen dentro del círculo
+      ctx.drawImage(img, 6, 6, 48, 48);
+      ctx.restore();
+
+      const dataUrl = canvas.toDataURL("image/png") + `#${Math.random()}`; // Forzar cambio
+      resolve({
+        url: dataUrl,
+        scaledSize: new google.maps.Size(50, 50),
+        anchor: new google.maps.Point(25, 25),
+      });
+    };
+
+    img.onerror = () => {
+      resolve({
+        url,
+        scaledSize: new google.maps.Size(50, 50),
+        anchor: new google.maps.Point(25, 25),
+      });
+    };
+  });
+}
+
 async function renderAllPatients() {
   try {
     const response = await getDeviceData();
     const patients = response.data;
 
+    // Limpiar marcadores anteriores
+    markers.forEach(markerObj => {
+      if (markerObj.marker) {
+        markerObj.marker.setMap(null);
+      }
+    });
     markers = [];
+
+    // Limpiar intervalo de parpadeo anterior
+    if (blinkInterval) {
+      clearInterval(blinkInterval);
+      blinkInterval = null;
+    }
 
     const defaultImageUrl =
       "https://res.cloudinary.com/drrbpmn8j/image/upload/v1754318789/ttiwc7chvzoqo0o3ahwb.png";
 
     for (const p of patients) {
       const alerta = p.alerta;
-      if (!alerta || !alerta.fecha || !alerta.idTipoAlerta) continue;
+      if (!alerta || !alerta.fecha) continue;
 
       const lat = parseFloat(p.latitud);
       const lng = parseFloat(p.longitud);
@@ -128,21 +203,11 @@ async function renderAllPatients() {
       const fotoUrl =
         p.foto && p.foto.startsWith("http") ? p.foto : defaultImageUrl;
 
-      const isAlertRecent = isRecent(alerta.fecha);
-      let color, parpadea;
+      // ✅ Color según tipo de alerta (SOS = amarillo, WARNING = rojo)
+      const color = getAlertColor(alerta.idTipoAlerta);
+      const parpadea = isRecent(alerta.fecha);
 
-      if (alerta.idTipoAlerta === "SOS" && isAlertRecent) {
-        color = "#ea4335"; // Rojo
-        parpadea = true;
-      } else if (alerta.idTipoAlerta !== "SOS" && isAlertRecent) {
-        color = "#fbbc04"; // Naranja
-        parpadea = true;
-      } else {
-        color = "#9e9e9e"; // Gris si no es reciente
-        parpadea = false;
-      }
-
-      const icon = await createImageIcon(fotoUrl, color, parpadea);
+      const icon = await createImageIcon(fotoUrl, color);
 
       const marker = new google.maps.Marker({
         position: { lat, lng },
@@ -179,25 +244,58 @@ async function renderAllPatients() {
         strokeToggle: false,
         baseColor: color,
         fotoUrl,
+        fechaAlerta: alerta.fecha,
+        tipoAlerta: alerta.idTipoAlerta
       });
     }
-    setInterval(async () => {
-      for (const obj of markers) {
-        if (obj.parpadea) {
-          obj.strokeToggle = !obj.strokeToggle;
 
-          const newIcon = await createImageIcon(
-            obj.fotoUrl,
-            obj.strokeToggle ? obj.baseColor : "#cccccc" // Alterna el color de borde
-          );
+    // ✅ Iniciar parpadeo solo si hay marcadores que deban parpadear
+    const hasBlinkingMarkers = markers.some(m => m.parpadea);
+    if (hasBlinkingMarkers) {
+      startBlinking();
+    }
 
-          obj.marker.setIcon(newIcon);
-        }
-      }
-    }, 600);
   } catch (err) {
     console.error("Error al pintar pacientes en el mapa:", err);
   }
+}
+
+// ✅ Función separada para manejar el parpadeo
+function startBlinking() {
+  blinkInterval = setInterval(async () => {
+    const ahora = new Date();
+    let stillBlinking = false;
+
+    for (const obj of markers) {
+      if (obj.parpadea) {
+        const tiempoAlerta = new Date(obj.fechaAlerta);
+        const minutosDesdeAlerta = (ahora - tiempoAlerta) / (1000 * 60);
+
+        // Solo parpadea durante los primeros 10 minutos
+        if (minutosDesdeAlerta <= 10) {
+          stillBlinking = true;
+          obj.strokeToggle = !obj.strokeToggle;
+
+          // Color de parpadeo: alterna entre el color base y gris claro
+          const colorParpadeo = obj.strokeToggle ? obj.baseColor : "#cccccc";
+
+          const newIcon = await createImageIcon(obj.fotoUrl, colorParpadeo);
+          obj.marker.setIcon(newIcon);
+        } else {
+          // Después de 10 minutos, deja de parpadear y mantiene el color base
+          obj.parpadea = false;
+          const staticIcon = await createImageIcon(obj.fotoUrl, obj.baseColor);
+          obj.marker.setIcon(staticIcon);
+        }
+      }
+    }
+
+    // Si no hay más marcadores parpadeando, detener el intervalo
+    if (!stillBlinking) {
+      clearInterval(blinkInterval);
+      blinkInterval = null;
+    }
+  }, 600); // Parpadea cada 600ms
 }
 
 // Marcador rojo manual
@@ -217,49 +315,3 @@ function setRedMarker(lat, lng, title = "Paciente") {
 window.setRedPersonLocation = function (lat, lng, name) {
   setRedMarker(lat, lng, name || "Paciente");
 };
-function createImageIcon(url, borderColor = "#ffffff") {
-  const canvas = document.createElement("canvas");
-  canvas.width = 60;
-  canvas.height = 60;
-  const ctx = canvas.getContext("2d");
-
-  const img = new Image();
-  img.crossOrigin = "anonymous";
-  img.src = url;
-
-  return new Promise((resolve) => {
-    img.onload = () => {
-      // Borde exterior
-      ctx.beginPath();
-      ctx.arc(30, 30, 28, 0, Math.PI * 2, true);
-      ctx.fillStyle = borderColor;
-      ctx.fill();
-
-      // Clip redondo para la imagen
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(30, 30, 24, 0, Math.PI * 2, true);
-      ctx.closePath();
-      ctx.clip();
-
-      // Imagen dentro del círculo
-      ctx.drawImage(img, 6, 6, 48, 48);
-      ctx.restore();
-
-      const dataUrl = canvas.toDataURL("image/png") + `#${Math.random()}`; // <-- Forzar cambio
-      resolve({
-        url: dataUrl,
-        scaledSize: new google.maps.Size(50, 50),
-        anchor: new google.maps.Point(25, 25),
-      });
-    };
-
-    img.onerror = () => {
-      resolve({
-        url,
-        scaledSize: new google.maps.Size(50, 50),
-        anchor: new google.maps.Point(25, 25),
-      });
-    };
-  });
-}
