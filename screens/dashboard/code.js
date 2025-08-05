@@ -24,7 +24,7 @@ getDashboardData().then((data) => {
     data.data.alertsPerDay.promedioAlertasPorDia || 0;
 
   document.getElementById("avg-oxygen-level").textContent =
-    data.data.manualSignsPerDay.promedioSignosPorDia  || "N/A";
+    data.data.manualSignsPerDay.promedioSignosPorDia || "N/A";
 
   updateDashboard(data);
 });
@@ -45,53 +45,38 @@ function showToast(message, type = "success") {
 }
 
 function updateDashboard(data) {
-  const vitals = data.data.averageVitals;
+  const alertsPerHour = data.data.alertsPerHour;
 
-  const categories = vitals.map((v) => v.fecha);
-  const tempData = vitals.map((v) => v.promedioTemperatura);
-  const bpmData = vitals.map((v) => v.promedioPulso);
+  const categories = alertsPerHour.map((a) => a.hora);
+  const alertsData = alertsPerHour.map((a) => a.totalAlertas);
 
-  // Gráfica de Pulso (BPM)
+  // Gráfica de Alertas por Hora
   Highcharts.chart("chart-bpm", {
+    // Usa el div donde estaba el BPM, o cambia el ID si prefieres otro
     chart: {
-      type: "spline",
+      type: "column",
       backgroundColor: "transparent",
     },
     title: { text: "" },
     xAxis: {
       categories: categories,
+      title: { text: "Hours" },
       lineColor: "#ccc",
       tickColor: "#ccc",
       labels: {
         style: {
-          fontSize: "8px",
+          fontSize: "10px",
           color: "#666",
         },
       },
     },
     yAxis: {
-      title: { text: "BPM" },
+      min: 0,
+      title: { text: "Total alerts" },
       gridLineColor: "#eee",
-      min: 50,
-      max: 120,
-      tickInterval: 10,
-      plotBands: [
-        {
-          from: 60,
-          to: 100,
-          color: "rgba(144, 238, 144, 0.2)", // Verde suave
-          label: {
-            text: "",
-            style: { color: "#606060", fontSize: "10px" },
-          },
-        },
-      ],
     },
     plotOptions: {
-      spline: {
-        marker: { enabled: true, radius: 4 },
-        lineWidth: 2,
-        enableMouseTracking: true,
+      column: {
         dataLabels: {
           enabled: true,
           style: { fontSize: "10px", color: "#444" },
@@ -100,81 +85,9 @@ function updateDashboard(data) {
     },
     series: [
       {
-        name: "BPM",
-        data: bpmData,
-        color: "#90EE90",
-        marker: {
-          enabled: true,
-          radius: 6,
-          symbol: "circle",
-          lineColor: "#90EE90",
-          lineWidth: 3,
-          fillColor: "#90EE90",
-        },
-      },
-    ],
-  });
-
-  // Gráfica de Temperatura (°C)
-  Highcharts.chart("chart-temp", {
-    chart: {
-      type: "spline",
-      backgroundColor: "transparent",
-    },
-    title: { text: "" },
-    xAxis: {
-      categories: categories,
-      lineColor: "#ccc",
-      tickColor: "#ccc",
-      labels: {
-        style: {
-          fontSize: "8px",
-          color: "#666",
-        },
-      },
-    },
-    yAxis: {
-      title: { text: "°C" },
-      gridLineColor: "#eee",
-      min: 35,
-      max: 40,
-      tickInterval: 0.3,
-      plotBands: [
-        {
-          from: 36.1,
-          to: 37.2,
-          color: "rgba(255, 182, 193, 0.2)", // Rosa suave
-          label: {
-            text: "",
-            style: { color: "#606060", fontSize: "10px" },
-          },
-        },
-      ],
-    },
-    plotOptions: {
-      spline: {
-        marker: { enabled: true, radius: 4 },
-        lineWidth: 2,
-        enableMouseTracking: true,
-        dataLabels: {
-          enabled: true,
-          style: { fontSize: "10px", color: "#444" },
-        },
-      },
-    },
-    series: [
-      {
-        name: "Temperature",
-        data: tempData,
-        color: "#FFB6C1",
-        marker: {
-          enabled: true,
-          radius: 6,
-          symbol: "circle",
-          lineColor: "#FFB6C1",
-          lineWidth: 3,
-          fillColor: "#FFB6C1",
-        },
+        name: "Alerts",
+        data: alertsData,
+        color: "#9CC3E6",
       },
     ],
   });
