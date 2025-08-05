@@ -292,6 +292,7 @@ function renderPatientData(idPatient) {
 
         // SIEMPRE llamar a renderLectures, con datos o array vacío
         renderLectures(data.lectures || []);
+        console.log("Lecturas recibidas:", data.lectures);
 
         if (data.alerts && data.alerts.length > 0) {
           renderAlerts(data.alerts);
@@ -370,7 +371,9 @@ function renderLectures(lectures) {
       const stats = card.querySelectorAll(".stat p");
 
       if (stats[0]) {
-        const pulso = lecture.pulsoPromedio || 0;
+        const pulsoArray = lecture.pulso || [];
+        const pulso =
+          pulsoArray.length > 0 ? pulsoArray[pulsoArray.length - 1] : 0;
         stats[0].textContent = `${pulso} BPM`;
       }
 
@@ -809,60 +812,6 @@ fileInput.addEventListener("change", async function () {
   }
 });
 
-const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-// Campos de nombres/apellidos (paciente y cuidador)
-const nameFields = [
-  "name",
-  "sur-name",
-  "last-name",
-  "caregiver-name",
-  "caregiver-sur-name",
-  "caregiver-last-name",
-];
-
-// Validar nombres/apellidos en tiempo real (solo letras)
-nameFields.forEach((id) => {
-  const input = document.getElementById(id);
-
-  // Bloquear entrada de caracteres no válidos (números, símbolos)
-  input.addEventListener("keypress", function (e) {
-    const key = String.fromCharCode(e.which);
-    if (!/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]$/.test(key)) {
-      e.preventDefault();
-    }
-  });
-
-  // Limpiar caracteres no válidos al pegar texto (números, símbolos)
-  input.addEventListener("paste", function (e) {
-    e.preventDefault();
-    const text = (e.clipboardData || window.clipboardData).getData("text");
-    this.value = text.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, "");
-  });
-
-  // Asegurarse que al escribir no se queden caracteres no válidos
-  input.addEventListener("input", function () {
-    this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, "");
-  });
-});
-
-// Validar Colonia y Calle (letras, números y espacios)
-["colonia", "street"].forEach((id) => {
-  document.getElementById(id).addEventListener("input", function () {
-    this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ0-9\s]/g, "");
-  });
-});
-
-// Validar Teléfonos (solo números, máximo 10 dígitos)
-["phone-number", "caregiver-phone-number"].forEach((id) => {
-  const input = document.getElementById(id);
-
-  input.addEventListener("input", function () {
-    this.value = this.value.replace(/\D/g, "").substring(0, 10);
-  });
-});
-
 // Submit del formulario
 document
   .getElementById("user-form")
@@ -905,41 +854,6 @@ document
         },
       };
 
-      // Validaciones cuidador
-      if (!nameRegex.test(cuidadorData.nombre)) {
-        showToast("Nombre del cuidador solo puede contener letras.", "error");
-        return;
-      }
-      if (!nameRegex.test(cuidadorData.apellidoPa)) {
-        showToast(
-          "Apellido Paterno del cuidador solo puede contener letras.",
-          "error"
-        );
-        return;
-      }
-      if (cuidadorData.apellidoMa && !nameRegex.test(cuidadorData.apellidoMa)) {
-        showToast(
-          "Apellido Materno del cuidador solo puede contener letras.",
-          "error"
-        );
-        return;
-      }
-      if (!emailRegex.test(cuidadorData.email)) {
-        showToast("Correo electrónico inválido.", "error");
-        return;
-      }
-      if (cuidadorData.contrasena.length < 6) {
-        showToast("La contraseña debe tener al menos 6 caracteres.", "error");
-        return;
-      }
-      if (cuidadorData.telefono.length !== 10) {
-        showToast(
-          "El teléfono del cuidador debe tener exactamente 10 dígitos.",
-          "error"
-        );
-        return;
-      }
-
       // Crear cuidador
       const cuidadorResponse = await fetch(`${config.api.apiURL}/Users`, {
         method: "POST",
@@ -956,7 +870,7 @@ document
 
       // Datos Paciente
       const pacienteData = {
-        nombre: document.getElementById("name").value.trim(),
+        nombre: document.getElementById("patient-name").value.trim(),
         apellidoPa: document.getElementById("sur-name").value.trim(),
         apellidoMa: document.getElementById("last-name").value.trim() || "",
         foto: imageUrlInput.value || "",
@@ -972,33 +886,6 @@ document
       };
 
       console.log("Datos del paciente:", pacienteData);
-
-      // Validaciones paciente
-      if (!nameRegex.test(pacienteData.nombre)) {
-        showToast("Nombre del paciente solo puede contener letras.", "error");
-        return;
-      }
-      if (!nameRegex.test(pacienteData.apellidoPa)) {
-        showToast(
-          "Apellido Paterno del paciente solo puede contener letras.",
-          "error"
-        );
-        return;
-      }
-      if (pacienteData.apellidoMa && !nameRegex.test(pacienteData.apellidoMa)) {
-        showToast(
-          "Apellido Materno del paciente solo puede contener letras.",
-          "error"
-        );
-        return;
-      }
-      if (pacienteData.telefono.length !== 10) {
-        showToast(
-          "El teléfono del paciente debe tener exactamente 10 dígitos.",
-          "error"
-        );
-        return;
-      }
 
       // Crear paciente
       const pacienteResponse = await fetch(
@@ -1320,8 +1207,9 @@ updateSubmitBtn.addEventListener("click", async (e) => {
 
     showToast("Patient and caregiver updated succesfully!", "success");
     setTimeout(() => {
-      document.getElementById("content-container-3").style.display = "none";
-      document.getElementById("content-container").style.display = "flex";
+      const input = document.getElementById("search-patient");
+      const results = document.getElementById("search-results");
+      selectPatientAndRender(allPatients[0], input, results);
     }, 3000);
   } catch (err) {
     console.error("Update Error:", err);
@@ -1339,7 +1227,6 @@ const confirmNoBtn = document.getElementById("confirm-disable-no");
 disableBtn.addEventListener("click", () => {
   confirmModal.classList.add("active");
   confirmModal.classList.remove("modal-initial");
-  console.log("Button pressed");
 });
 
 confirmNoBtn.addEventListener("click", () => {
@@ -1348,7 +1235,7 @@ confirmNoBtn.addEventListener("click", () => {
 });
 
 confirmYesBtn.addEventListener("click", async () => {
-  disablePatient(selectedPatientData.paciente.id);
+  disablePatient(selectedPatientData.id);
   confirmModal.classList.remove("active");
   confirmModal.classList.add("modal-initial");
 
@@ -1362,8 +1249,9 @@ confirmYesBtn.addEventListener("click", async () => {
 
 async function disablePatient(patientId) {
   try {
+    console.log("Disabling patient: ", patientId);
     const response = await fetch(
-      `${config.api.apiURL}/Users/disable/${patientId}?activate=false`,
+      `http://localhost:5221/api/Users/disable/${patientId}?activate=false`,
       {
         method: "PUT",
       }

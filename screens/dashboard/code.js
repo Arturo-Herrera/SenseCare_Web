@@ -24,7 +24,7 @@ getDashboardData().then((data) => {
     data.data.alertsPerDay.promedioAlertasPorDia || 0;
 
   document.getElementById("avg-oxygen-level").textContent =
-    data.data.oxygenLevel.promedioOxigeno + "%" || "N/A";
+    data.data.manualSignsPerDay.promedioSignosPorDia  || "N/A";
 
   updateDashboard(data);
 });

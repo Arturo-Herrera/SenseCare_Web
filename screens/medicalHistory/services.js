@@ -68,12 +68,9 @@ export async function sendReport({
       duration: duration.trim(),
     },
     observations: observations.trim(),
-    idDoctor: Number(idDoctor), // minúsculas como en el ejemplo
-    idPatient: Number(idPatient), // minúsculas como en el ejemplo
-    datosAlerta:
-      currentAlerts.length > 0
-        ? currentAlerts.map((alert) => alert.id || 0) // Solo los IDs como array de números
-        : [0], // Array con 0 si no hay alertas, como en tu ejemplo
+    idDoctor: Number(idDoctor),
+    idPatient: Number(idPatient),
+    nombreCompletoMedico: "Jesus Herrera Luevano"
   };
 
   console.log("Sending report payload:", JSON.stringify(reportData, null, 2));

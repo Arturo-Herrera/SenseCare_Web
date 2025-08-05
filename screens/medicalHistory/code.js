@@ -390,6 +390,8 @@ if (reportForm) {
     this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ0-9.,!?()\s]/g, "");
   });
 
+  const doctorFullName = localStorage.getItem("FullName");
+
   reportForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -399,6 +401,7 @@ if (reportForm) {
     const dosis = document.getElementById("dosis").value.trim();
     const duration = document.getElementById("duration").value.trim();
     const observations = observationsInput.value.trim();
+    const doctorName = doctorFullName;
 
     if (
       !reason ||
@@ -455,6 +458,7 @@ if (reportForm) {
         observations,
         idDoctor,
         idPatient,
+        doctorName
       });
 
       showToast("Report created successfully!", "success");

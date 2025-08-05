@@ -41,6 +41,7 @@ export function init() {
 
         const userRole = userData.data.rol;
         const userId = userData.data.id;
+        const fullNameUser = userData.data.nombre;
 
         console.log("User Role:", userRole);
         console.log("User ID:", userId);
@@ -51,6 +52,7 @@ export function init() {
         ) {
           localStorage.setItem("userId", userId);
           localStorage.setItem("userRole", userRole);
+          localStorage.setItem("FullName", fullNameUser);
 
           location.href = "../../../index.html";
         } else {

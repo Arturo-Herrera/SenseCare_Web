@@ -135,6 +135,9 @@
             <input
               type="text"
               id="patient-name"
+              pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" 
+              title="Only letters and spaces are allowed"
+              oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
               placeholder="Enter name"
               required
               autocomplete="off"
@@ -145,6 +148,9 @@
             <input
               type="text"
               id="sur-name"
+              pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" 
+              title="Only letters and spaces are allowed"
+              oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
               placeholder="Enter surname"
               required
               autocomplete="off"
@@ -155,6 +161,9 @@
             <input
               type="text"
               id="last-name"
+              pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" 
+              title="Only letters and spaces are allowed"
+              oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
               placeholder="Enter last name"
               autocomplete="off"
             />
@@ -209,9 +218,11 @@
               placeholder="Enter phone number"
               required
               autocomplete="off"
+              pattern="[0-9]{10}" 
+              title="Must contain exactly 10 digits"
               maxlength="10"
-              max="9999999999"
-              oninput="this.value=this.value.slice(0,10)"
+              minlength="10"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)"
             />
           </div>
           <div class="form-group">
@@ -229,6 +240,9 @@
             <input
               type="text"
               id="caregiver-name"
+              pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" 
+              title="Only letters and spaces are allowed"
+              oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
               placeholder="Enter name"
               required
               autocomplete="off"
@@ -239,6 +253,9 @@
             <input
               type="text"
               id="caregiver-sur-name"
+              pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" 
+              title="Only letters and spaces are allowed"
+              oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
               placeholder="Enter surname"
               required
               autocomplete="off"
@@ -249,6 +266,9 @@
             <input
               type="text"
               id="caregiver-last-name"
+              pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" 
+              title="Only letters and spaces are allowed"
+              oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
               placeholder="Enter last name"
               autocomplete="off"
             />
@@ -278,9 +298,11 @@
               placeholder="Enter phone number"
               required
               autocomplete="off"
+              pattern="[0-9]{10}" 
+              title="Must contain exactly 10 digits"
               maxlength="10"
-              max="9999999999"
-              oninput="this.value=this.value.slice(0,10)"
+              minlength="10"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)"
             />
           </div>
           <div class="form-group">
@@ -299,6 +321,9 @@
               <input
                 type="password"
                 id="caregiver-password"
+                minlength="6" 
+                maxlength="15" 
+                title="The password must be between 6 and 15 characters."
                 placeholder="Enter password"
                 required
                 autocomplete="off"
@@ -339,6 +364,9 @@
             <input
               type="text"
               id="update-name"
+              pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" 
+              title="Only letters and spaces are allowed"
+              oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
               placeholder="Enter name"
               required
               autocomplete="off"
@@ -349,6 +377,9 @@
             <input
               type="text"
               id="update-sur-name"
+              pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" 
+              title="Only letters and spaces are allowed"
+              oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
               placeholder="Enter surname"
               required
               autocomplete="off"
@@ -359,6 +390,9 @@
             <input
               type="text"
               id="update-last-name"
+              pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" 
+              title="Only letters and spaces are allowed"
+              oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
               placeholder="Enter last name"
               required
               autocomplete="off"
@@ -419,9 +453,11 @@
               placeholder="Enter phone number"
               required
               autocomplete="off"
+              pattern="[0-9]{10}" 
+              title="Must contain exactly 10 digits"
               maxlength="10"
-              max="9999999999"
-              oninput="this.value=this.value.slice(0,10)"
+              minlength="10"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)"
             />
           </div>
           <div class="form-group">
@@ -439,6 +475,9 @@
             <input
               type="text"
               id="update-caregiver-name"
+              pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" 
+              title="Only letters and spaces are allowed"
+              oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
               placeholder="Enter name"
               required
               autocomplete="off"
@@ -449,6 +488,9 @@
             <input
               type="text"
               id="update-caregiver-sur-name"
+              pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" 
+              title="Only letters and spaces are allowed"
+              oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
               placeholder="Enter surname"
               required
               autocomplete="off"
@@ -459,6 +501,9 @@
             <input
               type="text"
               id="update-caregiver-last-name"
+              pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" 
+              title="Only letters and spaces are allowed"
+              oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
               placeholder="Enter last name"
               required
               autocomplete="off"
@@ -489,9 +534,11 @@
               placeholder="Enter phone number"
               required
               autocomplete="off"
+              pattern="[0-9]{10}" 
+              title="Must contain exactly 10 digits"
               maxlength="10"
-              max="9999999999"
-              oninput="this.value=this.value.slice(0,10)"
+              minlength="10"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)"
             />
           </div>
           <div class="form-group">
