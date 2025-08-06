@@ -45,7 +45,7 @@ async function initializePatientSearch() {
 
     setupSearchListeners();
   } catch (error) {
-    showToast("Error al cargar pacientes:", error);
+    showToast("Failed loading patient:", error);
   }
 }
 
@@ -87,7 +87,7 @@ function setupSearchListeners() {
   const results = document.getElementById("search-results");
 
   if (!input || !results) {
-    showToast("No se encontraron los elementos del buscador");
+    showToast("Didn't find data to load");
     return;
   }
 
@@ -206,7 +206,7 @@ function selectPatientAndRender(patient, input, results) {
     console.log("Renderizando datos del paciente ID:", patientId);
     renderPatientData(patientId);
   } else {
-    showToast("No se encontró ID del paciente:", patient);
+    showToast("Didn't find user id", patient);
   }
 }
 
@@ -317,10 +317,10 @@ function renderInfoPatient(data, patient) {
     data.apellidoMa || ""
   }`.trim();
   document.getElementById("name").textContent =
-    fullName || "Usuario desconocido";
+    fullName || "Unknown user";
 
   document.getElementById("gender").textContent =
-    data.sexo || "No especificado";
+    data.sexo || "Not specified";
 
   if (data.fecNac) {
     const birthDate = new Date(data.fecNac);
@@ -337,7 +337,7 @@ function renderInfoPatient(data, patient) {
 
     document.getElementById("age").textContent = `${age} years old`;
   } else {
-    document.getElementById("age").textContent = "Edad no disponible";
+    document.getElementById("age").textContent = "Age not available";
   }
 
   const lectureElement = document.getElementById("lecture");
@@ -769,7 +769,7 @@ fileInput.addEventListener("change", async function () {
   if (this.files && this.files.length > 0) {
     const fileName = this.files[0].name;
 
-    if (label) label.textContent = `Subiendo ${fileName}...`;
+    if (label) label.textContent = `Uploading ${fileName}...`;
 
     // Cancelar subida anterior si existe
     if (isUploading && uploadAbortController) {
@@ -790,14 +790,14 @@ fileInput.addEventListener("change", async function () {
       imageUrlInput.value = imageUrl;
 
       if (label) label.textContent = `${fileName} (Listo)`;
-      showToast("Imagen subida correctamente", "success");
+      showToast("Photo uploaded succesfully", "success");
 
       console.log("Imagen subida a Cloudinary:", imageUrl);
     } catch (error) {
       if (error.name !== "AbortError") {
         console.error("Error al subir imagen a Cloudinary:", error);
-        if (label) label.textContent = "Error al subir, intenta nuevamente";
-        showToast("Error al subir la imagen", "error");
+        if (label) label.textContent = "Failed uploading, try again";
+        showToast("Failed uploading photo", "error");
         fileInput.value = ""; // Limpiar el input
         imageUrlInput.value = ""; // Limpiar la URL también
       }
@@ -825,8 +825,20 @@ document
     submitBtn.disabled = true;
 
     try {
+      const caregiverDateBirth = document.getElementById(
+        "caregiver-date-birth"
+      ).value;
+      const yearLimit = 2007;
+
+      if (
+        caregiverDateBirth &&
+        new Date(caregiverDateBirth).getFullYear() > yearLimit
+      ) {
+        showToast("Caregiver's year birth cannot be older than 2007", "error");
+        throw new Error("Invalid date birth");
+      }
       if (isUploading) {
-        showToast("Espera a que termine de subir la imagen", "warning");
+        showToast("Wait for you finish uploading the image", "warning");
         return;
       }
 
@@ -862,7 +874,7 @@ document
       });
 
       if (!cuidadorResponse.ok)
-        throw new Error("Error al crear el usuario cuidador");
+        throw new Error("Failed creating caregiver's user");
 
       const cuidadorResult = await cuidadorResponse.json();
       const cuidadorId = cuidadorResult.data.id;
@@ -885,8 +897,6 @@ document
         idDispositivo: parseInt(document.getElementById("device-select").value),
       };
 
-      console.log("Datos del paciente:", pacienteData);
-
       // Crear paciente
       const pacienteResponse = await fetch(
         `${config.api.apiURL}/Patient/register`,
@@ -899,10 +909,10 @@ document
 
       if (!pacienteResponse.ok) {
         const errorData = await pacienteResponse.json();
-        throw new Error(errorData.message || "Error al crear paciente");
+        throw new Error(errorData.message || "Failed creating patient");
       }
 
-      showToast("Paciente y cuidador creados exitosamente", "success");
+      showToast("Patient and caregiver created succesfully", "success");
 
       setTimeout(() => {
         window.location.href = "/patients";
@@ -995,7 +1005,7 @@ function openInfoModal(patientData) {
   } else {
     modal.querySelector(
       ".section-title.caregiver-age"
-    ).nextElementSibling.textContent = "Edad no disponible";
+    ).nextElementSibling.textContent = "Age not available";
   }
 
   modal.querySelector(
