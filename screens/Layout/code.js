@@ -57,8 +57,7 @@ async function initializeMapWithImportLibrary() {
   });
 
   await renderAllPatients();
-
-  setInterval(renderAllPatients, 120000);
+  setInterval(renderAllPatients, 10000);
 }
 
 function initializeMap() {
@@ -71,62 +70,57 @@ function initializeMap() {
   });
 
   renderAllPatients();
-
-  setInterval(renderAllPatients, 120000); // ✅ Corregido: removí los paréntesis extra
+  setInterval(renderAllPatients, 10000);
 }
 
 function isRecent(fechaISO) {
-  const fechaAlerta = new Date(fechaISO);
-  const ahora = new Date();
-  const diferenciaMin = (ahora - fechaAlerta) / (1000 * 60);
-  return diferenciaMin <= 10;
+  const fechaAlertaUTC = new Date(fechaISO);
+  const fechaAlertaMexico = new Date(fechaAlertaUTC.getTime() - (7 * 60 * 60 * 1000));
+  
+  const ahoraUTC = new Date();
+  const ahoraMexico = new Date(ahoraUTC.getTime() - (7 * 60 * 60 * 1000));
+  
+  const diferenciaMin = (ahoraMexico - fechaAlertaMexico) / (1000 * 60);
+  
+  return diferenciaMin <= 10 && diferenciaMin >= 0;
 }
 
 // Función para determinar el color según el tipo de alerta
 function getAlertColor(tipoAlerta) {
-  // Convierte a mayúsculas para comparación más robusta
   const tipo = String(tipoAlerta).toUpperCase();
   
   switch (tipo) {
     case 'SOS':
-      return '#ea4335'; // Rojo para SOS
+      return '#ea4335';
     case 'WARN':
     case 'WARNING':
-      return '#fbbc04'; // Amarillo para WARN/WARNING
+      return '#fbbc04';
     default:
-      return '#34a853'; // Verde para otros tipos
+      return '#34a853';
   }
 }
 
-// Ícono con color invertible
-function createEmojiIcon(emoji, color, invert = false) {
-  const fillColor = invert ? "#ffffff" : color;
-  const strokeColor = invert ? color : "#ffffff";
-  const textColor = invert ? color : "#ffffff";
-
-  return {
-    url:
-      "data:image/svg+xml;charset=UTF-8," +
-      encodeURIComponent(`
-      <svg width="60" height="60" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.3"/>
-          </filter>
-        </defs>
-        <circle cx="30" cy="30" r="28" fill="${fillColor}" stroke="${strokeColor}" stroke-width="4" filter="url(#shadow)"/>
-        <text x="30" y="38" text-anchor="middle" font-size="28" font-family="Arial" fill="${textColor}">${emoji}</text>
-      </svg>
-    `),
-    scaledSize: new google.maps.Size(50, 50),
-    anchor: new google.maps.Point(25, 25),
-  };
+// Función para determinar el color del contorno (verde si no es reciente)
+function getContourColor(tipoAlerta, isRecent) {
+  if (!isRecent) {
+    return '#34a853'; // Verde fijo para alertas no recientes
+  }
+  return getAlertColor(tipoAlerta); // Color original para alertas recientes
 }
 
-function createImageIcon(url, borderColor = "#ffffff") {
+function createImageIcon(url, borderColor = "#ffffff", isAlert = false) {
+  // Tamaño más grande para alertas
+const size = isAlert ? 85 : 60;
+const radius = isAlert ? 40.5 : 28;
+const innerRadius = isAlert ? 34 : 24;
+const imageSize = isAlert ? 68 : 48;
+const imageOffset = isAlert ? 8.5 : 6;
+const scaledSize = isAlert ? 70 : 50;
+const anchorPoint = isAlert ? 35 : 25;
+
   const canvas = document.createElement("canvas");
-  canvas.width = 60;
-  canvas.height = 60;
+  canvas.width = size;
+  canvas.height = size;
   const ctx = canvas.getContext("2d");
 
   const img = new Image();
@@ -135,36 +129,36 @@ function createImageIcon(url, borderColor = "#ffffff") {
 
   return new Promise((resolve) => {
     img.onload = () => {
-      // Borde exterior
+      // Borde exterior con el color correspondiente
       ctx.beginPath();
-      ctx.arc(30, 30, 28, 0, Math.PI * 2, true);
+      ctx.arc(size/2, size/2, radius, 0, Math.PI * 2, true);
       ctx.fillStyle = borderColor;
       ctx.fill();
 
       // Clip redondo para la imagen
       ctx.save();
       ctx.beginPath();
-      ctx.arc(30, 30, 24, 0, Math.PI * 2, true);
+      ctx.arc(size/2, size/2, innerRadius, 0, Math.PI * 2, true);
       ctx.closePath();
       ctx.clip();
 
       // Imagen dentro del círculo
-      ctx.drawImage(img, 6, 6, 48, 48);
+      ctx.drawImage(img, imageOffset, imageOffset, imageSize, imageSize);
       ctx.restore();
 
-      const dataUrl = canvas.toDataURL("image/png") + `#${Math.random()}`; // Forzar cambio
+      const dataUrl = canvas.toDataURL("image/png") + `#${Math.random()}`;
       resolve({
         url: dataUrl,
-        scaledSize: new google.maps.Size(50, 50),
-        anchor: new google.maps.Point(25, 25),
+        scaledSize: new google.maps.Size(scaledSize, scaledSize),
+        anchor: new google.maps.Point(anchorPoint, anchorPoint),
       });
     };
 
     img.onerror = () => {
       resolve({
         url,
-        scaledSize: new google.maps.Size(50, 50),
-        anchor: new google.maps.Point(25, 25),
+        scaledSize: new google.maps.Size(scaledSize, scaledSize),
+        anchor: new google.maps.Point(anchorPoint, anchorPoint),
       });
     };
   });
@@ -194,8 +188,6 @@ async function renderAllPatients() {
 
     for (const p of patients) {
       const alerta = p.alerta;
-      if (!alerta || !alerta.fecha) continue;
-
       const lat = parseFloat(p.latitud);
       const lng = parseFloat(p.longitud);
       if (isNaN(lat) || isNaN(lng)) continue;
@@ -203,11 +195,26 @@ async function renderAllPatients() {
       const fotoUrl =
         p.foto && p.foto.startsWith("http") ? p.foto : defaultImageUrl;
 
-      // ✅ Color según tipo de alerta (SOS = amarillo, WARNING = rojo)
-      const color = getAlertColor(alerta.idTipoAlerta);
-      const parpadea = isRecent(alerta.fecha);
+      let alertColor, contourColor, isAlertRecent, alertText, alertTextColor, shouldBeLarge;
 
-      const icon = await createImageIcon(fotoUrl, color);
+      if (!alerta || !alerta.fecha || !alerta.idTipoAlerta) {
+        // Sin alertas
+        contourColor = '#34a853';
+        isAlertRecent = false;
+        alertText = 'Sin alertas';
+        alertTextColor = '#34a853';
+        shouldBeLarge = false; // Tamaño normal
+      } else {
+        // Con alertas
+        isAlertRecent = isRecent(alerta.fecha);
+        alertColor = getAlertColor(alerta.idTipoAlerta);
+        contourColor = getContourColor(alerta.idTipoAlerta, isAlertRecent);
+        alertText = alerta.idTipoAlerta;
+        alertTextColor = alertColor;
+        shouldBeLarge = isAlertRecent; // Solo grande si es reciente
+      }
+
+      const icon = await createImageIcon(fotoUrl, contourColor, shouldBeLarge);
 
       const marker = new google.maps.Marker({
         position: { lat, lng },
@@ -225,9 +232,9 @@ async function renderAllPatients() {
         ">
           <h3 style="margin: 0 0 8px 0; color: #333;">${p.nombreCompleto}</h3>
           <p style="margin: 4px 0;"><strong>Sexo:</strong> ${p.sexo}</p>
-          <p style="margin: 4px 0;"><strong>Signo Afectado:</strong> ${alerta.signoAfectado}</p>
-          <p style="margin: 4px 0; color: ${color};">
-            <strong>Tipo de Alerta:</strong> ${alerta.idTipoAlerta}
+          <p style="margin: 4px 0;"><strong>Signo Afectado:</strong> ${alerta ? alerta.signoAfectado : 'N/A'}</p>
+          <p style="margin: 4px 0; color: ${alertTextColor};">
+            <strong>Tipo de Alerta:</strong> ${alertText}
           </p>
         </div>
       `;
@@ -240,16 +247,17 @@ async function renderAllPatients() {
 
       markers.push({
         marker,
-        parpadea,
+        parpadea: isAlertRecent,
         strokeToggle: false,
-        baseColor: color,
+        baseColor: contourColor,
         fotoUrl,
-        fechaAlerta: alerta.fecha,
-        tipoAlerta: alerta.idTipoAlerta
+        fechaAlerta: alerta ? alerta.fecha : null,
+        tipoAlerta: alerta ? alerta.idTipoAlerta : null,
+        shouldBeLarge: shouldBeLarge
       });
     }
 
-    // ✅ Iniciar parpadeo solo si hay marcadores que deban parpadear
+    // Iniciar parpadeo solo si hay marcadores que deban parpadear
     const hasBlinkingMarkers = markers.some(m => m.parpadea);
     if (hasBlinkingMarkers) {
       startBlinking();
@@ -260,42 +268,41 @@ async function renderAllPatients() {
   }
 }
 
-// ✅ Función separada para manejar el parpadeo
 function startBlinking() {
   blinkInterval = setInterval(async () => {
-    const ahora = new Date();
+    const ahoraUTC = new Date();
+    const ahoraMexico = new Date(ahoraUTC.getTime() - (7 * 60 * 60 * 1000));
     let stillBlinking = false;
 
     for (const obj of markers) {
-      if (obj.parpadea) {
-        const tiempoAlerta = new Date(obj.fechaAlerta);
-        const minutosDesdeAlerta = (ahora - tiempoAlerta) / (1000 * 60);
+      if (obj.parpadea && obj.fechaAlerta) {
+        const tiempoAlertaUTC = new Date(obj.fechaAlerta);
+        const tiempoAlertaMexico = new Date(tiempoAlertaUTC.getTime() - (7 * 60 * 60 * 1000));
+        const minutosDesdeAlerta = (ahoraMexico - tiempoAlertaMexico) / (1000 * 60);
 
-        // Solo parpadea durante los primeros 10 minutos
-        if (minutosDesdeAlerta <= 10) {
+        if (minutosDesdeAlerta <= 10 && minutosDesdeAlerta >= 0) {
           stillBlinking = true;
           obj.strokeToggle = !obj.strokeToggle;
 
-          // Color de parpadeo: alterna entre el color base y gris claro
-          const colorParpadeo = obj.strokeToggle ? obj.baseColor : "#cccccc";
-
-          const newIcon = await createImageIcon(obj.fotoUrl, colorParpadeo);
+          const colorParpadeo = obj.strokeToggle ? obj.baseColor : "#e0e0e0";
+          const newIcon = await createImageIcon(obj.fotoUrl, colorParpadeo, true); // Grande mientras parpadea
           obj.marker.setIcon(newIcon);
         } else {
-          // Después de 10 minutos, deja de parpadear y mantiene el color base
+          // Después de 10 minutos: deja de parpadear, se vuelve verde y PEQUEÑO
           obj.parpadea = false;
-          const staticIcon = await createImageIcon(obj.fotoUrl, obj.baseColor);
+          obj.shouldBeLarge = false; // Cambiar a pequeño
+          obj.baseColor = '#34a853'; // Verde fijo
+          const staticIcon = await createImageIcon(obj.fotoUrl, '#34a853', false); // Pequeño
           obj.marker.setIcon(staticIcon);
         }
       }
     }
 
-    // Si no hay más marcadores parpadeando, detener el intervalo
     if (!stillBlinking) {
       clearInterval(blinkInterval);
       blinkInterval = null;
     }
-  }, 600); // Parpadea cada 600ms
+  }, 600);
 }
 
 // Marcador rojo manual
