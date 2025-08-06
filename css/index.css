@@ -32,13 +32,11 @@ i {
 .sidebar-option {
   display: flex;
   align-items: center;
-  /* justify-content: flex-start; */
   gap: 12px;
-  /* padding-left: 10px;
-  padding-right: 10px; */
-  transition: 0.5s;
   width: 151px;
-  padding: 3px;
+  padding: 3px 10px; /* ← padding siempre activo */
+  border-radius: 10px; /* ← necesario para hover/active */
+  transition: background-color 0.3s ease; /* ← solo el fondo transiciona */
 }
 
 .option-container {
@@ -85,6 +83,18 @@ i {
 #content {
   margin-left: 234px;
   padding: 20px;
+  background: #f8f8f8;
+  overflow: hidden;
+}
+
+.logout-option {
+  margin-top: auto;
+  color: #e57373;
+}
+
+.logout-option:hover {
+  background-color: #ffcdd2;
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {

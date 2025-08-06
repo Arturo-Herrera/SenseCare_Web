@@ -1,2 +1,677 @@
-<link rel="stylesheet" href="../../css/index.css" />
-<h1 class="title">Patients</h1>
+<link rel="stylesheet" href="/screens/patients/style.css" />
+
+<div class="main-container">
+  <div class="header">
+    <div class="header-left">
+      <h1 class="page-title">Patients</h1>
+    </div>
+    <div class="header-center">
+      <div class="search-container">
+        <i class="fas fa-search"></i>
+        <input
+          type="text"
+          class="search-input"
+          id="search-patient"
+          placeholder="Search"
+          autocomplete="off"
+        />
+        <ul id="search-results" class="search-results"></ul>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="add-container">
+        <div class="add-button">
+          <i class="fas fa-plus"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-container" id="content-container">
+    <div class="grid-top">
+      <!-- Info container -->
+      <div class="patient-info-container" id="patient-info">
+        <h1 class="patient-name" id="name"></h1>
+        <div class="bottom-container">
+          <p class="gender" id="gender"></p>
+          <p class="age" id="age"></p>
+        </div>
+        <p class="time-last-lecture" id="lecture"></p>
+      </div>
+
+      <div class="lectures-container">
+        <!-- <div class="lectures header"> -->
+        <h2 class="lectures-title">Last 3 readings</h2>
+        <!-- </div> -->
+        <div class="cards-lectures-container">
+          <div class="lecture-card">
+            <div class="stat">
+              <i class="fas fa-heart"></i>
+              <p>0 BPM</p>
+            </div>
+            <div class="stat">
+              <i class="fa-solid fa-temperature-empty"></i>
+              <p>0 °C</p>
+            </div>
+            <div class="stat">
+              <i class="fa-solid fa-droplet"></i>
+              <p>0 %</p>
+            </div>
+          </div>
+          <div class="lecture-card">
+            <div class="stat">
+              <i class="fas fa-heart"></i>
+              <p>0 BPM</p>
+            </div>
+            <div class="stat">
+              <i class="fa-solid fa-temperature-empty"></i>
+              <p>0 °C</p>
+            </div>
+            <div class="stat">
+              <i class="fa-solid fa-droplet"></i>
+              <p>0 %</p>
+            </div>
+          </div>
+          <div class="lecture-card">
+            <div class="stat">
+              <i class="fas fa-heart"></i>
+              <p>0 BPM</p>
+            </div>
+            <div class="stat">
+              <i class="fa-solid fa-temperature-empty"></i>
+              <p>0 °C</p>
+            </div>
+            <div class="stat">
+              <i class="fa-solid fa-droplet"></i>
+              <p>0 %</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="charts-section">
+      <h1 class="charts-title">Charts</h1>
+      <div class="grid-bottom">
+        <div
+          class="vital-signs-chart"
+          id="bpm-chart-container"
+          data-chart-type="bpm"
+        ></div>
+        <div
+          class="vital-signs-chart"
+          id="temp-chart-container"
+          data-chart-type="temp"
+        ></div>
+        <div
+          class="vital-signs-chart"
+          id="oxygen-chart-container"
+          data-chart-type="oxygen"
+        ></div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="content-container-2"
+    id="content-container-2"
+    style="display: none"
+  >
+    <div class="create-user-container" id="create-user-container">
+      <div class="add-user-header">
+        <h2 class="add-user-title">Add New Patient</h2>
+        <button id="back-button">Back</button>
+      </div>
+
+      <form class="info-user-container" id="user-form">
+        <div class="header-form">
+          <h1 class="patient-form-title">Patient information</h1>
+          <label class="custom-file-label" for="fileUpload">Subir Imagen</label>
+          <input type="file" id="fileUpload" class="photo-input" />
+        </div>
+
+        <div class="patient-info-form">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input
+              type="text"
+              id="patient-name"
+              pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" 
+              title="Only letters and spaces are allowed"
+              oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
+              placeholder="Enter name"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="sur-name">Surname</label>
+            <input
+              type="text"
+              id="sur-name"
+              pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" 
+              title="Only letters and spaces are allowed"
+              oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
+              placeholder="Enter surname"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="last-name">Last Name</label>
+            <input
+              type="text"
+              id="last-name"
+              pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" 
+              title="Only letters and spaces are allowed"
+              oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
+              placeholder="Enter last name"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="date-birth">Date of Birth</label>
+            <input type="date" id="date-birth" required autocomplete="off" />
+          </div>
+          <div class="form-group">
+            <label for="gender">Gender</label>
+            <select id="patient-gender" required>
+              <option value="" disabled selected>Select</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="colonia">Colonia</label>
+            <input
+              type="text"
+              id="colonia"
+              placeholder="Enter colonia"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="street">Street</label>
+            <input
+              type="text"
+              id="street"
+              placeholder="Enter street"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="number">Number</label>
+            <input
+              type="number"
+              id="number"
+              placeholder="Enter number"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="phone-number">Phone Number</label>
+            <input
+              type="number"
+              id="phone-number"
+              placeholder="Enter phone number"
+              required
+              autocomplete="off"
+              pattern="[0-9]{10}" 
+              title="Must contain exactly 10 digits"
+              maxlength="10"
+              minlength="10"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)"
+            />
+          </div>
+          <div class="form-group">
+            <label for="device-select">Assign device</label>
+
+            <select id="device-select" required>
+              <option value="" disabled selected>Select a device</option>
+            </select>
+          </div>
+        </div>
+        <h1 class="patient-form-title">Caregiver information</h1>
+        <div class="caregiver-info-form">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input
+              type="text"
+              id="caregiver-name"
+              pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" 
+              title="Only letters and spaces are allowed"
+              oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
+              placeholder="Enter name"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="sur-name">Surname</label>
+            <input
+              type="text"
+              id="caregiver-sur-name"
+              pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" 
+              title="Only letters and spaces are allowed"
+              oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
+              placeholder="Enter surname"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="last-name">Last Name</label>
+            <input
+              type="text"
+              id="caregiver-last-name"
+              pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" 
+              title="Only letters and spaces are allowed"
+              oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
+              placeholder="Enter last name"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="date-birth">Date of Birth</label>
+            <input
+              type="date"
+              id="caregiver-date-birth"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="gender">Gender</label>
+            <select id="caregiver-gender" required>
+              <option value="" disabled selected>Select</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="phone-number">Phone Number</label>
+            <input
+              type="number"
+              id="caregiver-phone-number"
+              placeholder="Enter phone number"
+              required
+              autocomplete="off"
+              pattern="[0-9]{10}" 
+              title="Must contain exactly 10 digits"
+              maxlength="10"
+              minlength="10"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)"
+            />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="caregiver-email"
+              placeholder="Enter email"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="password-container">
+              <input
+                type="password"
+                id="caregiver-password"
+                minlength="6" 
+                maxlength="15" 
+                title="The password must be between 6 and 15 characters."
+                placeholder="Enter password"
+                required
+                autocomplete="off"
+              />
+              <i
+                id="togglePassword"
+                class="fa-solid fa-eye password-toggle-icon"
+              ></i>
+            </div>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="submit-button">Create Patient</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div
+    class="content-container-2"
+    id="content-container-3"
+    style="display: none"
+  >
+    <div class="create-user-container" id="create-user-container">
+      <div class="add-user-header">
+        <h2 class="add-user-title">Update Patient</h2>
+        <button id="back-button2">Back</button>
+      </div>
+
+      <form class="info-user-container" id="user-form">
+        <div class="header-form">
+          <h1 class="patient-form-title">Patient information</h1>
+        </div>
+
+        <div class="patient-info-form">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input
+              type="text"
+              id="update-name"
+              pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" 
+              title="Only letters and spaces are allowed"
+              oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
+              placeholder="Enter name"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="sur-name">Surname</label>
+            <input
+              type="text"
+              id="update-sur-name"
+              pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" 
+              title="Only letters and spaces are allowed"
+              oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
+              placeholder="Enter surname"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="last-name">Last Name</label>
+            <input
+              type="text"
+              id="update-last-name"
+              pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" 
+              title="Only letters and spaces are allowed"
+              oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
+              placeholder="Enter last name"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="date-birth">Date of Birth</label>
+            <input
+              type="date"
+              id="update-date-birth"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="gender">Gender</label>
+            <select id="update-gender" required>
+              <option value="" disabled selected>Select</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="colonia">Colonia</label>
+            <input
+              type="text"
+              id="update-colonia"
+              placeholder="Enter colonia"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="street">Street</label>
+            <input
+              type="text"
+              id="update-street"
+              placeholder="Enter street"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="number">Number</label>
+            <input
+              type="number"
+              id="update-number"
+              placeholder="Enter number"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="phone-number">Phone Number</label>
+            <input
+              type="number"
+              id="update-phone-number"
+              placeholder="Enter phone number"
+              required
+              autocomplete="off"
+              pattern="[0-9]{10}" 
+              title="Must contain exactly 10 digits"
+              maxlength="10"
+              minlength="10"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)"
+            />
+          </div>
+          <div class="form-group">
+            <label for="device-select">Assign device</label>
+
+            <select id="update-device-select" required>
+              <option value="" disabled selected>Select a device</option>
+            </select>
+          </div>
+        </div>
+        <h1 class="patient-form-title">Caregiver information</h1>
+        <div class="caregiver-info-form">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input
+              type="text"
+              id="update-caregiver-name"
+              pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" 
+              title="Only letters and spaces are allowed"
+              oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
+              placeholder="Enter name"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="update-sur-name">Surname</label>
+            <input
+              type="text"
+              id="update-caregiver-sur-name"
+              pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" 
+              title="Only letters and spaces are allowed"
+              oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
+              placeholder="Enter surname"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="last-name">Last Name</label>
+            <input
+              type="text"
+              id="update-caregiver-last-name"
+              pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" 
+              title="Only letters and spaces are allowed"
+              oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
+              placeholder="Enter last name"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="date-birth">Date of Birth</label>
+            <input
+              type="date"
+              id="update-caregiver-date-birth"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="gender">Gender</label>
+            <select id="update-caregiver-gender" required>
+              <option value="" disabled selected>Select</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="phone-number">Phone Number</label>
+            <input
+              type="number"
+              id="update-caregiver-phone-number"
+              placeholder="Enter phone number"
+              required
+              autocomplete="off"
+              pattern="[0-9]{10}" 
+              title="Must contain exactly 10 digits"
+              maxlength="10"
+              minlength="10"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)"
+            />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="update-caregiver-email"
+              placeholder="Enter email"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <!-- <div class="form-group">
+            <label for="password">Password</label>
+            <div class="password-container">
+              <input
+                type="password"
+                id="update-caregiver-password"
+                placeholder="Enter password"
+                required
+                autocomplete="off"
+              />
+              <i
+                id="togglePassword"
+                class="fa-solid fa-eye password-toggle-icon"
+              ></i>
+            </div>
+          </div> -->
+        </div>
+        <div class="form-actions">
+          <button type="button" class="update-submit-button">
+            Update Patient
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal para la gráfica grande -->
+  <div id="chart-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h2
+        style="
+          color: var(--primary-color);
+          text-align: center;
+          margin-bottom: 20px;
+          font-size: 30px;
+          padding-left: 20px;
+        "
+      >
+        Detailed Vital Signs
+      </h2>
+      <div id="modal-chart-container">
+        <div id="big-chart" style="width: 100%; height: 500px"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="report-modal modal-initial" id="report-modal">
+    <div class="report-modal-content modal-initial">
+      <div class="modal-header">
+        <h1 class="modal-title">Patient information</h1>
+        <span class="close-btn">&times;</span>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title full-name">Name</h2>
+        <p></p>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title age">Age</h2>
+        <p></p>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title gender">Gender</h2>
+        <p></p>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title address">Address</h2>
+        <p></p>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title phone">Phone number</h2>
+        <p></p>
+      </div>
+
+      <h2 class="modal-subtitle">Caregiver information</h2>
+      <!-- Caregiver -->
+      <div class="section">
+        <h2 class="section-title caregiver-full-name">Name</h2>
+        <p></p>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title caregiver-age">Age</h2>
+        <p></p>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title caregiver-gender">Gender</h2>
+        <p></p>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title caregiver-phone">Phone number</h2>
+        <p></p>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title caregiver-email">Email</h2>
+        <p></p>
+      </div>
+
+      <div class="actions-container">
+        <div class="update-button">Update</div>
+        <div class="disable-button">Disable</div>
+      </div>
+    </div>
+  </div>
+  <div id="toast-container"></div>
+</div>
+
+<div class="confirm-modal modal-initial" id="confirm-disable-modal">
+  <div class="confirm-modal-content">
+    <h2>Are you sure you want to disable this patient?</h2>
+    <div class="confirm-actions">
+      <button id="confirm-disable-yes" class="confirm-btn yes-btn">Yes</button>
+      <button id="confirm-disable-no" class="confirm-btn no-btn">No</button>
+    </div>
+  </div>
+</div>

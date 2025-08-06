@@ -1,2 +1,32 @@
-<link rel="stylesheet" href="../../css/index.css" />
-<h1 class="title">Dashboard</h1>
+<link rel="stylesheet" href="/screens/dashboard/style.css" />
+
+<div class="dashboard-content">
+  <h1 class="title">Dashboard</h1>
+
+  <div class="stats-container">
+    <div class="stat-card">
+      <h2 id="active-patients"></h2>
+      <p>Active patients</p>
+    </div>
+    <div class="stat-card">
+      <h2 id="avg-oxygen-level"></h2>
+      <p>Avg. Manual takes</p>
+    </div>
+    <div class="stat-card">
+      <h2 id="avg-alerts-per-day"></h2>
+      <p>Avg. alerts per day</p>
+    </div>
+  </div>
+
+  <div class="charts-container">
+    <div class="vital-signs-chart">
+      <div class="chart-header">
+        <h2>Hourly Alerts</h2>
+      </div>
+      <div id="chart-bpm"></div>
+    </div>
+  </div>
+  <div id="toast-container"></div>
+</div>
+
+<!-- <script type="module" src="/screens/dashboard/code.js"></script> -->

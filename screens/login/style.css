@@ -1,0 +1,165 @@
+body {
+  font-family: "Merriweather-sans", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.main-container {
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(to right, #b2c5d7, #ffffff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 34.188rem;
+  height: 38.313rem;
+  border-radius: 20px;
+  background: rgba(249, 249, 249, 0.32);
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 48px;
+  font-weight: bold;
+  color: #44749d;
+  margin-top: 66px;
+  margin-bottom: 14px;
+}
+
+.subtitle {
+  font-size: 22px;
+  color: #44749d;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 23px;
+  margin-top: 33px;
+}
+
+.input-field {
+  width: 28.625rem;
+  height: 4.188rem;
+  background: rgba(239, 239, 239, 0.3);
+  border-radius: 10px;
+  color: rgba(117, 117, 117, 56);
+  border: 1px solid rgba(204, 204, 204, 1);
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+  padding-left: 41px;
+  padding-bottom: 21px;
+  padding-top: 21px;
+  font-size: 20px;
+}
+
+.bottom-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 33px;
+  gap: 17px;
+}
+
+.submit-button {
+  width: 28.625rem;
+  height: 4rem;
+  background: #44749d;
+  border-radius: 20px;
+  color: #ffffff;
+  font-size: 32px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.submit-button:hover {
+  background: #365a7c;
+  transition: background 0.3s ease-in-out;
+}
+
+.top-span {
+  font-size: 18px;
+}
+
+.bottom-span {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.top-span,
+.bottom-span {
+  color: #44749d;
+}
+
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #999;
+  font-size: 18px;
+  padding-right: 10px;
+}
+
+.password-toggle-icon:hover {
+  color: #333;
+}
+
+#toast-container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.toast {
+  min-width: 250px;
+  padding: 12px 20px;
+  border-radius: 5px;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideIn 0.4s forwards, fadeOut 0.5s forwards 3s;
+}
+
+.toast.success {
+  background-color: #4caf50;
+}
+
+.toast.error {
+  background-color: #f44336;
+}
+
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}

@@ -1,0 +1,45 @@
+<link rel="stylesheet" href="/screens/login/style.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<div class="main-container">
+  <div class="login-container">
+    <h1 class="title">Welcome</h1>
+    <h2 class="subtitle">This is a medical portal</h2>
+
+    <form id="login-form">
+      <div class="input-container">
+        <input
+          type="text"
+          class="input-field"
+          placeholder="Enter your email"
+          id="email"
+          autocomplete="off"
+        />
+        <div class="password-container">
+          <input
+            type="password"
+            id="password"
+            class="input-field"
+            placeholder="Enter password"
+            required
+            autocomplete="off"
+          />
+          <i
+            id="togglePassword"
+            class="fa-solid fa-eye password-toggle-icon"
+          ></i>
+        </div>
+      </div>
+      <div class="bottom-container">
+        <button type="submit" class="submit-button">
+          <span class="button-text">Login</span>
+        </button>
+        <span class="top-span">In case of problems</span>
+        <span class="bottom-span">Contact your supervisor</span>
+      </div>
+    </form>
+  </div>
+  <div id="toast-container"></div>
+</div>
+
+<script type="module" src="/screens/login/code.js"></script>
